@@ -1,34 +1,29 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
+:root { color-scheme: light; }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
+body { @apply bg-white text-neutral-900; }
 
-.App-link {
-    color: #61dafb;
-}
+/* Bottom Nav */
+.bottom-nav { @apply fixed bottom-0 left-0 right-0 bg-white shadow-[0_-1px_8px_rgba(0,0,0,0.06)] z-50; }
+.bottom-nav-inner { @apply grid grid-cols-3; }
+.bottom-nav-btn { @apply py-3 text-center text-sm font-medium transition-colors; }
+.bottom-nav-btn.active { @apply bg-blue-600 text-white; }
+.bottom-nav-btn.inactive { @apply text-neutral-500; }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
+/* Floating Action Button */
+.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg; }
+
+/* Cards & Grid */
+.card { @apply bg-white rounded-xl border border-neutral-200 p-4; }
+.grid-3 { @apply grid grid-cols-3 gap-3; }
+
+/* Search */
+.search-wrap { @apply p-4 pt-6; }
+.search-input { @apply w-full border border-neutral-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
+.suggestions { @apply mt-3 bg-white border border-neutral-200 rounded-lg divide-y; }
+.suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
+
+.header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 px-4 py-3 font-semibold; }
