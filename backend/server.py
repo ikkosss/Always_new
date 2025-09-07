@@ -158,11 +158,11 @@ async def number_usage(number_id: str):
     used_place_ids = {u["placeId"] for u in usage_list if u.get("used")}
     unused_place_ids = set(p["id"] for p in places) - used_place_ids
     used = [
-        {k: v for k, v in p.items() if k != "logo"}
+        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
         for p in places if p["id"] in used_place_ids
     ]
     unused = [
-        {k: v for k, v in p.items() if k != "logo"}
+        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
         for p in places if p["id"] in unused_place_ids
     ]
     return {"used": used, "unused": unused}
