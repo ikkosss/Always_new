@@ -351,14 +351,21 @@ async def search(q: str):
         # places = []  # optionally none
     else:
         places = await db.places.find({"name": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
-    # strip logo from places
+    # strip logo and _id from places
     def strip_logo(p: Dict[str, Any]):
         p2 = dict(p)
+        p2.pop("_id", None)
         p2.pop("logo", None)
         p2["hasLogo"] = "logo" in p and bool(p.get("logo"))
         return p2
+    # Clean numbers by removing _id
+    clean_numbers = []
+    for n in numbers:
+        clean_n = dict(n)
+        clean_n.pop("_id", None)
+        clean_numbers.append(clean_n)
     return {
-        "numbers": [NumberModel(**n).model_dump() for n in numbers],
+        "numbers": [NumberModel(**n).model_dump() for n in clean_numbers],
         "places": [strip_logo(p) for p in places]
     }
 
