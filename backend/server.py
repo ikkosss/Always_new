@@ -99,7 +99,13 @@ async def list_numbers(q: Optional[str] = None):
     if q:
         query = {"phone": {"$regex": re.escape(q), "$options": "i"}}
     items = await db.numbers.find(query).sort("createdAt", -1).to_list(1000)
-    return [NumberModel(**i) for i in items]
+    # Remove MongoDB _id field from each item
+    clean_items = []
+    for item in items:
+        clean_item = dict(item)
+        clean_item.pop("_id", None)
+        clean_items.append(clean_item)
+    return [NumberModel(**i) for i in clean_items]
 
 @api_router.post("/numbers", response_model=NumberModel)
 async def create_number(payload: NumberCreate):
