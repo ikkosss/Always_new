@@ -177,9 +177,10 @@ async def list_places(q: Optional[str] = None, category: Optional[str] = None, s
     else:
         cursor = cursor.sort("createdAt", -1)
     items = await cursor.to_list(5000)
-    # strip logo binary to reduce payload
+    # strip logo binary to reduce payload and remove MongoDB _id
     def strip_logo(p: Dict[str, Any]):
         p2 = dict(p)
+        p2.pop("_id", None)  # Remove MongoDB ObjectId
         if "logo" in p2:
             p2["hasLogo"] = bool(p2["logo"])
             p2.pop("logo", None)
