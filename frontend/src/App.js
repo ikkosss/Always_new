@@ -84,7 +84,7 @@ function SearchPage() {
       // propose add number
       alert(`Добавить номер ${q.trim()} через экран НОМЕРА (кнопка +)`);
     } else {
-      alert(`Добавить \"${q.trim()}\" через экран МЕСТА (кнопка +)`);
+      alert(`Добавить "${q.trim()}" через экран МЕСТА (кнопка +)`);
     }
   };
 
@@ -127,7 +127,7 @@ function SearchPage() {
         )}
         {noFound && (
           <div className="mt-3 text-sm text-neutral-600">
-            {isDigits ? `Добавить номер \"${q.trim()}\"?` : `Добавить \"${q.trim()}\"?`}
+            {isDigits ? `Добавить номер "${q.trim()}"?` : `Добавить "${q.trim()}"?`}
           </div>
         )}
       </div>
@@ -170,7 +170,7 @@ function NumbersPage() {
           <a key={n.id} href={`/numbers/${n.id}`} className="card flex items-center gap-3">
             <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
             <div className="flex-1">{n.phone}</div>
-            <button className="text-red-600 text-sm" onClick={(e) => { e.preventDefault(); del(n.id); }}>Удалить</button>
+            <button className="text-red-600 text-sm" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(n.id); }}>Удалить</button>
           </a>
         ))}
       </div>
@@ -300,7 +300,7 @@ function PlacesPage() {
         </div>
         <div className="grid-3">
           {items.map((p) => (
-            <div key={p.id} className="card flex flex-col items-center gap-2 p-3">
+            <a key={p.id} href={`/places/${p.id}`} className="card flex flex-col items-center gap-2 p-3 cursor-pointer">
               <div className="w-16 h-16 bg-neutral-100 rounded overflow-hidden flex items-center justify-center">
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
@@ -308,9 +308,9 @@ function PlacesPage() {
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
               </div>
-              <a href={`/places/${p.id}`} className="text-center text-sm font-medium">{p.name}</a>
-              <button className="text-red-600 text-xs" onClick={() => del(p.id)}>Удалить</button>
-            </div>
+              <div className="text-center text-sm font-medium">{p.name}</div>
+              <button className="text-red-600 text-xs" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(p.id); }}>Удалить</button>
+            </a>
           ))}
         </div>
       </div>
