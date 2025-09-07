@@ -228,8 +228,9 @@ async def create_place(
 @api_router.get("/places/{place_id}")
 async def get_place(place_id: str):
     doc = await get_place_or_404(place_id)
-    # strip logo
+    # strip logo and _id
     resp = dict(doc)
+    resp.pop("_id", None)
     resp.pop("logo", None)
     resp["hasLogo"] = "logo" in doc and bool(doc["logo"])
     return resp
