@@ -123,7 +123,9 @@ async def create_number(payload: NumberCreate):
 @api_router.get("/numbers/{number_id}", response_model=NumberModel)
 async def get_number(number_id: str):
     doc = await get_number_or_404(number_id)
-    return NumberModel(**doc)
+    clean_doc = dict(doc)
+    clean_doc.pop("_id", None)
+    return NumberModel(**clean_doc)
 
 @api_router.put("/numbers/{number_id}", response_model=NumberModel)
 async def update_number(number_id: str, payload: NumberCreate):
