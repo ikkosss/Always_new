@@ -219,8 +219,9 @@ async def create_place(
             "data": base64.b64encode(content).decode('utf-8')
         }
     await db.places.insert_one(doc)
-    # strip logo in response
-    resp = dict(doc)
+    # Create response using PlaceModel to ensure proper serialization
+    place_model = PlaceModel(**doc)
+    resp = place_model.model_dump()
     resp.pop("logo", None)
     resp["hasLogo"] = "logo" in doc
     return resp
