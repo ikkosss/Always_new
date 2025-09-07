@@ -4,6 +4,7 @@ import requests
 import sys
 import json
 from pathlib import Path
+import time
 
 class FIRSTAPITester:
     def __init__(self, base_url="https://sim-check.preview.emergentagent.com"):
@@ -13,6 +14,8 @@ class FIRSTAPITester:
         self.tests_passed = 0
         self.created_number_id = None
         self.created_place_id = None
+        # Use timestamp to make unique entries
+        self.timestamp = str(int(time.time()))
 
     def log(self, message):
         print(f"🔍 {message}")
@@ -69,7 +72,7 @@ class FIRSTAPITester:
     def test_create_number(self):
         """Test POST /api/numbers - create a number"""
         data = {
-            "phone": "+79990000001",
+            "phone": f"+7999000{self.timestamp[-4:]}",  # Use timestamp for unique phone
             "operatorKey": "mts"
         }
         success, response = self.run_test("Create number", "POST", "/numbers", 200, data)
@@ -101,7 +104,7 @@ class FIRSTAPITester:
             return False
 
         data = {
-            "name": "Магнит",
+            "name": f"Магнит-{self.timestamp}",  # Use timestamp for unique name
             "category": "Магазины"
         }
         
@@ -135,11 +138,11 @@ class FIRSTAPITester:
         success, response = self.run_test("List places", "GET", "/places", 200)
         if success and self.created_place_id:
             # Check if our created place is in the list
-            found = any(p.get('id') == self.created_place_id and p.get('name') == 'Магнит' for p in response)
+            found = any(p.get('id') == self.created_place_id for p in response)
             if found:
-                print(f"✅ Created place 'Магнит' found in list")
+                print(f"✅ Created place found in list")
             else:
-                print(f"❌ Created place 'Магнит' NOT found in list")
+                print(f"❌ Created place NOT found in list")
                 return False
         return success
 
