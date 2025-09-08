@@ -1056,7 +1056,7 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <button className="w-20 h-20 bg-neutral-100 overflow-hidden flex items-center justify-center relative rounded-lg" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
+              <button className="w-24 h-24 bg-neutral-100 overflow-hidden flex items-center justify-center relative rounded-lg" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover rounded-lg" src={`${API}/places/${p.id}/logo`} />
                 ) : (
