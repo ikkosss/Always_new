@@ -554,7 +554,7 @@ function PlaceDetails({ id }) {
             />
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <button
             className={`px-4 py-2 ${tab === 'unused' ? 'bg-green-200 text-green-800' : 'bg-green-100 text-green-700'}`}
             onClick={() => setTab('unused')}
@@ -566,6 +566,13 @@ function PlaceDetails({ id }) {
             onClick={() => setTab('used')}
           >
             Использован
+          </button>
+          <button
+            className="px-3 py-2 bg-red-600 text-white hover:bg-red-700 ml-2"
+            onClick={() => setDeleteConfirmOpen(true)}
+            title="Удалить место"
+          >
+            🗑️
           </button>
         </div>
         {tab === 'unused' && (
