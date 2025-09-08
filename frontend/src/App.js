@@ -852,6 +852,75 @@ function PlaceDetails({ id }) {
         </div>
       )}
 
+      {editDialogOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setEditDialogOpen(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Редактировать место</div>
+            <div className="grid gap-3">
+              <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
+              <select className="search-input" value={editForm.category} onChange={(e)=>setEditForm({...editForm, category: e.target.value})}>
+                {['Магазины','Аптеки','Заправки','Соц. сети'].map((c)=> (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              
+              {/* Промокод с плюсиком */}
+              <div className="flex items-center gap-2">
+                <input 
+                  className="search-input flex-1" 
+                  placeholder="Промокод" 
+                  value={editForm.promoCode} 
+                  onChange={(e)=>setEditForm({...editForm, promoCode: e.target.value})} 
+                />
+                <button 
+                  type="button"
+                  className="px-3 py-2 bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg h-[42px]"
+                  onClick={handleEditPlusClick}
+                  title="Добавить поле"
+                >
+                  +
+                </button>
+              </div>
+              
+              {/* Дополнительный промокод */}
+              {showExtraPromo && (
+                <input 
+                  className="search-input" 
+                  placeholder="Дополнительный промокод" 
+                  value={editForm.promoCode2} 
+                  onChange={(e)=>setEditForm({...editForm, promoCode2: e.target.value})} 
+                />
+              )}
+              
+              {/* Ссылка на акцию */}
+              {showPromoUrl && (
+                <input 
+                  className="search-input" 
+                  placeholder="Ссылка на акцию" 
+                  value={editForm.promoUrl} 
+                  onChange={(e)=>setEditForm({...editForm, promoUrl: e.target.value})} 
+                />
+              )}
+              
+              {/* Комментарий */}
+              <textarea 
+                className="search-input" 
+                placeholder="Комментарий" 
+                rows="3"
+                value={editForm.comment} 
+                onChange={(e)=>setEditForm({...editForm, comment: e.target.value})} 
+              />
+              
+              <input className="search-input" type="file" accept="image/*" onChange={(e)=>setEditForm({...editForm, logo: e.target.files?.[0] || null})} />
+              <div className="flex justify-end gap-2">
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
