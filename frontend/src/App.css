@@ -75,24 +75,34 @@ body {
   clip-path: circle(50% at 50% 50%);
 }
 
-/* Разделительные линии для номеров */
+/* Разделительные линии для номеров - между элементами */
+.number-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .number-item {
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.number-item:last-child {
-  border-bottom: none;
+/* Разделительные линии для сервисов в списках - между элементами */
+.service-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-/* Разделительные линии для сервисов в списках */
 .service-item {
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.service-item:last-child {
-  border-bottom: none;
 }
 
 /* Разделительные линии для мест (сетка) */
