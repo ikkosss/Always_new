@@ -390,7 +390,7 @@ function NumberDetails({ id }) {
                 <div key={p.id} className="flex items-center justify-between py-2">
                   <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                   <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                    <input type="checkbox" className="toggle" checked={false} onChange={()=>confirmTogglePlace(p, false)} />
+                    <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(p.id, true)} />
                   </label>
                 </div>
               ))}
