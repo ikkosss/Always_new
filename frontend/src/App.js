@@ -1066,7 +1066,7 @@ function PlacesPage() {
                   <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
                 )}
               </button>
-              <div className="text-center text-sm font-normal text-black mt-1 truncate w-full">{p.name}</div>
+              <div className="text-center text-sm font-normal text-black mt-1 truncate w-24">{p.name}</div>
             </LongPressable>
           ))}
         </div>
