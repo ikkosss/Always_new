@@ -283,7 +283,7 @@ function SearchPage() {
                 ))}
               </select>
               <input className="search-input" placeholder="Промокод" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
-              <input className="search-input" placeholder="ССЫЛКА НА РЕСУРС" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
+              <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
               <input className="search-input" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
