@@ -557,13 +557,13 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <div className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center">
+              <button className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
                 ) : (
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
-              </div>
+              </button>
               <div className="text-center text-sm font-medium">{p.name}</div>
             </LongPressable>
           ))}
