@@ -834,6 +834,20 @@ function PlacesPage() {
     setPromoOpen(true);
   };
 
+  const handlePlusClick = (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    const lastClick = e.currentTarget.lastClick || 0;
+    
+    if (now - lastClick < 300) { // Double click
+      setShowPromoUrl(true);
+    } else { // Single click
+      setShowExtraPromo(true);
+    }
+    
+    e.currentTarget.lastClick = now;
+  };
+
   return (
     <Page title="МЕСТА">
       <div className="p-4">
