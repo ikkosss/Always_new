@@ -520,7 +520,7 @@ function NumberDetails({ id }) {
             <div className="text-sm text-neutral-600">Сервисы, в которых ещё не производилась регистрация:</div>
             <div className="grid gap-2">
               {usage.unused.map((p)=> (
-                <div key={p.id} className="flex items-center justify-between py-2">
+                <div key={p.id} className="flex items-center justify-between py-2 service-item">
                   <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                   <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
                     <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(p.id, true)} />
