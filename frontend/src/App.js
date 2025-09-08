@@ -373,7 +373,9 @@ function NumberDetails({ id }) {
               {usage.unused.map((p)=> (
                 <div key={p.id} className="flex items-center justify-between py-2">
                   <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
-                  <button className="text-blue-600" onClick={()=>toggle(p.id, true)}>Отметить использован</button>
+                  <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
+                    <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(p.id, true)} />
+                  </label>
                 </div>
               ))}
               {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных мест</div>}
@@ -384,7 +386,9 @@ function NumberDetails({ id }) {
             {usage.used.map((p)=> (
               <div key={p.id} className="flex items-center justify-between py-2">
                 <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
-                <button className="text-neutral-600" onClick={()=>toggle(p.id, false)}>Снять отметку</button>
+                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
+                  <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(p.id, false)} />
+                </label>
               </div>
             ))}
             {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных мест</div>}
@@ -398,7 +402,7 @@ function NumberDetails({ id }) {
 function PlaceDetails({ id }) {
   const [place, setPlace] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
-  const [tab, setTab] = useState(null); // 'unused' | 'used' | null
+  const [tab, setTab] = useState('unused');
 
   const load = async () => {
     const [p, u] = await Promise.all([
@@ -442,7 +446,9 @@ function PlaceDetails({ id }) {
             {usage.unused.map((n)=> (
               <div key={n.id} className="flex items-center justify-between py-2">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <button className="text-blue-600" onClick={()=>toggle(n.id, true)}>Отметить использован</button>
+                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
+                  <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(n.id, true)} />
+                </label>
               </div>
             ))}
             {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных номеров</div>}
@@ -453,7 +459,9 @@ function PlaceDetails({ id }) {
             {usage.used.map((n)=> (
               <div key={n.id} className="flex items-center justify-between py-2">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <button className="text-neutral-600" onClick={()=>toggle(n.id, false)}>Снять отметку</button>
+                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
+                  <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(n.id, false)} />
+                </label>
               </div>
             ))}
             {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных номеров</div>}
@@ -595,7 +603,7 @@ function PlacesPage() {
 
       {/* Context menu */}
       {ctxOpen && ctxTarget && (
-        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify<center p-4" onClick={() => setCtxOpen(false)}>
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
