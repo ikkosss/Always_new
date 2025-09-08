@@ -210,13 +210,16 @@ function SearchPage() {
             <input
               value={q}
               onChange={(e) => onChange(e.target.value)}
-              className="search-input"
+              className="search-input pr-20"
               placeholder="Номер телефона или название места"
             />
-            {q && (
-              <button type="button" onClick={() => setQ("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500">×</button>
-            )}
+            <button 
+              type="button" 
+              onClick={handleSearch}
+              className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-blue-600 text-white text-xs font-medium"
+            >
+              НАЙТИ
+            </button>
           </div>
         </form>
         {(results.numbers.length > 0 || results.places.length > 0) && (
@@ -245,6 +248,52 @@ function SearchPage() {
           </div>
         )}
       </div>
+
+      {/* Number Dialog */}
+      {showNumberDialog && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowNumberDialog(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Добавить номер</div>
+            <div className="grid gap-3">
+              <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={numberForm.phone} onChange={(e) => setNumberForm({ ...numberForm, phone: formatRuPhonePartial(e.target.value) })} />
+              <select className="search-input" value={numberForm.operatorKey} onChange={(e) => setNumberForm({ ...numberForm, operatorKey: e.target.value })}>
+                {Object.entries(OPERATORS).map(([key, op]) => (
+                  <option key={key} value={key}>{op.name}</option>
+                ))}
+              </select>
+              <div className="flex justify-end gap-2">
+                <button className="px-4 py-2" onClick={() => setShowNumberDialog(false)}>Отмена</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveNumber}>Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Place Dialog */}
+      {showPlaceDialog && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowPlaceDialog(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Добавить место</div>
+            <div className="grid gap-3">
+              <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
+              <select className="search-input" value={placeForm.category} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
+                {["Магазины", "Рестораны", "Заправки", "Банки", "Аптеки", "Сайты", "Другое"].map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <input className="search-input" placeholder="ПРОМОКОД" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
+              <input className="search-input" placeholder="ССЫЛКА НА РЕСУРС" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
+              <input className="search-input" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
+              <div className="flex justify-end gap-2">
+                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
