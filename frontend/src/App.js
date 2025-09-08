@@ -425,15 +425,9 @@ function NumberDetails({ id }) {
   useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (placeId, used) => {
-    // If switching from unused to used (false to true), show confirmation
-    if (used) {
-      setPendingToggle({ placeId, used });
-      setToggleConfirmOpen(true);
-      return;
-    }
-    
-    // Direct toggle for used to unused
-    await performToggle(placeId, used);
+    // Always show confirmation for any toggle
+    setPendingToggle({ placeId, used });
+    setToggleConfirmOpen(true);
   };
 
   const performToggle = async (placeId, used) => {
