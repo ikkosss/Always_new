@@ -367,15 +367,18 @@ function NumberDetails({ id }) {
           </button>
         </div>
         {tab === 'unused' ? (
-          <div className="grid gap-2">
-            {usage.unused.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between py-2">
-                <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
-                <button className="text-blue-600" onClick={()=>toggle(p.id, true)}>Отметить использован</button>
-              </div>
-            ))}
-            {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных мест</div>}
-          </div>
+          <>
+            <div className="text-sm text-neutral-600">Сервисы, в которых ещё не производилась регистрация:</div>
+            <div className="grid gap-2">
+              {usage.unused.map((p)=> (
+                <div key={p.id} className="flex items-center justify-between py-2">
+                  <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
+                  <button className="text-blue-600" onClick={()=>toggle(p.id, true)}>Отметить использован</button>
+                </div>
+              ))}
+              {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных мест</div>}
+            </div>
+          </>
         ) : (
           <div className="grid gap-2">
             {usage.used.map((p)=> (
