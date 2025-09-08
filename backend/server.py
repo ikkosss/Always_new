@@ -355,6 +355,21 @@ async def update_place(
     resp["hasPromo"] = bool(doc.get("promoCode") or doc.get("promoUrl"))
     return resp
 
+@api_router.delete("/places/{place_id}")
+async def delete_place(place_id: str):
+    # Check if place exists
+    place = await db.places.find_one({"id": place_id})
+    if not place:
+        raise HTTPException(status_code=404, detail="Place not found")
+    
+    # Delete the place
+    await db.places.delete_one({"id": place_id})
+    
+    # Also delete all usage records for this place
+    await db.usages.delete_many({"placeId": place_id})
+    
+    return {"ok": True, "message": "Place deleted successfully"}
+
 @api_router.get("/places/{place_id}/usage")
 async def place_usage(place_id: str):
     cur = await db.places.find_one({"id": place_id})
