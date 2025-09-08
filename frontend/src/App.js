@@ -398,6 +398,7 @@ function NumberDetails({ id }) {
 function PlaceDetails({ id }) {
   const [place, setPlace] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
+  const [tab, setTab] = useState(null); // 'unused' | 'used' | null
 
   const load = async () => {
     const [p, u] = await Promise.all([
