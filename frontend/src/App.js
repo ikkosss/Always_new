@@ -423,8 +423,21 @@ function PlaceDetails({ id }) {
           {place.hasLogo && <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />}
           <div className="font-medium text-lg">{place.name}</div>
         </div>
-        <div>
-          <div className="font-medium mb-2">Не использован</div>
+        <div className="flex gap-2">
+          <button
+            className={`px-4 py-2 ${tab === 'unused' ? 'bg-green-200 text-green-800' : 'bg-green-100 text-green-700'}`}
+            onClick={() => setTab('unused')}
+          >
+            Доступен
+          </button>
+          <button
+            className={`px-4 py-2 ${tab === 'used' ? 'bg-red-200 text-red-800' : 'bg-red-100 text-red-700'}`}
+            onClick={() => setTab('used')}
+          >
+            Использован
+          </button>
+        </div>
+        {tab === 'unused' && (
           <div className="grid gap-2">
             {usage.unused.map((n)=> (
               <div key={n.id} className="flex items-center justify-between py-2">
@@ -434,9 +447,8 @@ function PlaceDetails({ id }) {
             ))}
             {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных номеров</div>}
           </div>
-        </div>
-        <div>
-          <div className="font-medium mb-2">Использован</div>
+        )}
+        {tab === 'used' && (
           <div className="grid gap-2">
             {usage.used.map((n)=> (
               <div key={n.id} className="flex items-center justify-between py-2">
@@ -446,7 +458,7 @@ function PlaceDetails({ id }) {
             ))}
             {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных номеров</div>}
           </div>
-        </div>
+        )}
       </div>
     </Page>
   );
