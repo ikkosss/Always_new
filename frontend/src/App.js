@@ -427,6 +427,14 @@ function PlaceDetails({ id }) {
     load();
   };
 
+  const confirmToggleNumber = async (num, currentUsed) => {
+    const wasText = currentUsed ? "не был" : "был";
+    const msg = `Подтверждаете что ❮${num.phone}❯ ${wasText} использован в ❮${place?.name}❯?`;
+    if (window.confirm(msg)) {
+      await toggle(num.id, !currentUsed);
+    }
+  };
+
   if (!place) return <Page title="Загрузка..."/>;
   return (
     <Page title={place.name}>
