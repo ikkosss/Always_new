@@ -415,6 +415,8 @@ function NumberDetails({ id }) {
   const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
   const [pendingToggle, setPendingToggle] = useState(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
 
   const load = async () => {
     const [n, u] = await Promise.all([
