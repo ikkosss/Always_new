@@ -28,6 +28,15 @@ body {
 /* Search */
 .search-wrap { @apply p-4 pt-6; }
 .search-input { @apply w-full border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
+
+/* Строгое центрирование для search-wrap */
+.search-wrap {
+  @apply p-4 pt-6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 .suggestions { @apply mt-3 bg-white border border-neutral-200 divide-y; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 
