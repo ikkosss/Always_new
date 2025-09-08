@@ -79,3 +79,48 @@ body {
   background: #ef4444; /* red-500 */
   clip-path: circle(50% at 50% 50%);
 }
+
+/* Разделительные линии для номеров */
+.number-item {
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.number-item:last-child {
+  border-bottom: none;
+}
+
+/* Разделительные линии для сервисов в списках */
+.service-item {
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.service-item:last-child {
+  border-bottom: none;
+}
+
+/* Разделительные линии для мест (сетка) */
+.places-grid {
+  position: relative;
+}
+
+.places-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 33.33% 100px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.places-grid > * {
+  position: relative;
+  z-index: 1;
+}
