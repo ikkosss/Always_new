@@ -564,10 +564,6 @@ function PlacesPage() {
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
               </div>
-              {p.hasPromo && (
-                <img src="/promo.png" alt="promo" className="absolute right-2 top-3 h-16 w-16 object-contain cursor-pointer"
-                     onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
-              )}
               <div className="text-center text-sm font-medium">{p.name}</div>
             </LongPressable>
           ))}
