@@ -762,7 +762,17 @@ function PlacesPage() {
   const [showDialog, setShowDialog] = useState(false);
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
-  const [form, setForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+  const [form, setForm] = useState({ 
+    name: "", 
+    category: "Магазины", 
+    promoCode: "", 
+    promoCode2: "", 
+    promoUrl: "", 
+    comment: "", 
+    logo: null 
+  });
+  const [showExtraPromo, setShowExtraPromo] = useState(false);
+  const [showPromoUrl, setShowPromoUrl] = useState(false);
   const [filter, setFilter] = useState({ category: "", sort: "new" });
   const [editing, setEditing] = useState(null);
   const [ctxOpen, setCtxOpen] = useState(false);
