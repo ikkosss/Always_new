@@ -339,6 +339,61 @@ function NumberDetails({ id }) {
   );
 }
 
+// Restored PlaceDetails component
+function PlaceDetails({ id }) {
+  const [place, setPlace] = useState(null);
+  const [usage, setUsage] = useState({ used: [], unused: [] });
+
+  const load = async () => {
+    const [p, u] = await Promise.all([
+      api.get(`/places/${id}`),
+      api.get(`/places/${id}/usage`),
+    ]);
+    setPlace(p.data);
+    setUsage(u.data);
+  };
+  useEffect(() => { load(); }, [id]);
+
+  const toggle = async (numberId, used) => {
+    await api.post(`/usage`, { numberId, placeId: id, used });
+    load();
+  };
+
+  if (!place) return <Page title="Загрузка..."/>;
+  return (
+    <Page title={place.name}>
+      <div className="p-4 grid gap-3">
+        <div className="card flex flex-col items-center gap-3">
+          <div className="w-20 h-20 bg-neutral-100 rounded overflow-hidden">
+            {place.hasLogo && <img alt={place.name} className="w-full h-full object-cover" src={`${API}/places/${id}/logo`} />}
+          </div>
+          <div className="font-medium">{place.name}</div>
+        </div>
+        <Accordion title="Не использован" count={usage.unused.length}>
+          <div className="grid gap-2">
+            {usage.unused.map((n)=> (
+              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
+                <button className="text-blue-600" onClick={()=>toggle(n.id, true)}>Отметить использован</button>
+              </div>
+            ))}
+          </div>
+        </Accordion>
+        <Accordion title="Использован" count={usage.used.length}>
+          <div className="grid gap-2">
+            {usage.used.map((n)=> (
+              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
+                <button className="text-neutral-600" onClick={()=>toggle(n.id, false)}>Снять отметку</button>
+              </div>
+            ))}
+          </div>
+        </Accordion>
+      </div>
+    </Page>
+  );
+}
+
 function PlacesPage() {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
