@@ -307,6 +307,7 @@ async def update_place(
     category: Optional[str] = Form(None),
     promoCode: Optional[str] = Form(None),
     promoUrl: Optional[str] = Form(None),
+    comment: Optional[str] = Form(None),
     logo: Optional[UploadFile] = File(None),
     removeLogo: Optional[bool] = Form(False)
 ):
