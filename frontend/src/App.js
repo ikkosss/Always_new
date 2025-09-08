@@ -739,7 +739,7 @@ function PlacesPage() {
                 ))}
               </select>
               <input className="search-input" placeholder="Промокод" value={form.promoCode} onChange={(e)=>setForm({...form, promoCode: e.target.value})} />
-              <input className="search-input" placeholder="ССЫЛКА НА РЕСУРС" value={form.promoUrl} onChange={(e)=>setForm({...form, promoUrl: e.target.value})} />
+              <input className="search-input" placeholder="Ссылка на акцию" value={form.promoUrl} onChange={(e)=>setForm({...form, promoUrl: e.target.value})} />
               <input className="search-input" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
