@@ -94,11 +94,10 @@ function SearchPage() {
       <div className="search-wrap">
         <form onSubmit={onSubmit}>
           <div className="relative max-w-xl mx-auto">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 select-none">🔍</span>
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="search-input pl-9"
+              className="search-input"
               placeholder="Номер телефона или название места"
             />
             {q && (
@@ -167,14 +166,16 @@ function NumbersPage() {
 
   return (
     <Page title="НОМЕРА">
-      <div className="p-4 grid gap-3">
-        {items.map((n) => (
-          <a key={n.id} href={`/numbers/${n.id}`} className="card flex items-center gap-3">
-            <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
-            <div className="flex-1">{n.phone}</div>
-            <button className="text-red-600 text-sm" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(n.id); }}>Удалить</button>
-          </a>
-        ))}
+      <div className="p-0">
+        <div className="bg-white border-t border-b divide-y">
+          {items.map((n) => (
+            <a key={n.id} href={`/numbers/${n.id}`} className="flex items-center gap-3 px-4 py-3">
+              <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
+              <div className="flex-1">{n.phone}</div>
+              <button className="text-red-600 text-sm" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(n.id); }}>Удалить</button>
+            </a>
+          ))}
+        </div>
       </div>
       <button className="fab" onClick={() => setShowDialog(true)}>+</button>
       {showDialog && (
@@ -292,6 +293,7 @@ function PlacesPage() {
           <select className="search-input" value={filter.sort} onChange={(e)=>setFilter({ ...filter, sort: e.target.value })}>
             <option value="new">Новые</option>
             <option value="old">Старые</option>
+            <option value="popular">Популярные</option>
           </select>
           <select className="search-input" value={filter.category} onChange={(e)=>setFilter({ ...filter, category: e.target.value })}>
             <option value="">Все категории</option>

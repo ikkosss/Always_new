@@ -99,13 +99,7 @@ async def list_numbers(q: Optional[str] = None):
     if q:
         query = {"phone": {"$regex": re.escape(q), "$options": "i"}}
     items = await db.numbers.find(query).sort("createdAt", -1).to_list(1000)
-    # Remove MongoDB _id field from each item
-    clean_items = []
-    for item in items:
-        clean_item = dict(item)
-        clean_item.pop("_id", None)
-        clean_items.append(clean_item)
-    return [NumberModel(**i) for i in clean_items]
+    return [NumberModel(**i) for i in items]
 
 @api_router.post("/numbers", response_model=NumberModel)
 async def create_number(payload: NumberCreate):
@@ -123,9 +117,7 @@ async def create_number(payload: NumberCreate):
 @api_router.get("/numbers/{number_id}", response_model=NumberModel)
 async def get_number(number_id: str):
     doc = await get_number_or_404(number_id)
-    clean_doc = dict(doc)
-    clean_doc.pop("_id", None)
-    return NumberModel(**clean_doc)
+    return NumberModel(**doc)
 
 @api_router.put("/numbers/{number_id}", response_model=NumberModel)
 async def update_number(number_id: str, payload: NumberCreate):
@@ -179,16 +171,29 @@ async def list_places(q: Optional[str] = None, category: Optional[str] = None, s
         query["name"] = {"$regex": re.escape(q), "$options": "i"}
     if category:
         query["category"] = category
-    cursor = db.places.find(query)
+
+    # base list
+    items = await db.places.find(query).to_list(5000)
+
+    # sort handling
     if sort == "old" or sort == "asc":
-        cursor = cursor.sort("createdAt", 1)
+        items.sort(key=lambda p: p.get("createdAt", datetime.utcnow()))
+    elif sort == "popular":
+        # build popularity map from usages where used=true
+        agg = db.usages.aggregate([
+            {"$match": {"used": True}},
+            {"$group": {"_id": "$placeId", "count": {"$sum": 1}}}
+        ])
+        counts = {doc["_id"]: doc["count"] async for doc in agg}
+        items.sort(key=lambda p: (counts.get(p["id"], 0), p.get("createdAt", datetime.utcnow())), reverse=True)
     else:
-        cursor = cursor.sort("createdAt", -1)
-    items = await cursor.to_list(5000)
+        # default: new first
+        items.sort(key=lambda p: p.get("createdAt", datetime.utcnow()), reverse=True)
+
     # strip logo binary to reduce payload and remove MongoDB _id
     def strip_logo(p: Dict[str, Any]):
         p2 = dict(p)
-        p2.pop("_id", None)  # Remove MongoDB ObjectId
+        p2.pop("_id", None)
         if "logo" in p2:
             p2["hasLogo"] = bool(p2["logo"])
             p2.pop("logo", None)
@@ -219,9 +224,8 @@ async def create_place(
             "data": base64.b64encode(content).decode('utf-8')
         }
     await db.places.insert_one(doc)
-    # Create response using PlaceModel to ensure proper serialization
-    place_model = PlaceModel(**doc)
-    resp = place_model.model_dump()
+    # strip logo in response
+    resp = dict(doc)
     resp.pop("logo", None)
     resp["hasLogo"] = "logo" in doc
     return resp
@@ -295,6 +299,7 @@ async def update_place(
     doc = await db.places.find_one({"id": place_id})
     # strip logo
     resp = dict(doc)
+    resp.pop("_id", None)
     resp.pop("logo", None)
     resp["hasLogo"] = "logo" in doc and bool(doc["logo"])
     return resp
@@ -349,7 +354,7 @@ async def search(q: str):
     places: List[Dict[str, Any]] = []
     if is_digits:
         numbers = await db.numbers.find({"phone": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
-        # places = []  # optionally none
+        # places = []
     else:
         places = await db.places.find({"name": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
     # strip logo and _id from places
@@ -362,9 +367,9 @@ async def search(q: str):
     # Clean numbers by removing _id
     clean_numbers = []
     for n in numbers:
-        clean_n = dict(n)
-        clean_n.pop("_id", None)
-        clean_numbers.append(clean_n)
+        nn = dict(n)
+        nn.pop("_id", None)
+        clean_numbers.append(nn)
     return {
         "numbers": [NumberModel(**n).model_dump() for n in clean_numbers],
         "places": [strip_logo(p) for p in places]
