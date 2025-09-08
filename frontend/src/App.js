@@ -502,7 +502,7 @@ function NumberDetails({ id }) {
           </button>
           <button
             className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-            onClick={() => {/* TODO: Add edit functionality */}}
+            onClick={openEditDialog}
             title="Редактировать номер"
           >
             ✏️
