@@ -572,6 +572,26 @@ function NumberDetails({ id }) {
         </div>
       )}
 
+      {editDialogOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setEditDialogOpen(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Редактировать номер</div>
+            <div className="grid gap-3">
+              <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: formatRuPhonePartial(e.target.value) })} />
+              <select className="search-input" value={editForm.operatorKey} onChange={(e) => setEditForm({ ...editForm, operatorKey: e.target.value })}>
+                {Object.entries(OPERATORS).map(([key, op]) => (
+                  <option key={key} value={key}>{op.name}</option>
+                ))}
+              </select>
+              <div className="flex justify-end gap-2">
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
