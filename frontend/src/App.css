@@ -41,11 +41,11 @@ body {
 }
 .search-input { @apply w-full border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
 
-/* Контейнер для поля поиска на всю ширину */
+/* Контейнер для поля поиска на всю ширину экрана без отступов */
 .search-input-container {
   width: 100%;
   max-width: none;
-  padding: 0 1rem; /* Небольшие отступы от краев экрана */
+  padding: 0; /* Убираем все отступы для 100% ширины экрана */
 }
 .suggestions { @apply mt-3 bg-white border border-neutral-200 divide-y; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
