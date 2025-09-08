@@ -31,7 +31,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 .search-input { @apply w-full border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
 
