@@ -620,7 +620,7 @@ function PlaceDetails({ id }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {place.hasLogo && (
-              <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />
+              <img alt={place.name} className="w-10 h-10 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
             )}
             <div className="font-medium text-lg">{place.name}</div>
           </div>
