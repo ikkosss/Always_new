@@ -430,11 +430,21 @@ function PlaceDetails({ id }) {
   return (
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4">
-        <div className="flex items-center gap-3">
-          {place.hasLogo && (
-            <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {place.hasLogo && (
+              <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />
+            )}
+            <div className="font-medium text-lg">{place.name}</div>
+          </div>
+          {place.hasPromo && (
+            <img 
+              alt="Promo" 
+              className="w-10 h-10 object-cover cursor-pointer" 
+              src="/promo.png" 
+              onClick={openPromoDialog}
+            />
           )}
-          <div className="font-medium text-lg">{place.name}</div>
         </div>
         <div className="flex gap-2">
           <button
