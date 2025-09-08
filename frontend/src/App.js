@@ -605,6 +605,18 @@ function PlaceDetails({ id }) {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
   const [pendingToggle, setPendingToggle] = useState(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editForm, setEditForm] = useState({ 
+    name: "", 
+    category: "Магазины", 
+    promoCode: "", 
+    promoCode2: "", 
+    promoUrl: "", 
+    comment: "", 
+    logo: null 
+  });
+  const [showExtraPromo, setShowExtraPromo] = useState(false);
+  const [showPromoUrl, setShowPromoUrl] = useState(false);
 
   const load = async () => {
     const [p, u] = await Promise.all([
