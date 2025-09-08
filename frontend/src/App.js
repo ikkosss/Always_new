@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -23,6 +23,34 @@ const OPERATORS = {
 
 // Simple API helper
 const api = axios.create({ baseURL: API });
+
+// Long press hook (~2s)
+function useLongPress(onLongPress, ms = 2000) {
+  const timerRef = useRef(null);
+  const startedRef = useRef(false);
+
+  const start = (e) => {
+    startedRef.current = true;
+    timerRef.current = setTimeout(() => {
+      onLongPress(e);
+    }, ms);
+  };
+  const clear = () => {
+    startedRef.current = false;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+  return {
+    onMouseDown: start,
+    onTouchStart: start,
+    onMouseUp: clear,
+    onMouseLeave: clear,
+    onTouchEnd: clear,
+    onTouchCancel: clear,
+  };
+}
 
 function useBottomNav() {
   const location = useLocation();
@@ -115,20 +143,20 @@ function SearchPage() {
         {(results.numbers.length > 0 || results.places.length > 0) && (
           <div className="suggestions w-full">
             {results.numbers.map((n) => (
-              <a key={n.id} href={`/numbers/${n.id}`} className="suggestion flex items-center gap-3">
+              <div key={n.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/numbers/${n.id}`)}>
                 <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6"/>
                 <div className="flex-1">{n.phone}</div>
                 <div className="text-neutral-400 text-xs">номер</div>
-              </a>
+              </div>
             ))}
             {results.places.map((p) => (
-              <a key={p.id} href={`/places/${p.id}`} className="suggestion flex items-center gap-3">
+              <div key={p.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/places/${p.id}`)}>
                 <div className="w-6 h-6 bg-neutral-200 rounded overflow-hidden">
                   {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover" src={`${API}/places/${p.id}/logo`} />}
                 </div>
                 <div className="flex-1">{p.name}</div>
                 <div className="text-neutral-400 text-xs">место</div>
-              </a>
+              </div>
             ))}
           </div>
         )}
@@ -143,9 +171,14 @@ function SearchPage() {
 }
 
 function NumbersPage() {
+  const nav = useNavigate();
   const [items, setItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [form, setForm] = useState({ phone: "", operatorKey: "mts" });
+  const [editing, setEditing] = useState(null); // number object or null
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxTarget, setCtxTarget] = useState(null); // number object
+  const suppressClickRef = useRef(false);
 
   const load = async () => {
     const { data } = await api.get(`/numbers`);
@@ -155,8 +188,13 @@ function NumbersPage() {
 
   const save = async () => {
     try {
-      await api.post(`/numbers`, form);
+      if (editing) {
+        await api.put(`/numbers/${editing.id}`, form);
+      } else {
+        await api.post(`/numbers`, form);
+      }
       setShowDialog(false);
+      setEditing(null);
       setForm({ phone: "", operatorKey: "mts" });
       load();
     } catch (e) {
@@ -170,24 +208,51 @@ function NumbersPage() {
     load();
   };
 
+  const openContext = (n) => {
+    suppressClickRef.current = true;
+    setCtxTarget(n);
+    setCtxOpen(true);
+  };
+
+  const longPressHandlers = (n) => useLongPress(() => openContext(n), 2000);
+
+  const onItemClick = (n) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    nav(`/numbers/${n.id}`);
+  };
+
+  const startEdit = (n) => {
+    setEditing(n);
+    setForm({ phone: n.phone, operatorKey: n.operatorKey });
+    setShowDialog(true);
+    setCtxOpen(false);
+  };
+
   return (
     <Page title="НОМЕРА">
       <div className="p-0">
         <div className="bg-white border-t border-b divide-y">
           {items.map((n) => (
-            <a key={n.id} href={`/numbers/${n.id}`} className="flex items-center gap-3 px-4 py-3">
+            <div key={n.id}
+                 className="flex items-center gap-3 px-4 py-3"
+                 {...longPressHandlers(n)}
+                 onClick={() => onItemClick(n)}>
               <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
               <div className="flex-1">{n.phone}</div>
-              <button className="text-red-600 text-sm" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(n.id); }}>Удалить</button>
-            </a>
+            </div>
           ))}
         </div>
       </div>
-      <button className="fab" onClick={() => setShowDialog(true)}>+</button>
+      <button className="fab" onClick={() => { setEditing(null); setForm({ phone: "", operatorKey: "mts" }); setShowDialog(true); }}>+</button>
+
+      {/* Add/Edit dialog */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
           <div className="bg-white rounded-xl p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Добавить номер</div>
+            <div className="text-lg font-semibold mb-2">{editing ? "Редактировать номер" : "Добавить номер"}</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>setForm({...form, phone: e.target.value})} />
               <select className="search-input" value={form.operatorKey} onChange={(e)=>setForm({...form, operatorKey: e.target.value})}>
@@ -200,6 +265,17 @@ function NumbersPage() {
                 <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={save}>Сохранить</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Context menu */}
+      {ctxOpen && ctxTarget && (
+        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
+          <div className="bg-white rounded-xl w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
+            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
           </div>
         </div>
       )}
@@ -260,10 +336,15 @@ function NumberDetails({ id }) {
 }
 
 function PlacesPage() {
+  const nav = useNavigate();
   const [items, setItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [form, setForm] = useState({ name: "", category: "Магазины", logo: null });
   const [filter, setFilter] = useState({ category: "", sort: "new" });
+  const [editing, setEditing] = useState(null); // place object or null
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxTarget, setCtxTarget] = useState(null); // place object
+  const suppressClickRef = useRef(false);
 
   const load = async () => {
     const { data } = await api.get(`/places`, { params: filter });
@@ -272,13 +353,22 @@ function PlacesPage() {
   useEffect(() => { load(); }, [filter]);
 
   const save = async () => {
-    const fd = new FormData();
-    fd.append("name", form.name);
-    fd.append("category", form.category);
-    if (form.logo) fd.append("logo", form.logo);
     try {
-      await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
+      if (editing) {
+        const fd = new FormData();
+        fd.append("name", form.name);
+        fd.append("category", form.category);
+        if (form.logo) fd.append("logo", form.logo);
+        await api.put(`/places/${editing.id}`, fd);
+      } else {
+        const fd = new FormData();
+        fd.append("name", form.name);
+        fd.append("category", form.category);
+        if (form.logo) fd.append("logo", form.logo);
+        await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
+      }
       setShowDialog(false);
+      setEditing(null);
       setForm({ name: "", category: "Магазины", logo: null });
       load();
     } catch (e) {
@@ -290,6 +380,26 @@ function PlacesPage() {
     if (!confirm("Удалить место?")) return;
     await api.delete(`/places/${id}`);
     load();
+  };
+
+  const openContext = (p) => {
+    suppressClickRef.current = true;
+    setCtxTarget(p);
+    setCtxOpen(true);
+  };
+  const longPressHandlers = (p) => useLongPress(() => openContext(p), 2000);
+  const onItemClick = (p) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    nav(`/places/${p.id}`);
+  };
+  const startEdit = (p) => {
+    setEditing(p);
+    setForm({ name: p.name, category: p.category, logo: null });
+    setShowDialog(true);
+    setCtxOpen(false);
   };
 
   return (
@@ -310,7 +420,10 @@ function PlacesPage() {
         </div>
         <div className="grid-3">
           {items.map((p) => (
-            <a key={p.id} href={`/places/${p.id}`} className="card flex flex-col items-center gap-2 p-3 cursor-pointer">
+            <div key={p.id}
+                 className="card flex flex-col items-center gap-2 p-3 cursor-pointer"
+                 {...longPressHandlers(p)}
+                 onClick={() => onItemClick(p)}>
               <div className="w-16 h-16 bg-neutral-100 rounded overflow-hidden flex items-center justify-center">
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
@@ -319,16 +432,17 @@ function PlacesPage() {
                 )}
               </div>
               <div className="text-center text-sm font-medium">{p.name}</div>
-              <button className="text-red-600 text-xs" onClick={(e) => { e.preventDefault(); e.stopPropagation(); del(p.id); }}>Удалить</button>
-            </a>
+            </div>
           ))}
         </div>
       </div>
-      <button className="fab" onClick={() => setShowDialog(true)}>+</button>
+      <button className="fab" onClick={() => { setEditing(null); setForm({ name: "", category: "Магазины", logo: null }); setShowDialog(true); }}>+</button>
+
+      {/* Add/Edit dialog */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
           <div className="bg-white rounded-xl p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Добавить место</div>
+            <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="Название" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} />
               <select className="search-input" value={form.category} onChange={(e)=>setForm({...form, category: e.target.value})}>
@@ -345,60 +459,17 @@ function PlacesPage() {
           </div>
         </div>
       )}
-    </Page>
-  );
-}
 
-function PlaceDetails({ id }) {
-  const [place, setPlace] = useState(null);
-  const [usage, setUsage] = useState({ used: [], unused: [] });
-
-  const load = async () => {
-    const [p, u] = await Promise.all([
-      api.get(`/places/${id}`),
-      api.get(`/places/${id}/usage`),
-    ]);
-    setPlace(p.data);
-    setUsage(u.data);
-  };
-  useEffect(() => { load(); }, [id]);
-
-  const toggle = async (numberId, used) => {
-    await api.post(`/usage`, { numberId, placeId: id, used });
-    load();
-  };
-
-  if (!place) return <Page title="Загрузка..."/>;
-  return (
-    <Page title={place.name}>
-      <div className="p-4 grid gap-3">
-        <div className="card flex flex-col items-center gap-3">
-          <div className="w-20 h-20 bg-neutral-100 rounded overflow-hidden">
-            {place.hasLogo && <img alt={place.name} className="w-full h-full object-cover" src={`${API}/places/${id}/logo`} />}
+      {/* Context menu */}
+      {ctxOpen && ctxTarget && (
+        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
+          <div className="bg-white rounded-xl w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
+            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
           </div>
-          <div className="font-medium">{place.name}</div>
         </div>
-        <Accordion title="Не использован" count={usage.unused.length}>
-          <div className="grid gap-2">
-            {usage.unused.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <button className="text-blue-600" onClick={()=>toggle(n.id, true)}>Отметить использован</button>
-              </div>
-            ))}
-          </div>
-        </Accordion>
-        <Accordion title="Использован" count={usage.used.length}>
-          <div className="grid gap-2">
-            {usage.used.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <button className="text-neutral-600" onClick={()=>toggle(n.id, false)}>Снять отметку</button>
-              </div>
-            ))}
-          </div>
-        </Accordion>
-      </div>
+      )}
     </Page>
   );
 }
