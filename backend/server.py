@@ -13,7 +13,6 @@ from datetime import datetime
 import base64
 import re
 
-
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -25,6 +24,9 @@ db = client[os.environ['DB_NAME']]
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
+# ---------------------
+# Models
+# ---------------------
 class NumberCreate(BaseModel):
     phone: str
     operatorKey: str
@@ -53,17 +55,156 @@ class SearchResult(BaseModel):
     numbers: List[Dict[str, Any]]
     places: List[Dict[str, Any]]
 
+# ---------------------
+# Phone utils
+# ---------------------
 DIGIT_RE = re.compile(r"\D+")
 PHONE_ONLY_RE = re.compile(r"^[0-9+\-()\s]+$")
 
-# ... helpers for phone omitted for brevity (kept from previous version)
+def extract_ru_digits(raw: str) -> str:
+    if not raw:
+        return ""
+    digits = re.sub(DIGIT_RE, "", raw)
+    if not digits:
+        return ""
+    if digits[0] == '8':
+        digits = '7' + digits[1:]
+    if digits[0] != '7':
+        if len(digits) >= 10:
+            digits = '7' + digits[-10:]
+        else:
+            digits = '7' + digits
+    return digits[:11]
 
+def format_ru_phone_strict(raw: str) -> str:
+    digits = extract_ru_digits(raw)
+    if len(digits) != 11 or digits[0] != '7':
+        raise ValueError("Invalid RU phone")
+    c, a, b, c2, d2 = digits[0], digits[1:4], digits[4:7], digits[7:9], digits[9:11]
+    return f"+{c} {a} {b} {c2} {d2}"
+
+def format_ru_phone_partial(raw: str) -> str:
+    digits = extract_ru_digits(raw)
+    if not digits:
+        return ""
+    out = "+7"
+    rest = digits[1:]
+    if len(rest) > 0:
+        out += " " + rest[:3]
+    if len(rest) > 3:
+        out += " " + rest[3:6]
+    if len(rest) > 6:
+        out += " " + rest[6:8]
+    if len(rest) > 8:
+        out += " " + rest[8:10]
+    return out
+
+async def find_number_by_digits(digits: str) -> Optional[Dict[str, Any]]:
+    doc = await db.numbers.find_one({"phoneDigits": digits})
+    if doc:
+        return doc
+    items = await db.numbers.find({}).to_list(2000)
+    for it in items:
+        p = it.get("phone", "")
+        if extract_ru_digits(p) == digits:
+            return it
+    return None
+
+# ---------------------
+# Root
+# ---------------------
 @api_router.get("/")
 async def root():
     return {"message": "FIRST API ready"}
 
-# Numbers endpoints are unchanged (kept)
+# ---------------------
+# Numbers
+# ---------------------
+@api_router.get("/numbers", response_model=List[NumberModel])
+async def list_numbers(q: Optional[str] = None):
+    query: Dict[str, Any] = {}
+    if q:
+        q = q.strip()
+        if PHONE_ONLY_RE.match(q):
+            d = extract_ru_digits(q)
+            if d:
+                query = {"phoneDigits": {"$regex": f"^{re.escape(d)}"}}
+        else:
+            query = {"phone": {"$regex": re.escape(q), "$options": "i"}}
+    items = await db.numbers.find(query).sort("createdAt", -1).to_list(1000)
+    return [NumberModel(**i) for i in items]
 
+@api_router.post("/numbers", response_model=NumberModel)
+async def create_number(payload: NumberCreate):
+    try:
+        formatted = format_ru_phone_strict(payload.phone)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid phone format. Expect +7 777 777 77 77")
+    digits = extract_ru_digits(formatted)
+    existing = await find_number_by_digits(digits)
+    if existing:
+        raise HTTPException(status_code=409, detail="Phone already exists")
+    number = NumberModel(phone=formatted, operatorKey=payload.operatorKey)
+    doc = number.model_dump()
+    doc["phoneDigits"] = digits
+    await db.numbers.insert_one(doc)
+    return number
+
+@api_router.get("/numbers/{number_id}", response_model=NumberModel)
+async def get_number(number_id: str):
+    doc = await db.numbers.find_one({"id": number_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Number not found")
+    return NumberModel(**doc)
+
+@api_router.put("/numbers/{number_id}", response_model=NumberModel)
+async def update_number(number_id: str, payload: NumberCreate):
+    cur = await db.numbers.find_one({"id": number_id})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Number not found")
+    try:
+        formatted = format_ru_phone_strict(payload.phone)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid phone format. Expect +7 777 777 77 77")
+    digits = extract_ru_digits(formatted)
+    existing = await find_number_by_digits(digits)
+    if existing and existing.get("id") != number_id:
+        raise HTTPException(status_code=409, detail="Phone already exists")
+    update_doc = {"$set": {"phone": formatted, "phoneDigits": digits, "operatorKey": payload.operatorKey}}
+    await db.numbers.update_one({"id": number_id}, update_doc)
+    updated = await db.numbers.find_one({"id": number_id})
+    return NumberModel(**updated)
+
+@api_router.delete("/numbers/{number_id}")
+async def delete_number(number_id: str):
+    await db.usages.delete_many({"numberId": number_id})
+    res = await db.numbers.delete_one({"id": number_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Number not found")
+    return {"ok": True}
+
+@api_router.get("/numbers/{number_id}/usage")
+async def number_usage(number_id: str):
+    doc = await db.numbers.find_one({"id": number_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Number not found")
+    places = await db.places.find({}).to_list(5000)
+    usage_list = await db.usages.find({"numberId": number_id}).to_list(5000)
+    used_place_ids = {u["placeId"] for u in usage_list if u.get("used")}
+    unused_place_ids = set(p["id"] for p in places) - used_place_ids
+    used = [
+        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
+        for p in places if p["id"] in used_place_ids
+    ]
+    unused = [
+        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
+        for p in places if p["id"] in unused_place_ids
+    ]
+    return {"used": used, "unused": unused}
+
+# ---------------------
+# Places
+# ---------------------
 @api_router.get("/places")
 async def list_places(q: Optional[str] = None, category: Optional[str] = None, sort: Optional[str] = None):
     query: Dict[str, Any] = {}
@@ -231,6 +372,9 @@ async def place_usage(place_id: str):
     ]
     return {"used": used, "unused": unused}
 
+# ---------------------
+# Usage toggle
+# ---------------------
 @api_router.post("/usage")
 async def set_usage(payload: UsageSet):
     num = await db.numbers.find_one({"id": payload.numberId})
@@ -244,6 +388,42 @@ async def set_usage(payload: UsageSet):
         upsert=True,
     )
     return {"ok": True}
+
+# ---------------------
+# Search
+# ---------------------
+@api_router.get("/search", response_model=SearchResult)
+async def search(q: str):
+    q = q.strip()
+    is_phone_like = bool(PHONE_ONLY_RE.match(q))
+    numbers: List[Dict[str, Any]] = []
+    places: List[Dict[str, Any]] = []
+    if is_phone_like:
+        d = extract_ru_digits(q)
+        if d:
+            numbers = await db.numbers.find({"phoneDigits": {"$regex": f"^{re.escape(d)}"}}).limit(10).to_list(10)
+        if not numbers:
+            all_nums = await db.numbers.find({}).limit(1000).to_list(1000)
+            for n in all_nums:
+                if extract_ru_digits(n.get("phone", "")).startswith(d):
+                    numbers.append(n)
+                    if len(numbers) >= 10:
+                        break
+    else:
+        places = await db.places.find({"name": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
+    def strip_place(p: Dict[str, Any]):
+        p2 = dict(p)
+        p2.pop("_id", None)
+        p2["hasLogo"] = bool(p.get("logo"))
+        p2["hasPromo"] = bool(p.get("promoCode") or p.get("promoUrl"))
+        p2.pop("logo", None)
+        return p2
+    clean_numbers = []
+    for n in numbers:
+        nn = dict(n)
+        nn.pop("_id", None)
+        clean_numbers.append(nn)
+    return {"numbers": [NumberModel(**n).model_dump() for n in clean_numbers], "places": [strip_place(p) for p in places]}
 
 app.include_router(api_router)
 app.add_middleware(
