@@ -821,7 +821,17 @@ function PlacesPage() {
   const onItemClick = (p) => { if (suppressClickRef.current) { suppressClickRef.current = false; return; } nav(`/places/${p.id}`); };
   const startEdit = (p) => {
     setEditing(p);
-    setForm({ name: p.name, category: p.category, promoCode: p.promoCode || "", promoUrl: p.promoUrl || "", logo: null });
+    setForm({ 
+      name: p.name, 
+      category: p.category, 
+      promoCode: p.promoCode || "", 
+      promoCode2: "", 
+      promoUrl: p.promoUrl || "", 
+      comment: p.comment || "", 
+      logo: null 
+    });
+    setShowExtraPromo(!!p.promoCode2);
+    setShowPromoUrl(!!p.promoUrl);
     setShowDialog(true);
     setCtxOpen(false);
   };
