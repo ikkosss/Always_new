@@ -491,7 +491,7 @@ function PlaceDetails({ id }) {
               <div key={n.id} className="flex items-center justify-between py-2">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                  <input type="checkbox" className="toggle" checked={true} onChange={()=>confirmToggleNumber(n, true)} />
+                  <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(n.id, false)} />
                 </label>
               </div>
             ))}
