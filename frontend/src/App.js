@@ -121,6 +121,10 @@ function SearchPage() {
   const [q, setQ] = useState("");
   const [results, setResults] = useState({ numbers: [], places: [] });
   const [noFound, setNoFound] = useState(false);
+  const [showNumberDialog, setShowNumberDialog] = useState(false);
+  const [showPlaceDialog, setShowPlaceDialog] = useState(false);
+  const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
+  const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
 
   const onChange = (val) => {
     if (/^[0-9+\-()\s]*$/.test(val)) {
@@ -145,13 +149,56 @@ function SearchPage() {
 
   const isDigits = useMemo(() => /^[0-9+\-()\s]+$/.test(q.trim()), [q]);
 
+  const handleSearch = () => {
+    if (!q.trim()) return;
+    if (noFound) {
+      if (isDigits) {
+        // Open number dialog
+        const digits = extractDigits(q);
+        setNumberForm({ phone: formatRuPhonePartial(q), operatorKey: "mts" });
+        setShowNumberDialog(true);
+      } else {
+        // Open place dialog
+        setPlaceForm({ name: q.trim(), category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+        setShowPlaceDialog(true);
+      }
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!noFound) return;
-    if (isDigits) {
-      alert(`Добавить номер ${q.trim()} через экран НОМЕРА (кнопка +)`);
-    } else {
-      alert(`Добавить "${q.trim()}" через экран МЕСТА (кнопка +)`);
+    handleSearch();
+  };
+
+  const saveNumber = async () => {
+    try {
+      await api.post(`/numbers`, numberForm);
+      setShowNumberDialog(false);
+      setNumberForm({ phone: "", operatorKey: "mts" });
+      setQ("");
+      // Refresh results
+      window.location.reload();
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось добавить номер. Повторите позже");
+    }
+  };
+
+  const savePlace = async () => {
+    try {
+      const fd = new FormData();
+      fd.append("name", placeForm.name);
+      fd.append("category", placeForm.category);
+      fd.append("promoCode", placeForm.promoCode);
+      fd.append("promoUrl", placeForm.promoUrl);
+      if (placeForm.logo) fd.append("logo", placeForm.logo);
+      await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
+      setShowPlaceDialog(false);
+      setPlaceForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+      setQ("");
+      // Refresh results
+      window.location.reload();
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось добавить место. Повторите позже");
     }
   };
 
