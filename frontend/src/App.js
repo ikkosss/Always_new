@@ -793,6 +793,7 @@ function PlacesPage() {
         fd.append("category", form.category);
         fd.append("promoCode", form.promoCode);
         fd.append("promoUrl", form.promoUrl);
+        fd.append("comment", form.comment);
         if (form.logo) fd.append("logo", form.logo);
         await api.put(`/places/${editing.id}`, fd);
       } else {
