@@ -755,10 +755,7 @@ function PlaceDetails({ id }) {
           </button>
           <button
             className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-            onClick={() => {
-              // Navigate to places page with edit functionality
-              window.location.href = `/places?edit=${id}`;
-            }}
+            onClick={openEditDialog}
             title="Редактировать место"
           >
             ✏️
