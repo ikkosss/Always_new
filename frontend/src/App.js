@@ -527,8 +527,14 @@ function PlacesPage() {
     setCtxOpen(false);
   };
 
-  const openPromoDialog = (p) => {
-    setPromoData({ code: p.promoCode || "", url: p.promoUrl || "" });
+  const openPromoDialog = async (p) => {
+    try {
+      const { data } = await api.get(`/places/${p.id}`);
+      setPromoData({ code: data.promoCode || "", url: data.promoUrl || "" });
+    } catch (e) {
+      // fallback to list item fields if any
+      setPromoData({ code: p.promoCode || "", url: p.promoUrl || "" });
+    }
     setPromoOpen(true);
   };
 
