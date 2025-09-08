@@ -282,7 +282,7 @@ function SearchPage() {
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              <input className="search-input" placeholder="ПРОМОКОД" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
+              <input className="search-input" placeholder="Промокод" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
               <input className="search-input" placeholder="ССЫЛКА НА РЕСУРС" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
               <input className="search-input" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
               <div className="flex justify-end gap-2">
