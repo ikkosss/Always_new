@@ -337,7 +337,7 @@ function NumberDetails({ id }) {
     setNumber(n.data);
     setUsage(u.data);
   };
-  useEffect(() => { load(); }, [id]);
+  useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (placeId, used) => {
     await api.post(`/usage`, { numberId: id, placeId, used });
