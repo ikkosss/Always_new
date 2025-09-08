@@ -727,7 +727,7 @@ function PlaceDetails({ id }) {
         {tab === 'used' && (
           <div className="grid gap-2">
             {usage.used.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between py-2">
+              <div key={n.id} className="flex items-center justify-between py-2 service-item">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
                   <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(n.id, false)} />
