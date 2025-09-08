@@ -65,23 +65,72 @@ class SearchResult(BaseModel):
 # ---------------------
 # Utils
 # ---------------------
-PHONE_RE = re.compile(r"^\+?[0-9\s\-()]{5,20}$")
-
-async def get_number_or_404(number_id: str) -> Dict[str, Any]:
-    doc = await db.numbers.find_one({"id": number_id})
-    if not doc:
-        raise HTTPException(status_code=404, detail="Number not found")
-    return doc
-
-async def get_place_or_404(place_id: str) -> Dict[str, Any]:
-    doc = await db.places.find_one({"id": place_id})
-    if not doc:
-        raise HTTPException(status_code=404, detail="Place not found")
-    return doc
+DIGIT_RE = re.compile(r"\D+")
+PHONE_ONLY_RE = re.compile(r"^[0-9+\-()\s]+$")
 
 
-def sanitize_number_phone(phone: str) -> str:
-    return phone.strip()
+def extract_ru_digits(raw: str) -> str:
+    """Extract digits and normalize to Russian format starting with 7.
+    Returns up to 11 digits, best effort.
+    """
+    if not raw:
+        return ""
+    digits = re.sub(DIGIT_RE, "", raw)
+    if not digits:
+        return ""
+    # Replace leading 8 with 7
+    if digits[0] == '8':
+        digits = '7' + digits[1:]
+    # If starts with 7, keep; if length==10 (e.g., 9XXXXXXXXX) assume RU and prefix 7
+    if digits[0] != '7':
+        if len(digits) >= 10:
+            digits = '7' + digits[-10:]
+        else:
+            # partial input, still assume RU and prefix 7
+            digits = '7' + digits
+    return digits[:11]
+
+
+def format_ru_phone_strict(raw: str) -> str:
+    """Format input into '+7 777 777 77 77'. Requires exactly 11 digits after normalization."""
+    digits = extract_ru_digits(raw)
+    if len(digits) != 11 or digits[0] != '7':
+        raise ValueError("Invalid RU phone")
+    c, a, b, c2, d2 = digits[0], digits[1:4], digits[4:7], digits[7:9], digits[9:11]
+    return f"+{c} {a} {b} {c2} {d2}"
+
+
+def format_ru_phone_partial(raw: str) -> str:
+    """Format partially while typing, still producing '+7 ...' progressively."""
+    digits = extract_ru_digits(raw)
+    if not digits:
+        return ""
+    out = "+7"
+    rest = digits[1:]
+    if len(rest) > 0:
+        out += " " + rest[:3]
+    if len(rest) > 3:
+        out += " " + rest[3:6]
+    if len(rest) > 6:
+        out += " " + rest[6:8]
+    if len(rest) > 8:
+        out += " " + rest[8:10]
+    return out
+
+
+async def find_number_by_digits(digits: str) -> Optional[Dict[str, Any]]:
+    # Prefer fast lookup by phoneDigits if present
+    doc = await db.numbers.find_one({"phoneDigits": digits})
+    if doc:
+        return doc
+    # Fallback scan for legacy records without phoneDigits
+    items = await db.numbers.find({}).to_list(5000)
+    for it in items:
+        p = it.get("phone", "")
+        if extract_ru_digits(p) == digits:
+            return it
+    return None
+
 
 # ---------------------
 # Root
@@ -97,41 +146,58 @@ async def root():
 async def list_numbers(q: Optional[str] = None):
     query: Dict[str, Any] = {}
     if q:
-        query = {"phone": {"$regex": re.escape(q), "$options": "i"}}
+        if PHONE_ONLY_RE.match(q.strip()):
+            # phone-like: search by digits prefix
+            d = extract_ru_digits(q)
+            if d:
+                query = {"phoneDigits": {"$regex": f"^{re.escape(d)}"}}
+        else:
+            # fallback: naive search by phone string
+            query = {"phone": {"$regex": re.escape(q), "$options": "i"}}
     items = await db.numbers.find(query).sort("createdAt", -1).to_list(1000)
     return [NumberModel(**i) for i in items]
 
 @api_router.post("/numbers", response_model=NumberModel)
 async def create_number(payload: NumberCreate):
-    phone = sanitize_number_phone(payload.phone)
-    if not PHONE_RE.match(phone):
-        raise HTTPException(status_code=400, detail="Invalid phone format")
-    # prevent duplicates by phone
-    existing = await db.numbers.find_one({"phone": phone})
+    try:
+        formatted = format_ru_phone_strict(payload.phone)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid phone format. Expect +7 777 777 77 77")
+    digits = extract_ru_digits(formatted)
+    # prevent duplicates by digits
+    existing = await find_number_by_digits(digits)
     if existing:
         raise HTTPException(status_code=409, detail="Phone already exists")
-    number = NumberModel(phone=phone, operatorKey=payload.operatorKey)
-    await db.numbers.insert_one(number.model_dump())
+    number = NumberModel(phone=formatted, operatorKey=payload.operatorKey)
+    doc = number.model_dump()
+    doc["phoneDigits"] = digits
+    await db.numbers.insert_one(doc)
     return number
 
 @api_router.get("/numbers/{number_id}", response_model=NumberModel)
 async def get_number(number_id: str):
-    doc = await get_number_or_404(number_id)
+    doc = await db.numbers.find_one({"id": number_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Number not found")
     return NumberModel(**doc)
 
 @api_router.put("/numbers/{number_id}", response_model=NumberModel)
 async def update_number(number_id: str, payload: NumberCreate):
-    phone = sanitize_number_phone(payload.phone)
-    if not PHONE_RE.match(phone):
-        raise HTTPException(status_code=400, detail="Invalid phone format")
-    # ensure no duplicate phone on another id
-    dup = await db.numbers.find_one({"phone": phone, "id": {"$ne": number_id}})
-    if dup:
-        raise HTTPException(status_code=409, detail="Phone already exists")
-    update_doc = {"$set": {"phone": phone, "operatorKey": payload.operatorKey}}
-    res = await db.numbers.update_one({"id": number_id}, update_doc)
-    if res.matched_count == 0:
+    # ensure exists
+    cur = await db.numbers.find_one({"id": number_id})
+    if not cur:
         raise HTTPException(status_code=404, detail="Number not found")
+    try:
+        formatted = format_ru_phone_strict(payload.phone)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid phone format. Expect +7 777 777 77 77")
+    digits = extract_ru_digits(formatted)
+    # ensure no duplicate phoneDigits on another id
+    existing = await find_number_by_digits(digits)
+    if existing and existing.get("id") != number_id:
+        raise HTTPException(status_code=409, detail="Phone already exists")
+    update_doc = {"$set": {"phone": formatted, "phoneDigits": digits, "operatorKey": payload.operatorKey}}
+    await db.numbers.update_one({"id": number_id}, update_doc)
     updated = await db.numbers.find_one({"id": number_id})
     return NumberModel(**updated)
 
@@ -146,7 +212,9 @@ async def delete_number(number_id: str):
 
 @api_router.get("/numbers/{number_id}/usage")
 async def number_usage(number_id: str):
-    await get_number_or_404(number_id)
+    doc = await db.numbers.find_one({"id": number_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Number not found")
     places = await db.places.find({}).to_list(5000)
     usage_list = await db.usages.find({"numberId": number_id}).to_list(5000)
     used_place_ids = {u["placeId"] for u in usage_list if u.get("used")}
@@ -232,7 +300,9 @@ async def create_place(
 
 @api_router.get("/places/{place_id}")
 async def get_place(place_id: str):
-    doc = await get_place_or_404(place_id)
+    doc = await db.places.find_one({"id": place_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Place not found")
     # strip logo and _id
     resp = dict(doc)
     resp.pop("_id", None)
@@ -242,7 +312,9 @@ async def get_place(place_id: str):
 
 @api_router.get("/places/{place_id}/logo")
 async def get_place_logo(place_id: str):
-    doc = await get_place_or_404(place_id)
+    doc = await db.places.find_one({"id": place_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Place not found")
     logo = doc.get("logo")
     if not logo:
         raise HTTPException(status_code=404, detail="Logo not set")
@@ -257,7 +329,9 @@ async def update_place(
     logo: Optional[UploadFile] = File(None),
     removeLogo: Optional[bool] = Form(False)
 ):
-    await get_place_or_404(place_id)
+    cur = await db.places.find_one({"id": place_id})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Place not found")
     update: Dict[str, Any] = {}
     if name is not None:
         n = name.strip()
@@ -314,7 +388,9 @@ async def delete_place(place_id: str):
 
 @api_router.get("/places/{place_id}/usage")
 async def place_usage(place_id: str):
-    await get_place_or_404(place_id)
+    cur = await db.places.find_one({"id": place_id})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Place not found")
     numbers = await db.numbers.find({}).to_list(5000)
     usage_list = await db.usages.find({"placeId": place_id}).to_list(5000)
     used_number_ids = {u["numberId"] for u in usage_list if u.get("used")}
@@ -333,8 +409,10 @@ async def place_usage(place_id: str):
 @api_router.post("/usage")
 async def set_usage(payload: UsageSet):
     # validate existence
-    await get_number_or_404(payload.numberId)
-    await get_place_or_404(payload.placeId)
+    num = await db.numbers.find_one({"id": payload.numberId})
+    plc = await db.places.find_one({"id": payload.placeId})
+    if not num or not plc:
+        raise HTTPException(status_code=404, detail="Pair not found")
     now = datetime.utcnow()
     await db.usages.update_one(
         {"numberId": payload.numberId, "placeId": payload.placeId},
@@ -349,12 +427,21 @@ async def set_usage(payload: UsageSet):
 @api_router.get("/search", response_model=SearchResult)
 async def search(q: str):
     q = q.strip()
-    is_digits = bool(re.fullmatch(r"[0-9+\-()\s]+", q))
+    is_phone_like = bool(PHONE_ONLY_RE.match(q))
     numbers: List[Dict[str, Any]] = []
     places: List[Dict[str, Any]] = []
-    if is_digits:
-        numbers = await db.numbers.find({"phone": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
-        # places = []
+    if is_phone_like:
+        d = extract_ru_digits(q)
+        if d:
+            numbers = await db.numbers.find({"phoneDigits": {"$regex": f"^{re.escape(d)}"}}).limit(10).to_list(10)
+        if not numbers:
+            # fallback legacy scan
+            all_nums = await db.numbers.find({}).limit(1000).to_list(1000)
+            for n in all_nums:
+                if extract_ru_digits(n.get("phone", "")).startswith(d):
+                    numbers.append(n)
+                    if len(numbers) >= 10:
+                        break
     else:
         places = await db.places.find({"name": {"$regex": re.escape(q), "$options": "i"}}).limit(10).to_list(10)
     # strip logo and _id from places

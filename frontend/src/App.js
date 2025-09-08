@@ -24,6 +24,29 @@ const OPERATORS = {
 // Simple API helper
 const api = axios.create({ baseURL: API });
 
+// Phone formatting utils
+function extractDigits(raw) {
+  const d = (raw || "").replace(/\D+/g, "");
+  if (!d) return "";
+  let out = d;
+  if (out[0] === "8") out = "7" + out.slice(1);
+  if (out[0] !== "7") {
+    if (out.length >= 10) out = "7" + out.slice(-10); else out = "7" + out;
+  }
+  return out.slice(0, 11);
+}
+function formatRuPhonePartial(raw) {
+  const digits = extractDigits(raw);
+  if (!digits) return "";
+  const rest = digits.slice(1);
+  let res = "+7";
+  if (rest.length > 0) res += " " + rest.slice(0, 3);
+  if (rest.length > 3) res += " " + rest.slice(3, 6);
+  if (rest.length > 6) res += " " + rest.slice(6, 8);
+  if (rest.length > 8) res += " " + rest.slice(8, 10);
+  return res;
+}
+
 // LongPressable wrapper component to avoid using hooks inside loops
 function LongPressable({ duration = 2000, onLongPress, onClick, className, children }) {
   const timerRef = useRef(null);
@@ -102,6 +125,16 @@ function SearchPage() {
   const [results, setResults] = useState({ numbers: [], places: [] });
   const [noFound, setNoFound] = useState(false);
 
+  const onChange = (val) => {
+    // If only phone-like chars, format immediately; else leave as is
+    if (/^[0-9+\-()\s]*$/.test(val)) {
+      const formatted = formatRuPhonePartial(val);
+      setQ(formatted);
+      return;
+    }
+    setQ(val);
+  };
+
   useEffect(() => {
     const t = setTimeout(async () => {
       if (!q.trim()) { setResults({ numbers: [], places: [] }); setNoFound(false); return; }
@@ -133,7 +166,7 @@ function SearchPage() {
           <div className="relative w-full">
             <input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => onChange(e.target.value)}
               className="search-input"
               placeholder="Номер телефона или название места"
             />
@@ -188,6 +221,10 @@ function NumbersPage() {
     setItems(data);
   };
   useEffect(() => { load(); }, []);
+
+  const onPhoneChange = (val) => {
+    setForm((f) => ({ ...f, phone: formatRuPhonePartial(val) }));
+  };
 
   const save = async () => {
     try {
@@ -258,7 +295,7 @@ function NumbersPage() {
           <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать номер" : "Добавить номер"}</div>
             <div className="grid gap-3">
-              <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>setForm({...form, phone: e.target.value})} />
+              <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>onPhoneChange(e.target.value)} />
               <select className="search-input" value={form.operatorKey} onChange={(e)=>setForm({...form, operatorKey: e.target.value})}>
                 {Object.entries(OPERATORS).map(([k, v]) => (
                   <option key={k} value={k}>{v.name}</option>
