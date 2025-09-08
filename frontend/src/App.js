@@ -672,6 +672,54 @@ function PlaceDetails({ id }) {
     setDeleteConfirmOpen(false);
   };
 
+  const openEditDialog = () => {
+    if (place) {
+      setEditForm({ 
+        name: place.name, 
+        category: place.category, 
+        promoCode: place.promoCode || "", 
+        promoCode2: "", 
+        promoUrl: place.promoUrl || "", 
+        comment: place.comment || "", 
+        logo: null 
+      });
+      setShowExtraPromo(false);
+      setShowPromoUrl(!!place.promoUrl);
+      setEditDialogOpen(true);
+    }
+  };
+
+  const saveEditedPlace = async () => {
+    try {
+      const fd = new FormData();
+      fd.append("name", editForm.name);
+      fd.append("category", editForm.category);
+      fd.append("promoCode", editForm.promoCode);
+      fd.append("promoUrl", editForm.promoUrl);
+      fd.append("comment", editForm.comment);
+      if (editForm.logo) fd.append("logo", editForm.logo);
+      await api.put(`/places/${id}`, fd);
+      await load();
+      setEditDialogOpen(false);
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось обновить место. Повторите позже");
+    }
+  };
+
+  const handleEditPlusClick = (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    const lastClick = e.currentTarget.lastClick || 0;
+    
+    if (now - lastClick < 300) { // Double click
+      setShowPromoUrl(true);
+    } else { // Single click
+      setShowExtraPromo(true);
+    }
+    
+    e.currentTarget.lastClick = now;
+  };
+
   if (!place) return <Page title="Загрузка..."/>;
   return (
     <Page title={place.name} hideHeader>
