@@ -890,7 +890,13 @@ function PlacesPage() {
           ))}
         </div>
       </div>
-      <button className="fab" onClick={() => { setEditing(null); setForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null }); setShowDialog(true); }}>+</button>
+      <button className="fab" onClick={() => { 
+        setEditing(null); 
+        setForm({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null }); 
+        setShowExtraPromo(false);
+        setShowPromoUrl(false);
+        setShowDialog(true); 
+      }}>+</button>
 
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowDialog(false)}>
