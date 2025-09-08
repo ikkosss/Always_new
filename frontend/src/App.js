@@ -362,7 +362,7 @@ function NumbersPage() {
           {items.map((n) => (
             <LongPressable
               key={n.id}
-              className="flex items-center gap-3 px-4 py-3"
+              className="flex items-center gap-3 px-4 py-3 number-item"
               duration={2000}
               onLongPress={() => openContext(n)}
               onClick={() => onItemClick(n)}
