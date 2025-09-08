@@ -570,7 +570,7 @@ function PlacesPage() {
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
               </button>
-              <div className="text-center text-sm font-medium">{p.name}</div>
+              <button className="text-center text-sm font-medium underline text-blue-700" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>{p.name}</button>
             </LongPressable>
           ))}
         </div>
