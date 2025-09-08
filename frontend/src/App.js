@@ -806,7 +806,9 @@ function PlacesPage() {
       }
       setShowDialog(false);
       setEditing(null);
-      setForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+      setForm({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
+      setShowExtraPromo(false);
+      setShowPromoUrl(false);
       load();
     } catch (e) {
       alert(e.response?.data?.detail || "Ошибка сохранения");
