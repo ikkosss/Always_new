@@ -859,7 +859,7 @@ function PlaceDetails({ id }) {
             <div className="grid gap-3">
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
               <select className="search-input" value={editForm.category} onChange={(e)=>setEditForm({...editForm, category: e.target.value})}>
-                {['Магазины','Аптеки','Заправки','Соц. сети'].map((c)=> (
+                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
