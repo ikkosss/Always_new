@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-## user_problem_statement: Add promo.png image on Place Details page. When a place has promo code or link, display promo.png symmetrically to the place logo but on the right side. Clicking promo.png should open a promo dialog with the promo code/link information.
+## user_problem_statement: Add НАЙТИ button in search field and auto-open dialogs for adding numbers/places when no search results found. If user types digits, open number dialog. If user types letters, open place dialog. Should work both on НАЙТИ button click and Enter key press.
 
 ## backend:
   - task: "Place model has promo fields"
@@ -132,6 +132,18 @@
         - working: true
         - agent: "main"
         - comment: "Successfully implemented promo.png display on PlaceDetails page. When place has promo (hasPromo=true), promo.png is displayed symmetrically to logo but on right side. Clicking promo.png opens dialog with promo code/link information. Tested manually and confirmed working correctly with place НЕФТЛ (promo code: 1111111)"
+
+  - task: "Add НАЙТИ button and auto-dialog functionality"
+    implemented: true
+    working: true
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "main"
+        - comment: "Successfully implemented НАЙТИ button in search field. When search returns no results and user clicks НАЙТИ or presses Enter: 1) If input contains only digits, opens number dialog with pre-filled phone number 2) If input contains letters, opens place dialog with pre-filled name. Both button click and Enter key work perfectly. Tested manually with phone numbers and place names."
 
 ## metadata:
   created_by: "main_agent"
