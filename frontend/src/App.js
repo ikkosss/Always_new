@@ -344,6 +344,14 @@ function NumberDetails({ id }) {
     load();
   };
 
+  const confirmTogglePlace = async (place, currentUsed) => {
+    const wasText = currentUsed ? "не был" : "был";
+    const msg = `Подтверждаете что ❮${number?.phone}❯ ${wasText} использован в ❮${place.name}❯?`;
+    if (window.confirm(msg)) {
+      await toggle(place.id, !currentUsed);
+    }
+  };
+
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone}>
