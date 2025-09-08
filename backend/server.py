@@ -329,6 +329,8 @@ async def update_place(
         update["promoCode"] = promoCode or None
     if promoUrl is not None:
         update["promoUrl"] = promoUrl or None
+    if comment is not None:
+        update["comment"] = comment or None
     logo_doc = None
     if logo is not None:
         content = await logo.read()
