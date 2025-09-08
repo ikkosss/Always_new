@@ -504,6 +504,19 @@ function NumberDetails({ id }) {
           </div>
         )}
       </div>
+
+      {toggleConfirmOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setToggleConfirmOpen(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Переключить тумблер?</div>
+            <div className="flex justify-end gap-2">
+              <button className="px-4 py-2" onClick={() => setToggleConfirmOpen(false)}>Отмена</button>
+              <button className="px-4 py-2 bg-blue-600 text-white" onClick={confirmToggle}>Переключить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
