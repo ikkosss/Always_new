@@ -835,9 +835,9 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <button className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center relative" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
+              <button className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center relative rounded-lg" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                 {p.hasLogo ? (
-                  <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
+                  <img alt={p.name} className="w-full h-full object-cover rounded-lg" src={`${API}/places/${p.id}/logo`} />
                 ) : (
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
@@ -845,7 +845,7 @@ function PlacesPage() {
                   <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
                 )}
               </button>
-              <div className="text-center text-sm font-medium">{p.name}</div>
+              <div className="text-center text-sm font-bold text-gray-800 mt-1">{p.name}</div>
             </LongPressable>
           ))}
         </div>
