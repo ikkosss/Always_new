@@ -24,32 +24,35 @@ const OPERATORS = {
 // Simple API helper
 const api = axios.create({ baseURL: API });
 
-// Long press hook (~2s)
-function useLongPress(onLongPress, ms = 2000) {
+// LongPressable wrapper component to avoid using hooks inside loops
+function LongPressable({ duration = 2000, onLongPress, onClick, className, children }) {
   const timerRef = useRef(null);
-  const startedRef = useRef(false);
-
-  const start = (e) => {
-    startedRef.current = true;
+  const handleStart = (e) => {
+    clear();
     timerRef.current = setTimeout(() => {
-      onLongPress(e);
-    }, ms);
+      onLongPress && onLongPress(e);
+    }, duration);
   };
   const clear = () => {
-    startedRef.current = false;
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
   };
-  return {
-    onMouseDown: start,
-    onTouchStart: start,
-    onMouseUp: clear,
-    onMouseLeave: clear,
-    onTouchEnd: clear,
-    onTouchCancel: clear,
-  };
+  return (
+    <div
+      className={className}
+      onMouseDown={handleStart}
+      onTouchStart={handleStart}
+      onMouseUp={clear}
+      onMouseLeave={clear}
+      onTouchEnd={clear}
+      onTouchCancel={clear}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
 }
 
 function useBottomNav() {
@@ -214,8 +217,6 @@ function NumbersPage() {
     setCtxOpen(true);
   };
 
-  const longPressHandlers = (n) => useLongPress(() => openContext(n), 2000);
-
   const onItemClick = (n) => {
     if (suppressClickRef.current) {
       suppressClickRef.current = false;
@@ -236,13 +237,16 @@ function NumbersPage() {
       <div className="p-0">
         <div className="bg-white border-t border-b divide-y">
           {items.map((n) => (
-            <div key={n.id}
-                 className="flex items-center gap-3 px-4 py-3"
-                 {...longPressHandlers(n)}
-                 onClick={() => onItemClick(n)}>
+            <LongPressable
+              key={n.id}
+              className="flex items-center gap-3 px-4 py-3"
+              duration={2000}
+              onLongPress={() => openContext(n)}
+              onClick={() => onItemClick(n)}
+            >
               <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
               <div className="flex-1">{n.phone}</div>
-            </div>
+            </LongPressable>
           ))}
         </div>
       </div>
@@ -387,7 +391,7 @@ function PlacesPage() {
     setCtxTarget(p);
     setCtxOpen(true);
   };
-  const longPressHandlers = (p) => useLongPress(() => openContext(p), 2000);
+
   const onItemClick = (p) => {
     if (suppressClickRef.current) {
       suppressClickRef.current = false;
@@ -395,6 +399,7 @@ function PlacesPage() {
     }
     nav(`/places/${p.id}`);
   };
+
   const startEdit = (p) => {
     setEditing(p);
     setForm({ name: p.name, category: p.category, logo: null });
@@ -420,10 +425,13 @@ function PlacesPage() {
         </div>
         <div className="grid-3">
           {items.map((p) => (
-            <div key={p.id}
-                 className="card flex flex-col items-center gap-2 p-3 cursor-pointer"
-                 {...longPressHandlers(p)}
-                 onClick={() => onItemClick(p)}>
+            <LongPressable
+              key={p.id}
+              className="card flex flex-col items-center gap-2 p-3 cursor-pointer"
+              duration={2000}
+              onLongPress={() => openContext(p)}
+              onClick={() => onItemClick(p)}
+            >
               <div className="w-16 h-16 bg-neutral-100 rounded overflow-hidden flex items-center justify-center">
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
@@ -432,7 +440,7 @@ function PlacesPage() {
                 )}
               </div>
               <div className="text-center text-sm font-medium">{p.name}</div>
-            </div>
+            </LongPressable>
           ))}
         </div>
       </div>
