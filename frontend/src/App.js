@@ -462,6 +462,23 @@ function NumberDetails({ id }) {
     setDeleteConfirmOpen(false);
   };
 
+  const openEditDialog = () => {
+    if (number) {
+      setEditForm({ phone: number.phone, operatorKey: number.operatorKey });
+      setEditDialogOpen(true);
+    }
+  };
+
+  const saveEditedNumber = async () => {
+    try {
+      await api.put(`/numbers/${id}`, editForm);
+      await load();
+      setEditDialogOpen(false);
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось обновить номер. Повторите позже");
+    }
+  };
+
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone} hideHeader>
