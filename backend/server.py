@@ -44,6 +44,7 @@ class PlaceModel(BaseModel):
     logo: Optional[Dict[str, Any]] = None
     promoCode: Optional[str] = None
     promoUrl: Optional[str] = None
+    comment: Optional[str] = None
     createdAt: datetime = Field(default_factory=datetime.utcnow)
 
 class UsageSet(BaseModel):
