@@ -427,7 +427,7 @@ function PlacesPage() {
           {items.map((p) => (
             <LongPressable
               key={p.id}
-              className="card flex flex-col items-center gap-2 p-3 cursor-pointer"
+              className="flex flex-col items-center gap-2 p-3 cursor-pointer"
               duration={2000}
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
