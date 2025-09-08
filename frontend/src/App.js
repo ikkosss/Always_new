@@ -351,9 +351,13 @@ function NumberDetails({ id }) {
   const confirmTogglePlace = async (place, currentUsed) => {
     const wasText = currentUsed ? "не был" : "был";
     const msg = `Подтверждаете что ❮${number?.phone}❯ ${wasText} использован в ❮${place.name}❯?`;
-    if (window.confirm(msg)) {
-      await toggle(place.id, !currentUsed);
+    const ok = window.confirm(msg);
+    if (!ok) {
+      // force re-render to restore switch visual without navigation
+      setUsage((u) => ({ ...u }));
+      return;
     }
+    await toggle(place.id, !currentUsed);
   };
 
   if (!number) return <Page title="Загрузка..."/>;
