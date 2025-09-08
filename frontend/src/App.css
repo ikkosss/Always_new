@@ -127,5 +127,5 @@ body {
   width: calc(70% * 0.707); /* 70% ширины поиска, умноженное на cos(45°) для диагонали */
   height: auto;
   object-fit: contain;
-  margin-bottom: calc(0.95 * 2.625rem); /* 95% высоты поля поиска */
+  margin-bottom: calc(0.95 * 2.625rem / 2); /* Сокращено в 2 раза */
 }
