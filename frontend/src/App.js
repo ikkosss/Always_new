@@ -487,6 +487,36 @@ function PlaceDetails({ id }) {
           </div>
         )}
       </div>
+
+      {promoOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Промо</div>
+            <div className="grid gap-3">
+              {promoData.code ? (
+                <div>
+                  <div className="text-sm text-neutral-600 mb-1">Актуальный промокод</div>
+                  <div className="flex items-center gap-2">
+                    <input className="search-input flex-1" readOnly value={promoData.code} />
+                    <button className="px-3 py-2 bg-blue-600 text-white" onClick={()=>navigator.clipboard.writeText(promoData.code)}>Копировать</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm text-neutral-500">Промокод не указан</div>
+              )}
+              {promoData.url ? (
+                <a className="px-4 py-2 bg-neutral-100 text-blue-700 underline text-left" href={promoData.url} target="_blank" rel="noreferrer">Перейти по ссылке</a>
+              ) : (
+                <div className="text-sm text-neutral-500">Ссылка не указана</div>
+              )}
+              <div className="flex justify-end">
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
