@@ -48,12 +48,18 @@ function BottomNav() {
   );
 }
 
-function Page({ title, children, center = false }) {
+function Page({ title, children, center = false, wide = false, padX = true }) {
+  const outerClass = center
+    ? `flex-1 flex items-center justify-center ${padX ? "px-4" : "px-0"}`
+    : "px-0";
+  const innerClass = center
+    ? wide ? "w-full" : "w-full max-w-xl"
+    : "w-full";
   return (
     <div className="min-h-screen pb-20 flex flex-col">
       <div className="header">{title}</div>
-      <div className={center ? "flex-1 flex items-center justify-center px-4" : "px-0"}>
-        <div className={center ? "w-full max-w-xl" : "w-full"}>{children}</div>
+      <div className={outerClass}>
+        <div className={innerClass}>{children}</div>
       </div>
       <BottomNav />
     </div>
@@ -90,10 +96,10 @@ function SearchPage() {
   };
 
   return (
-    <Page title="ПОИСК" center>
-      <div className="search-wrap">
+    <Page title="ПОИСК" center wide padX={false}>
+      <div className="search-wrap p-0 w-full">
         <form onSubmit={onSubmit}>
-          <div className="relative max-w-xl mx-auto">
+          <div className="relative w-full">
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -107,7 +113,7 @@ function SearchPage() {
           </div>
         </form>
         {(results.numbers.length > 0 || results.places.length > 0) && (
-          <div className="suggestions max-w-xl mx-auto">
+          <div className="suggestions w-full">
             {results.numbers.map((n) => (
               <a key={n.id} href={`/numbers/${n.id}`} className="suggestion flex items-center gap-3">
                 <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6"/>
@@ -127,7 +133,7 @@ function SearchPage() {
           </div>
         )}
         {noFound && (
-          <div className="mt-3 text-sm text-neutral-600 max-w-xl mx-auto">
+          <div className="mt-3 text-sm text-neutral-600 w-full">
             {isDigits ? `Добавить номер "${q.trim()}"?` : `Добавить "${q.trim()}"?`}
           </div>
         )}
