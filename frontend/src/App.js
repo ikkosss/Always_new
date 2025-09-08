@@ -413,6 +413,7 @@ function NumberDetails({ id }) {
   const [tab, setTab] = useState("unused");
   const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
   const [pendingToggle, setPendingToggle] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const load = async () => {
     const [n, u] = await Promise.all([
@@ -445,6 +446,17 @@ function NumberDetails({ id }) {
       setPendingToggle(null);
     }
     setToggleConfirmOpen(false);
+  };
+
+  const deleteNumber = async () => {
+    try {
+      await api.delete(`/numbers/${id}`);
+      // Navigate back to numbers page
+      window.location.href = '/numbers';
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось удалить номер. Повторите позже");
+    }
+    setDeleteConfirmOpen(false);
   };
 
   if (!number) return <Page title="Загрузка..."/>;
