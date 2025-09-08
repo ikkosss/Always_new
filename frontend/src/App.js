@@ -632,6 +632,21 @@ function PlaceDetails({ id }) {
         </div>
       )}
 
+      {deleteConfirmOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setDeleteConfirmOpen(false)}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Удалить место</div>
+            <div className="text-sm text-neutral-600 mb-4">
+              Вы уверены, что хотите удалить место "{place?.name}"? Это действие нельзя отменить.
+            </div>
+            <div className="flex justify-end gap-2">
+              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Отмена</button>
+              <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>Удалить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
