@@ -431,8 +431,12 @@ function PlaceDetails({ id }) {
   useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (numberId, used) => {
-    await api.post(`/usage`, { numberId, placeId: id, used });
-    load();
+    try {
+      await api.post(`/usage`, { numberId, placeId: id, used });
+      await load();
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось обновить статус. Повторите позже");
+    }
   };
 
   const confirmToggleNumber = async (num, currentUsed) => {
