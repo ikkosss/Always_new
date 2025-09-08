@@ -1042,7 +1042,7 @@ function PlacesPage() {
           </select>
           <select className="search-input" value={filter.category} onChange={(e)=>setFilter({ ...filter, category: e.target.value })}>
             <option value="">Все категории</option>
-            {['Магазины','Аптеки','Заправки','Соц. сети'].map((c)=> (
+            {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
