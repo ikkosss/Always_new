@@ -145,4 +145,9 @@
 
 ## agent_communication:
     - agent: "main"
-    - message: "User requested to add promo.png image on Place Details page, positioned symmetrically to place logo but on right side. When clicked, should open existing promo dialog. The promo.png image has been uploaded and extracted to /app/frontend/public/promo.png"
+    - message: "COMPLETED: Successfully implemented promo.png image on Place Details page. The functionality is working perfectly:
+      1. promo.png is displayed symmetrically to place logo but on the right side when place.hasPromo=true
+      2. Clicking promo.png opens a modal dialog showing promo code with copy button and/or link
+      3. Tested manually with place НЕФТЛ (ID: c4c95482-5229-40bc-a5d1-9b555035235a) - promo dialog opens correctly showing promo code '1111111'
+      4. Dialog closes properly when 'Закрыть' button is clicked
+      Ready for backend and frontend testing if needed."
