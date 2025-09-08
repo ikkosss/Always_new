@@ -119,16 +119,16 @@
 
 ## frontend:
   - task: "Add promo image on Place Details page"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-        - working: false
+        - working: true
         - agent: "main"
-        - comment: "Need to implement promo.png display on PlaceDetails page when place has promo, positioned symmetrically to logo but on right side, with click handler to open promo dialog"
+        - comment: "Successfully implemented promo.png display on PlaceDetails page. When place has promo (hasPromo=true), promo.png is displayed symmetrically to logo but on right side. Clicking promo.png opens dialog with promo code/link information. Tested manually and confirmed working correctly with place НЕФТЛ (promo code: 1111111)"
 
 ## metadata:
   created_by: "main_agent"
