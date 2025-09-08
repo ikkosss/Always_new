@@ -153,18 +153,19 @@
 
 ## test_plan:
   current_focus:
-    - "Add promo image on Place Details page"
+    - "Add НАЙТИ button and auto-dialog functionality"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 ## agent_communication:
     - agent: "main"
-    - message: "COMPLETED: Successfully implemented promo.png image on Place Details page. The functionality is working perfectly:
-      1. promo.png is displayed symmetrically to place logo but on the right side when place.hasPromo=true
-      2. Clicking promo.png opens a modal dialog showing promo code with copy button and/or link
-      3. Tested manually with place НЕФТЛ (ID: c4c95482-5229-40bc-a5d1-9b555035235a) - promo dialog opens correctly showing promo code '1111111'
-      4. Dialog closes properly when 'Закрыть' button is clicked
-      Ready for backend and frontend testing if needed."
+    - message: "COMPLETED: Successfully implemented both requested features:
+      1. ✅ PROMO IMAGE ON PLACE DETAILS: promo.png displays symmetrically to logo on right side, opens dialog on click
+      2. ✅ НАЙТИ BUTTON FUNCTIONALITY: Added НАЙТИ button in search field, auto-opens appropriate dialogs when no results found:
+         - Digits input → Number dialog with pre-filled formatted phone
+         - Letters input → Place dialog with pre-filled name
+         - Works on both button click and Enter key press
+      Both features tested manually and working perfectly. Ready for additional testing if needed."
     - agent: "testing"
     - message: "BACKEND TESTING COMPLETED: All promo functionality tests passed successfully (7/7 - 100% success rate). Verified all requirements from review request: 1) GET /api/places/{id} correctly returns hasPromo flag when place has promoCode or promoUrl, 2) Places with promo data return hasPromo=true, places without return hasPromo=false, 3) НЕФТЛ place (c4c95482-5229-40bc-a5d1-9b555035235a) correctly returns hasPromo=true with promoCode='1111111', 4) Promo data (promoCode, promoUrl) is correctly returned in place details endpoint. Backend logic for hasPromo flag and promo data retrieval is working perfectly. No issues found."
