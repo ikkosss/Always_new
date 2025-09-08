@@ -919,8 +919,54 @@ function PlacesPage() {
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              <input className="search-input" placeholder="Промокод" value={form.promoCode} onChange={(e)=>setForm({...form, promoCode: e.target.value})} />
-              <input className="search-input" placeholder="Ссылка на акцию" value={form.promoUrl} onChange={(e)=>setForm({...form, promoUrl: e.target.value})} />
+              
+              {/* Промокод с плюсиком */}
+              <div className="flex items-center gap-2">
+                <input 
+                  className="search-input flex-1" 
+                  placeholder="Промокод" 
+                  value={form.promoCode} 
+                  onChange={(e)=>setForm({...form, promoCode: e.target.value})} 
+                />
+                <button 
+                  type="button"
+                  className="px-3 py-2 bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg"
+                  onClick={handlePlusClick}
+                  title="Добавить поле"
+                >
+                  +
+                </button>
+              </div>
+              
+              {/* Дополнительный промокод */}
+              {showExtraPromo && (
+                <input 
+                  className="search-input" 
+                  placeholder="Дополнительный промокод" 
+                  value={form.promoCode2} 
+                  onChange={(e)=>setForm({...form, promoCode2: e.target.value})} 
+                />
+              )}
+              
+              {/* Ссылка на акцию */}
+              {showPromoUrl && (
+                <input 
+                  className="search-input" 
+                  placeholder="Ссылка на акцию" 
+                  value={form.promoUrl} 
+                  onChange={(e)=>setForm({...form, promoUrl: e.target.value})} 
+                />
+              )}
+              
+              {/* Комментарий */}
+              <textarea 
+                className="search-input" 
+                placeholder="Комментарий" 
+                rows="3"
+                value={form.comment} 
+                onChange={(e)=>setForm({...form, comment: e.target.value})} 
+              />
+              
               <input className="search-input" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
