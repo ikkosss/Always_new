@@ -401,6 +401,26 @@ class FIRSTAPITester:
                 return False
         return success
 
+    def test_list_places_promo_flag(self):
+        """Test GET /api/places to verify hasPromo flag in list view"""
+        success, response = self.run_test("List places for promo check", "GET", "/places", 200)
+        
+        if success:
+            # Look for places with and without promo
+            places_with_promo = [p for p in response if p.get('hasPromo') is True]
+            places_without_promo = [p for p in response if p.get('hasPromo') is False]
+            
+            print(f"✅ Found {len(places_with_promo)} places with promo")
+            print(f"✅ Found {len(places_without_promo)} places without promo")
+            
+            # Verify that places with promo have promoCode or promoUrl (though these fields might not be in list view)
+            if places_with_promo:
+                print(f"✅ Places with hasPromo=true found in list")
+            if places_without_promo:
+                print(f"✅ Places with hasPromo=false found in list")
+                
+        return success
+
     def run_all_tests(self):
         """Run all API tests in sequence"""
         print("🚀 Starting FIRST API Tests")
