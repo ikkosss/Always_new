@@ -211,7 +211,7 @@ function SearchPage() {
               value={q}
               onChange={(e) => onChange(e.target.value)}
               className="search-input pr-20"
-              placeholder="Номер телефона или название места"
+              placeholder="Номер или название места"
             />
             <button 
               type="button" 
