@@ -235,6 +235,172 @@ class FIRSTAPITester:
                 return False
         return success
 
+    def test_specific_place_neftl_promo(self):
+        """Test GET /api/places/{id} for НЕФТЛ place - should have hasPromo=true"""
+        neftl_id = "c4c95482-5229-40bc-a5d1-9b555035235a"
+        
+        success, response = self.run_test(
+            "Get НЕФТЛ place details", 
+            "GET", 
+            f"/places/{neftl_id}", 
+            200
+        )
+        
+        if success:
+            has_promo = response.get('hasPromo')
+            promo_code = response.get('promoCode')
+            
+            if has_promo is True:
+                print(f"✅ НЕФТЛ place has hasPromo=true")
+                if promo_code == "1111111":
+                    print(f"✅ НЕФТЛ place has correct promoCode: {promo_code}")
+                else:
+                    print(f"❌ НЕФТЛ place promoCode mismatch. Expected: 1111111, Got: {promo_code}")
+                    return False
+            else:
+                print(f"❌ НЕФТЛ place hasPromo is not true. Got: {has_promo}")
+                return False
+        return success
+
+    def test_create_place_with_promo_code(self):
+        """Test POST /api/places with promoCode - should have hasPromo=true"""
+        data = {
+            "name": f"PromoTest-Code-{self.timestamp}",
+            "category": "Тест",
+            "promoCode": "TEST123"
+        }
+        
+        success, response = self.run_test(
+            "Create place with promo code", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            has_promo = response.get('hasPromo')
+            promo_code = response.get('promoCode')
+            
+            if has_promo is True:
+                print(f"✅ Place with promoCode has hasPromo=true")
+                if promo_code == "TEST123":
+                    print(f"✅ Place has correct promoCode: {promo_code}")
+                else:
+                    print(f"❌ Place promoCode mismatch. Expected: TEST123, Got: {promo_code}")
+                    return False
+            else:
+                print(f"❌ Place with promoCode hasPromo is not true. Got: {has_promo}")
+                return False
+        return success
+
+    def test_create_place_with_promo_url(self):
+        """Test POST /api/places with promoUrl - should have hasPromo=true"""
+        data = {
+            "name": f"PromoTest-URL-{self.timestamp}",
+            "category": "Тест",
+            "promoUrl": "https://example.com/promo"
+        }
+        
+        success, response = self.run_test(
+            "Create place with promo URL", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            has_promo = response.get('hasPromo')
+            promo_url = response.get('promoUrl')
+            
+            if has_promo is True:
+                print(f"✅ Place with promoUrl has hasPromo=true")
+                if promo_url == "https://example.com/promo":
+                    print(f"✅ Place has correct promoUrl: {promo_url}")
+                else:
+                    print(f"❌ Place promoUrl mismatch. Expected: https://example.com/promo, Got: {promo_url}")
+                    return False
+            else:
+                print(f"❌ Place with promoUrl hasPromo is not true. Got: {has_promo}")
+                return False
+        return success
+
+    def test_create_place_with_both_promo_fields(self):
+        """Test POST /api/places with both promoCode and promoUrl - should have hasPromo=true"""
+        data = {
+            "name": f"PromoTest-Both-{self.timestamp}",
+            "category": "Тест",
+            "promoCode": "BOTH456",
+            "promoUrl": "https://example.com/both"
+        }
+        
+        success, response = self.run_test(
+            "Create place with both promo fields", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            has_promo = response.get('hasPromo')
+            promo_code = response.get('promoCode')
+            promo_url = response.get('promoUrl')
+            
+            if has_promo is True:
+                print(f"✅ Place with both promo fields has hasPromo=true")
+                if promo_code == "BOTH456" and promo_url == "https://example.com/both":
+                    print(f"✅ Place has correct promo fields - Code: {promo_code}, URL: {promo_url}")
+                else:
+                    print(f"❌ Place promo fields mismatch. Expected Code: BOTH456, URL: https://example.com/both")
+                    print(f"   Got Code: {promo_code}, URL: {promo_url}")
+                    return False
+            else:
+                print(f"❌ Place with both promo fields hasPromo is not true. Got: {has_promo}")
+                return False
+        return success
+
+    def test_create_place_without_promo(self):
+        """Test POST /api/places without promo fields - should have hasPromo=false"""
+        data = {
+            "name": f"NoPromoTest-{self.timestamp}",
+            "category": "Тест"
+        }
+        
+        success, response = self.run_test(
+            "Create place without promo", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            has_promo = response.get('hasPromo')
+            promo_code = response.get('promoCode')
+            promo_url = response.get('promoUrl')
+            
+            if has_promo is False:
+                print(f"✅ Place without promo has hasPromo=false")
+                if promo_code is None and promo_url is None:
+                    print(f"✅ Place has no promo fields as expected")
+                else:
+                    print(f"❌ Place should have no promo fields. Got Code: {promo_code}, URL: {promo_url}")
+                    return False
+            else:
+                print(f"❌ Place without promo hasPromo is not false. Got: {has_promo}")
+                return False
+        return success
+
     def run_all_tests(self):
         """Run all API tests in sequence"""
         print("🚀 Starting FIRST API Tests")
