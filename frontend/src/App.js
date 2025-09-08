@@ -416,6 +416,16 @@ function PlaceDetails({ id }) {
     }
   };
 
+  const openPromoDialog = async () => {
+    try {
+      const { data } = await api.get(`/places/${id}`);
+      setPromoData({ code: data.promoCode || "", url: data.promoUrl || "" });
+    } catch (e) {
+      setPromoData({ code: place.promoCode || "", url: place.promoUrl || "" });
+    }
+    setPromoOpen(true);
+  };
+
   if (!place) return <Page title="Загрузка..."/>;
   return (
     <Page title={place.name} hideHeader>
