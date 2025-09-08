@@ -4,6 +4,9 @@
 
 :root { color-scheme: light; }
 
+/* Force sharp corners globally */
+* { border-radius: 0 !important; }
+
 body { @apply bg-white text-neutral-900; }
 
 /* Bottom Nav */
@@ -13,17 +16,17 @@ body { @apply bg-white text-neutral-900; }
 .bottom-nav-btn.active { @apply bg-blue-600 text-white; }
 .bottom-nav-btn.inactive { @apply text-neutral-500; }
 
-/* Floating Action Button */
-.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg; }
+/* Floating Action Button (now square) */
+.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white w-12 h-12 flex items-center justify-center shadow-lg; }
 
 /* Cards & Grid */
-.card { @apply bg-white rounded-xl border border-neutral-200 p-4; }
+.card { @apply bg-white border border-neutral-200 p-4; }
 .grid-3 { @apply grid grid-cols-3 gap-3; }
 
 /* Search */
 .search-wrap { @apply p-4 pt-6; }
-.search-input { @apply w-full border border-neutral-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
-.suggestions { @apply mt-3 bg-white border border-neutral-200 rounded-lg divide-y; }
+.search-input { @apply w-full border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
+.suggestions { @apply mt-3 bg-white border border-neutral-200 divide-y; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 
 .header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 px-4 py-3 font-semibold; }

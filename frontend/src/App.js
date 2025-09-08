@@ -154,7 +154,7 @@ function SearchPage() {
             ))}
             {results.places.map((p) => (
               <div key={p.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/places/${p.id}`)}>
-                <div className="w-6 h-6 bg-neutral-200 rounded overflow-hidden">
+                <div className="w-6 h-6 bg-neutral-200 overflow-hidden">
                   {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover" src={`${API}/places/${p.id}/logo`} />}
                 </div>
                 <div className="flex-1">{p.name}</div>
@@ -255,7 +255,7 @@ function NumbersPage() {
       {/* Add/Edit dialog */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
-          <div className="bg-white rounded-xl p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать номер" : "Добавить номер"}</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>setForm({...form, phone: e.target.value})} />
@@ -266,7 +266,7 @@ function NumbersPage() {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={save}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@ function NumbersPage() {
       {/* Context menu */}
       {ctxOpen && ctxTarget && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
-          <div className="bg-white rounded-xl w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
+          <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
@@ -317,7 +317,7 @@ function NumberDetails({ id }) {
         <Accordion title="Не использован" count={usage.unused.length}>
           <div className="grid gap-2">
             {usage.unused.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={p.id} className="flex items-center justify-between p-3 border">
                 <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                 <button className="text-blue-600" onClick={()=>toggle(p.id, true)}>Отметить использован</button>
               </div>
@@ -327,7 +327,7 @@ function NumberDetails({ id }) {
         <Accordion title="Использован" count={usage.used.length}>
           <div className="grid gap-2">
             {usage.used.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={p.id} className="flex items-center justify-between p-3 border">
                 <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                 <button className="text-neutral-600" onClick={()=>toggle(p.id, false)}>Снять отметку</button>
               </div>
@@ -339,7 +339,6 @@ function NumberDetails({ id }) {
   );
 }
 
-// Restored PlaceDetails component
 function PlaceDetails({ id }) {
   const [place, setPlace] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
@@ -364,7 +363,7 @@ function PlaceDetails({ id }) {
     <Page title={place.name}>
       <div className="p-4 grid gap-3">
         <div className="card flex flex-col items-center gap-3">
-          <div className="w-20 h-20 bg-neutral-100 rounded overflow-hidden">
+          <div className="w-20 h-20 bg-neutral-100 overflow-hidden">
             {place.hasLogo && <img alt={place.name} className="w-full h-full object-cover" src={`${API}/places/${id}/logo`} />}
           </div>
           <div className="font-medium">{place.name}</div>
@@ -372,7 +371,7 @@ function PlaceDetails({ id }) {
         <Accordion title="Не использован" count={usage.unused.length}>
           <div className="grid gap-2">
             {usage.unused.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={n.id} className="flex items-center justify-between p-3 border">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <button className="text-blue-600" onClick={()=>toggle(n.id, true)}>Отметить использован</button>
               </div>
@@ -382,7 +381,7 @@ function PlaceDetails({ id }) {
         <Accordion title="Использован" count={usage.used.length}>
           <div className="grid gap-2">
             {usage.used.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={n.id} className="flex items-center justify-between p-3 border">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <button className="text-neutral-600" onClick={()=>toggle(n.id, false)}>Снять отметку</button>
               </div>
@@ -487,7 +486,7 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <div className="w-16 h-16 bg-neutral-100 rounded overflow-hidden flex items-center justify-center">
+              <div className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center">
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
                 ) : (
@@ -504,7 +503,7 @@ function PlacesPage() {
       {/* Add/Edit dialog */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
-          <div className="bg-white rounded-xl p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="Название" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} />
@@ -516,7 +515,7 @@ function PlacesPage() {
               <input className="search-input" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={save}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -526,7 +525,7 @@ function PlacesPage() {
       {/* Context menu */}
       {ctxOpen && ctxTarget && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
-          <div className="bg-white rounded-xl w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
+          <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
@@ -540,7 +539,7 @@ function PlacesPage() {
 function Accordion({ title, count, children }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border rounded-xl overflow-hidden">
+    <div className="border overflow-hidden">
       <button className="w-full flex items-center justify-between px-4 py-3 bg-neutral-50" onClick={()=>setOpen(!open)}>
         <div className="font-medium">{title}</div>
         <div className="text-sm text-neutral-500">{count}</div>
