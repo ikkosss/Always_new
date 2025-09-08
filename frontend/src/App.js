@@ -921,7 +921,7 @@ function PlacesPage() {
             ))}
           </select>
         </div>
-        <div className="grid-3 places-grid">
+        <div className="grid-3">
           {items.map((p) => (
             <LongPressable
               key={p.id}
