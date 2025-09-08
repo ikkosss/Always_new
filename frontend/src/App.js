@@ -411,6 +411,8 @@ function NumberDetails({ id }) {
   const [number, setNumber] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
   const [tab, setTab] = useState("unused");
+  const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
+  const [pendingToggle, setPendingToggle] = useState(null);
 
   const load = async () => {
     const [n, u] = await Promise.all([
@@ -423,12 +425,32 @@ function NumberDetails({ id }) {
   useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (placeId, used) => {
+    // If switching from unused to used (false to true), show confirmation
+    if (used) {
+      setPendingToggle({ placeId, used });
+      setToggleConfirmOpen(true);
+      return;
+    }
+    
+    // Direct toggle for used to unused
+    await performToggle(placeId, used);
+  };
+
+  const performToggle = async (placeId, used) => {
     try {
       await api.post(`/usage`, { numberId: id, placeId, used });
       await load();
     } catch (e) {
       alert(e.response?.data?.detail || "Не удалось обновить статус. Повторите позже");
     }
+  };
+
+  const confirmToggle = async () => {
+    if (pendingToggle) {
+      await performToggle(pendingToggle.placeId, pendingToggle.used);
+      setPendingToggle(null);
+    }
+    setToggleConfirmOpen(false);
   };
 
   if (!number) return <Page title="Загрузка..."/>;
