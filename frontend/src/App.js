@@ -738,7 +738,7 @@ function PlacesPage() {
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              <input className="search-input" placeholder="ПРОМОКОД" value={form.promoCode} onChange={(e)=>setForm({...form, promoCode: e.target.value})} />
+              <input className="search-input" placeholder="Промокод" value={form.promoCode} onChange={(e)=>setForm({...form, promoCode: e.target.value})} />
               <input className="search-input" placeholder="ССЫЛКА НА РЕСУРС" value={form.promoUrl} onChange={(e)=>setForm({...form, promoUrl: e.target.value})} />
               <input className="search-input" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
               <div className="flex justify-end gap-2">
