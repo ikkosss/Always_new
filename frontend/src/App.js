@@ -235,7 +235,7 @@ function NumbersPage() {
   return (
     <Page title="НОМЕРА">
       <div className="p-0">
-        <div className="bg-white border-t border-b divide-y">
+        <div className="bg-white">
           {items.map((n) => (
             <LongPressable
               key={n.id}
@@ -252,9 +252,9 @@ function NumbersPage() {
       </div>
       <button className="fab" onClick={() => { setEditing(null); setForm({ phone: "", operatorKey: "mts" }); setShowDialog(true); }}>+</button>
 
-      {/* Add/Edit dialog */}
+      {/* Add/Edit dialog - always centered */}
       {showDialog && (
-        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowDialog(false)}>
           <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать номер" : "Добавить номер"}</div>
             <div className="grid gap-3">
@@ -290,6 +290,7 @@ function NumbersPage() {
 function NumberDetails({ id }) {
   const [number, setNumber] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
+  const [tab, setTab] = useState("unused"); // "unused" | "used"
 
   const load = async () => {
     const [n, u] = await Promise.all([
@@ -309,31 +310,46 @@ function NumberDetails({ id }) {
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone}>
-      <div className="p-4 grid gap-3">
-        <div className="card flex items-center gap-3">
+      <div className="p-4 grid gap-4">
+        <div className="flex items-center gap-3">
           <img alt="op" src={OPERATORS[number.operatorKey]?.icon} className="w-8 h-8"/>
-          <div className="font-medium">{number.phone}</div>
+          <div className="font-medium text-lg">{number.phone}</div>
         </div>
-        <Accordion title="Не использован" count={usage.unused.length}>
+        <div className="flex gap-2">
+          <button
+            className={`px-4 py-2 ${tab === 'unused' ? 'bg-green-200 text-green-800' : 'bg-green-100 text-green-700'}`}
+            onClick={() => setTab('unused')}
+          >
+            Доступен
+          </button>
+          <button
+            className={`px-4 py-2 ${tab === 'used' ? 'bg-red-200 text-red-800' : 'bg-red-100 text-red-700'}`}
+            onClick={() => setTab('used')}
+          >
+            Использован
+          </button>
+        </div>
+        {tab === 'unused' ? (
           <div className="grid gap-2">
             {usage.unused.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between p-3 border">
+              <div key={p.id} className="flex items-center justify-between py-2">
                 <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                 <button className="text-blue-600" onClick={()=>toggle(p.id, true)}>Отметить использован</button>
               </div>
             ))}
+            {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных мест</div>}
           </div>
-        </Accordion>
-        <Accordion title="Использован" count={usage.used.length}>
+        ) : (
           <div className="grid gap-2">
             {usage.used.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between p-3 border">
+              <div key={p.id} className="flex items-center justify-between py-2">
                 <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
                 <button className="text-neutral-600" onClick={()=>toggle(p.id, false)}>Снять отметку</button>
               </div>
             ))}
+            {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных мест</div>}
           </div>
-        </Accordion>
+        )}
       </div>
     </Page>
   );
@@ -361,33 +377,35 @@ function PlaceDetails({ id }) {
   if (!place) return <Page title="Загрузка..."/>;
   return (
     <Page title={place.name}>
-      <div className="p-4 grid gap-3">
-        <div className="card flex flex-col items-center gap-3">
-          <div className="w-20 h-20 bg-neutral-100 overflow-hidden">
-            {place.hasLogo && <img alt={place.name} className="w-full h-full object-cover" src={`${API}/places/${id}/logo`} />}
-          </div>
-          <div className="font-medium">{place.name}</div>
+      <div className="p-4 grid gap-4">
+        <div className="flex items-center gap-3">
+          {place.hasLogo && <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />}
+          <div className="font-medium text-lg">{place.name}</div>
         </div>
-        <Accordion title="Не использован" count={usage.unused.length}>
+        <div>
+          <div className="font-medium mb-2">Не использован</div>
           <div className="grid gap-2">
             {usage.unused.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border">
+              <div key={n.id} className="flex items-center justify-between py-2">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <button className="text-blue-600" onClick={()=>toggle(n.id, true)}>Отметить использован</button>
               </div>
             ))}
+            {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных номеров</div>}
           </div>
-        </Accordion>
-        <Accordion title="Использован" count={usage.used.length}>
+        </div>
+        <div>
+          <div className="font-medium mb-2">Использован</div>
           <div className="grid gap-2">
             {usage.used.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between p-3 border">
+              <div key={n.id} className="flex items-center justify-between py-2">
                 <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
                 <button className="text-neutral-600" onClick={()=>toggle(n.id, false)}>Снять отметку</button>
               </div>
             ))}
+            {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных номеров</div>}
           </div>
-        </Accordion>
+        </div>
       </div>
     </Page>
   );
@@ -500,9 +518,9 @@ function PlacesPage() {
       </div>
       <button className="fab" onClick={() => { setEditing(null); setForm({ name: "", category: "Магазины", logo: null }); setShowDialog(true); }}>+</button>
 
-      {/* Add/Edit dialog */}
+      {/* Add/Edit dialog - always centered */}
       {showDialog && (
-        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setShowDialog(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowDialog(false)}>
           <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
             <div className="grid gap-3">
@@ -533,19 +551,6 @@ function PlacesPage() {
         </div>
       )}
     </Page>
-  );
-}
-
-function Accordion({ title, count, children }) {
-  const [open, setOpen] = useState(true);
-  return (
-    <div className="border overflow-hidden">
-      <button className="w-full flex items-center justify-between px-4 py-3 bg-neutral-50" onClick={()=>setOpen(!open)}>
-        <div className="font-medium">{title}</div>
-        <div className="text-sm text-neutral-500">{count}</div>
-      </button>
-      {open && <div className="p-3">{children}</div>}
-    </div>
   );
 }
 
