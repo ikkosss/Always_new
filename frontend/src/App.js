@@ -925,7 +925,7 @@ function PlacesPage() {
           {items.map((p) => (
             <LongPressable
               key={p.id}
-              className="flex flex-col items-center gap-2 p-3 cursor-pointer relative w-full"
+              className="flex flex-col items-center gap-2 p-3 cursor-pointer relative w-full place-item"
               duration={2000}
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
@@ -940,7 +940,7 @@ function PlacesPage() {
                   <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
                 )}
               </button>
-              <div className="text-center text-sm font-bold text-gray-800 mt-1">{p.name}</div>
+              <div className="text-center text-sm font-bold text-gray-800 mt-1 truncate w-full">{p.name}</div>
             </LongPressable>
           ))}
         </div>
