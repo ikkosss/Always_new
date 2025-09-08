@@ -119,3 +119,15 @@ body {
 .place-item {
   position: relative;
 }
+
+/* Изображение над полем поиска */
+.search-promo-image {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 70%;
+  max-height: 70%;
+  object-fit: contain;
+  margin-bottom: calc(0.95 * 42px); /* 95% высоты поля поиска (42px) */
+}
