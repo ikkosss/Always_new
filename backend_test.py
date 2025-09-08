@@ -433,6 +433,34 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def run_promo_tests(self):
+        """Run promo-specific API tests"""
+        print("🎯 Starting Promo Feature Tests")
+        print("=" * 50)
+        
+        promo_tests = [
+            self.test_specific_place_neftl_promo,
+            self.test_create_place_with_promo_code,
+            self.test_create_place_with_promo_url,
+            self.test_create_place_with_both_promo_fields,
+            self.test_create_place_without_promo,
+        ]
+        
+        for test in promo_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        print("📊 Promo Test Results:")
+        print(f"   Tests run: {self.tests_run}")
+        print(f"   Tests passed: {self.tests_passed}")
+        print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        return self.tests_passed == self.tests_run
+
 def main():
     tester = FIRSTAPITester()
     success = tester.run_all_tests()
