@@ -154,3 +154,5 @@
       3. Tested manually with place НЕФТЛ (ID: c4c95482-5229-40bc-a5d1-9b555035235a) - promo dialog opens correctly showing promo code '1111111'
       4. Dialog closes properly when 'Закрыть' button is clicked
       Ready for backend and frontend testing if needed."
+    - agent: "testing"
+    - message: "BACKEND TESTING COMPLETED: All promo functionality tests passed successfully (7/7 - 100% success rate). Verified all requirements from review request: 1) GET /api/places/{id} correctly returns hasPromo flag when place has promoCode or promoUrl, 2) Places with promo data return hasPromo=true, places without return hasPromo=false, 3) НЕФТЛ place (c4c95482-5229-40bc-a5d1-9b555035235a) correctly returns hasPromo=true with promoCode='1111111', 4) Promo data (promoCode, promoUrl) is correctly returned in place details endpoint. Backend logic for hasPromo flag and promo data retrieval is working perfectly. No issues found."
