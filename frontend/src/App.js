@@ -408,7 +408,7 @@ function PlaceDetails({ id }) {
     setPlace(p.data);
     setUsage(u.data);
   };
-  useEffect(() => { setTab(null); load(); }, [id]);
+  useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (numberId, used) => {
     await api.post(`/usage`, { numberId, placeId: id, used });
