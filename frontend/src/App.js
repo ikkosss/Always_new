@@ -190,6 +190,7 @@ function SearchPage() {
       fd.append("category", placeForm.category);
       fd.append("promoCode", placeForm.promoCode);
       fd.append("promoUrl", placeForm.promoUrl);
+      fd.append("comment", placeForm.comment);
       if (placeForm.logo) fd.append("logo", placeForm.logo);
       await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
       setShowPlaceDialog(false);
