@@ -461,6 +461,7 @@ class FIRSTAPITester:
         promo_tests = [
             self.test_specific_place_neftl_promo,
             self.test_list_places_promo_flag,
+            self.test_get_places_with_promo_details,
             # Skip create tests due to backend ObjectId serialization issue
             # self.test_create_place_with_promo_code,
             # self.test_create_place_with_promo_url,
