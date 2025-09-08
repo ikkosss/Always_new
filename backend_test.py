@@ -545,6 +545,361 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def test_search_with_digits(self):
+        """Test GET /api/search with digit query - should return numbers"""
+        # Test with phone number digits
+        test_queries = ["79990001234", "999", "+7 999 000 12 34", "8 999 000 12 34"]
+        
+        for query in test_queries:
+            success, response = self.run_test(
+                f"Search with digits: '{query}'", 
+                "GET", 
+                f"/search?q={query}", 
+                200
+            )
+            
+            if success:
+                numbers = response.get('numbers', [])
+                places = response.get('places', [])
+                
+                # For digit queries, we should get numbers (might be empty if no matches)
+                if isinstance(numbers, list) and isinstance(places, list):
+                    print(f"✅ Search returned proper structure - Numbers: {len(numbers)}, Places: {len(places)}")
+                    # For digit queries, places should be empty
+                    if len(places) == 0:
+                        print(f"✅ Digit query correctly returned no places")
+                    else:
+                        print(f"❌ Digit query should not return places, got {len(places)}")
+                        return False
+                else:
+                    print(f"❌ Search response structure invalid")
+                    return False
+            else:
+                return False
+        
+        return True
+
+    def test_search_with_text(self):
+        """Test GET /api/search with text query - should return places"""
+        # Test with place names
+        test_queries = ["магнит", "Нефтл", "кафе", "test"]
+        
+        for query in test_queries:
+            success, response = self.run_test(
+                f"Search with text: '{query}'", 
+                "GET", 
+                f"/search?q={query}", 
+                200
+            )
+            
+            if success:
+                numbers = response.get('numbers', [])
+                places = response.get('places', [])
+                
+                # For text queries, we should get places (might be empty if no matches)
+                if isinstance(numbers, list) and isinstance(places, list):
+                    print(f"✅ Search returned proper structure - Numbers: {len(numbers)}, Places: {len(places)}")
+                    # For text queries, numbers should be empty
+                    if len(numbers) == 0:
+                        print(f"✅ Text query correctly returned no numbers")
+                    else:
+                        print(f"❌ Text query should not return numbers, got {len(numbers)}")
+                        return False
+                else:
+                    print(f"❌ Search response structure invalid")
+                    return False
+            else:
+                return False
+        
+        return True
+
+    def test_search_edge_cases(self):
+        """Test GET /api/search with edge cases"""
+        edge_cases = [
+            ("", "empty query"),
+            ("   ", "whitespace only"),
+            ("!@#$%", "special characters"),
+            ("абвгдеёжзийклмнопрстуфхцчшщъыьэюя", "long text"),
+            ("1234567890123456789012345678901234567890", "very long digits")
+        ]
+        
+        for query, description in edge_cases:
+            success, response = self.run_test(
+                f"Search edge case - {description}: '{query}'", 
+                "GET", 
+                f"/search?q={query}", 
+                200
+            )
+            
+            if success:
+                numbers = response.get('numbers', [])
+                places = response.get('places', [])
+                
+                if isinstance(numbers, list) and isinstance(places, list):
+                    print(f"✅ Edge case handled properly - Numbers: {len(numbers)}, Places: {len(places)}")
+                else:
+                    print(f"❌ Edge case response structure invalid")
+                    return False
+            else:
+                return False
+        
+        return True
+
+    def test_search_partial_matches(self):
+        """Test GET /api/search with partial matches"""
+        # First create some test data to search for
+        test_number_phone = f"+7999888{self.timestamp[-4:]}"
+        test_place_name = f"SearchTest-{self.timestamp}"
+        
+        # Create a test number
+        number_data = {
+            "phone": test_number_phone,
+            "operatorKey": "mts"
+        }
+        success, number_response = self.run_test("Create test number for search", "POST", "/numbers", 200, number_data)
+        if not success:
+            return False
+        
+        # Create a test place
+        place_data = {
+            "name": test_place_name,
+            "category": "Тест"
+        }
+        success, place_response = self.run_test(
+            "Create test place for search", 
+            "POST", 
+            "/places", 
+            200, 
+            data=place_data, 
+            files=None, 
+            is_multipart=True
+        )
+        if not success:
+            return False
+        
+        # Test partial number search
+        partial_digits = test_number_phone.replace("+7", "").replace(" ", "")[:6]  # First 6 digits
+        success, response = self.run_test(
+            f"Search partial number: '{partial_digits}'", 
+            "GET", 
+            f"/search?q={partial_digits}", 
+            200
+        )
+        
+        if success:
+            numbers = response.get('numbers', [])
+            found = any(n.get('phone') == test_number_phone for n in numbers)
+            if found:
+                print(f"✅ Partial number search found created number")
+            else:
+                print(f"❌ Partial number search did not find created number")
+                return False
+        else:
+            return False
+        
+        # Test partial place search
+        partial_name = test_place_name[:8]  # First 8 characters
+        success, response = self.run_test(
+            f"Search partial place: '{partial_name}'", 
+            "GET", 
+            f"/search?q={partial_name}", 
+            200
+        )
+        
+        if success:
+            places = response.get('places', [])
+            found = any(p.get('name') == test_place_name for p in places)
+            if found:
+                print(f"✅ Partial place search found created place")
+            else:
+                print(f"❌ Partial place search did not find created place")
+                return False
+        else:
+            return False
+        
+        return True
+
+    def test_create_number_from_search(self):
+        """Test POST /api/numbers - create number from search dialog"""
+        # Test creating a number as would happen from search dialog
+        search_phone = f"+7888777{self.timestamp[-4:]}"
+        
+        data = {
+            "phone": search_phone,
+            "operatorKey": "beeline"
+        }
+        
+        success, response = self.run_test("Create number from search dialog", "POST", "/numbers", 200, data)
+        
+        if success:
+            # Verify the created number has correct format
+            created_phone = response.get('phone')
+            if created_phone and created_phone.startswith('+7'):
+                print(f"✅ Number created with correct format: {created_phone}")
+                
+                # Verify it can be found in search
+                digits = created_phone.replace('+7', '').replace(' ', '')[:6]
+                search_success, search_response = self.run_test(
+                    f"Search for created number: '{digits}'", 
+                    "GET", 
+                    f"/search?q={digits}", 
+                    200
+                )
+                
+                if search_success:
+                    numbers = search_response.get('numbers', [])
+                    found = any(n.get('phone') == created_phone for n in numbers)
+                    if found:
+                        print(f"✅ Created number found in search results")
+                    else:
+                        print(f"❌ Created number not found in search results")
+                        return False
+                else:
+                    return False
+            else:
+                print(f"❌ Created number has incorrect format: {created_phone}")
+                return False
+        else:
+            return False
+        
+        return True
+
+    def test_create_place_from_search(self):
+        """Test POST /api/places - create place from search dialog with all fields"""
+        # Test creating a place as would happen from search dialog
+        search_place_name = f"SearchPlace-{self.timestamp}"
+        
+        data = {
+            "name": search_place_name,
+            "category": "Кафе",
+            "promoCode": "SEARCH123",
+            "promoUrl": "https://example.com/search-promo"
+        }
+        
+        success, response = self.run_test(
+            "Create place from search dialog", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify the created place has all fields
+            created_name = response.get('name')
+            created_category = response.get('category')
+            has_promo = response.get('hasPromo')
+            promo_code = response.get('promoCode')
+            promo_url = response.get('promoUrl')
+            
+            if (created_name == search_place_name and 
+                created_category == "Кафе" and 
+                has_promo is True and
+                promo_code == "SEARCH123" and
+                promo_url == "https://example.com/search-promo"):
+                print(f"✅ Place created with all correct fields")
+                
+                # Verify it can be found in search
+                search_success, search_response = self.run_test(
+                    f"Search for created place: '{search_place_name[:8]}'", 
+                    "GET", 
+                    f"/search?q={search_place_name[:8]}", 
+                    200
+                )
+                
+                if search_success:
+                    places = search_response.get('places', [])
+                    found = any(p.get('name') == search_place_name for p in places)
+                    if found:
+                        print(f"✅ Created place found in search results")
+                    else:
+                        print(f"❌ Created place not found in search results")
+                        return False
+                else:
+                    return False
+            else:
+                print(f"❌ Created place has incorrect fields")
+                print(f"   Expected: name={search_place_name}, category=Кафе, hasPromo=True")
+                print(f"   Got: name={created_name}, category={created_category}, hasPromo={has_promo}")
+                return False
+        else:
+            return False
+        
+        return True
+
+    def test_search_differentiation(self):
+        """Test that search correctly differentiates between number and place queries"""
+        test_cases = [
+            ("79990001234", "digits", "numbers"),
+            ("999000", "digits", "numbers"),
+            ("+7 999 000 12 34", "phone format", "numbers"),
+            ("магнит", "text", "places"),
+            ("Кафе Пушкин", "text with spaces", "places"),
+            ("ABC123", "mixed alphanumeric", "places"),
+            ("test place", "text with space", "places")
+        ]
+        
+        for query, description, expected_type in test_cases:
+            success, response = self.run_test(
+                f"Search differentiation - {description}: '{query}'", 
+                "GET", 
+                f"/search?q={query}", 
+                200
+            )
+            
+            if success:
+                numbers = response.get('numbers', [])
+                places = response.get('places', [])
+                
+                if expected_type == "numbers":
+                    if len(places) == 0:
+                        print(f"✅ {description} correctly identified as number query (no places returned)")
+                    else:
+                        print(f"❌ {description} should be number query but returned {len(places)} places")
+                        return False
+                elif expected_type == "places":
+                    if len(numbers) == 0:
+                        print(f"✅ {description} correctly identified as place query (no numbers returned)")
+                    else:
+                        print(f"❌ {description} should be place query but returned {len(numbers)} numbers")
+                        return False
+            else:
+                return False
+        
+        return True
+
+    def run_search_tests(self):
+        """Run search functionality tests as requested in review"""
+        print("🔍 Starting Search Functionality Tests")
+        print("=" * 50)
+        
+        search_tests = [
+            self.test_search_with_digits,
+            self.test_search_with_text,
+            self.test_search_edge_cases,
+            self.test_search_partial_matches,
+            self.test_create_number_from_search,
+            self.test_create_place_from_search,
+            self.test_search_differentiation,
+        ]
+        
+        for test in search_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        print("📊 Search Test Results:")
+        print(f"   Tests run: {self.tests_run}")
+        print(f"   Tests passed: {self.tests_passed}")
+        print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        return self.tests_passed == self.tests_run
+
     def run_promo_tests(self):
         """Run promo-specific API tests"""
         print("🎯 Starting Promo Feature Tests")
