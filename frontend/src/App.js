@@ -23,7 +23,6 @@ const OPERATORS = {
 
 const api = axios.create({ baseURL: API });
 
-// Phone formatting utils
 function extractDigits(raw) {
   const d = (raw || "").replace(/\D+/g, "");
   if (!d) return "";
@@ -46,7 +45,6 @@ function formatRuPhonePartial(raw) {
   return res;
 }
 
-// LongPressable wrapper component to avoid using hooks inside loops
 function LongPressable({ duration = 2000, onLongPress, onClick, className, children }) {
   const timerRef = useRef(null);
   const handleStart = () => {
@@ -421,7 +419,9 @@ function PlaceDetails({ id }) {
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4">
         <div className="flex items-center gap-3">
-          {place.hasLogo && <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />}
+          {place.hasLogo && (
+            <img alt={place.name} className="w-10 h-10 object-cover" src={`${API}/places/${id}/logo`} />
+          )}
           <div className="font-medium text-lg">{place.name}</div>
         </div>
         <div className="flex gap-2">
@@ -532,7 +532,6 @@ function PlacesPage() {
       const { data } = await api.get(`/places/${p.id}`);
       setPromoData({ code: data.promoCode || "", url: data.promoUrl || "" });
     } catch (e) {
-      // fallback to list item fields if any
       setPromoData({ code: p.promoCode || "", url: p.promoUrl || "" });
     }
     setPromoOpen(true);
@@ -563,14 +562,17 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <button className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
+              <button className="w-16 h-16 bg-neutral-100 overflow-hidden flex items-center justify-center relative" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                 {p.hasLogo ? (
                   <img alt={p.name} className="w-full h-full object-cover" src={`${API}/places/${p.id}/logo`} />
                 ) : (
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
+                {p.hasPromo && (
+                  <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
+                )}
               </button>
-              <button className="text-center text-sm font-medium underline text-blue-700" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>{p.name}</button>
+              <div className="text-center text-sm font-medium">{p.name}</div>
             </LongPressable>
           ))}
         </div>
