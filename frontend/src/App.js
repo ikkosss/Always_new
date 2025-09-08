@@ -206,6 +206,11 @@ function SearchPage() {
   return (
     <Page title="ПОИСК" center wide padX={false}>
       <div className="search-wrap p-0 w-full">
+        <img 
+          src="/promofon.png" 
+          alt="Promo" 
+          className="search-promo-image"
+        />
         <form onSubmit={onSubmit}>
           <div className="relative w-full">
             <input
