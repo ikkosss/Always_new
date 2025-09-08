@@ -83,7 +83,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .number-item {
@@ -98,7 +98,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .service-item {
@@ -113,7 +113,7 @@ body {
   left: 10%;
   right: 10%;
   height: 1px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .place-item {
