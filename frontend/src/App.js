@@ -279,7 +279,7 @@ function SearchPage() {
             <div className="grid gap-3">
               <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
               <select className="search-input" value={placeForm.category} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
-                {["Магазины", "Рестораны", "Заправки", "Банки", "Аптеки", "Сайты", "Другое"].map((c) => (
+                {["Магазины", "Рестораны", "Заправки", "Банки", "Аптеки", "Сайты", "CashBack", "Другое"].map((c) => (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
