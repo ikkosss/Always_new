@@ -492,6 +492,7 @@ function PlaceDetails({ id }) {
   const [tab, setTab] = useState('unused');
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const load = async () => {
     const [p, u] = await Promise.all([
@@ -520,6 +521,17 @@ function PlaceDetails({ id }) {
       setPromoData({ code: place.promoCode || "", url: place.promoUrl || "" });
     }
     setPromoOpen(true);
+  };
+
+  const deletePlace = async () => {
+    try {
+      await api.delete(`/places/${id}`);
+      // Navigate back to places page
+      window.location.href = '/places';
+    } catch (e) {
+      alert(e.response?.data?.detail || "Не удалось удалить место. Повторите позже");
+    }
+    setDeleteConfirmOpen(false);
   };
 
   if (!place) return <Page title="Загрузка..."/>;
