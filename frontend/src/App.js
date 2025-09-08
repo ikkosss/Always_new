@@ -481,6 +481,13 @@ function NumberDetails({ id }) {
             Использован
           </button>
           <button
+            className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+            onClick={() => {/* TODO: Add edit functionality */}}
+            title="Редактировать номер"
+          >
+            ✏️
+          </button>
+          <button
             className="px-3 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200"
             onClick={() => setDeleteConfirmOpen(true)}
             title="Удалить номер"
