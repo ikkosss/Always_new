@@ -528,6 +528,8 @@ function PlaceDetails({ id }) {
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
+  const [pendingToggle, setPendingToggle] = useState(null);
 
   const load = async () => {
     const [p, u] = await Promise.all([
@@ -540,12 +542,32 @@ function PlaceDetails({ id }) {
   useEffect(() => { setTab('unused'); load(); }, [id]);
 
   const toggle = async (numberId, used) => {
+    // If switching from unused to used (false to true), show confirmation
+    if (used) {
+      setPendingToggle({ numberId, used });
+      setToggleConfirmOpen(true);
+      return;
+    }
+    
+    // Direct toggle for used to unused
+    await performToggle(numberId, used);
+  };
+
+  const performToggle = async (numberId, used) => {
     try {
       await api.post(`/usage`, { numberId, placeId: id, used });
       await load();
     } catch (e) {
       alert(e.response?.data?.detail || "Не удалось обновить статус. Повторите позже");
     }
+  };
+
+  const confirmToggle = async () => {
+    if (pendingToggle) {
+      await performToggle(pendingToggle.numberId, pendingToggle.used);
+      setPendingToggle(null);
+    }
+    setToggleConfirmOpen(false);
   };
 
   const openPromoDialog = async () => {
