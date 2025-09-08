@@ -246,6 +246,7 @@ async def create_place(
     category: str = Form(...),
     promoCode: Optional[str] = Form(None),
     promoUrl: Optional[str] = Form(None),
+    comment: Optional[str] = Form(None),
     logo: Optional[UploadFile] = File(None)
 ):
     name = name.strip()
@@ -254,7 +255,13 @@ async def create_place(
     exist = await db.places.find_one({"name": {"$regex": f"^{re.escape(name)}$", "$options": "i"}})
     if exist:
         raise HTTPException(status_code=409, detail="Place already exists")
-    doc = PlaceModel(name=name, category=category, promoCode=(promoCode or None), promoUrl=(promoUrl or None)).model_dump()
+    doc = PlaceModel(
+        name=name, 
+        category=category, 
+        promoCode=(promoCode or None), 
+        promoUrl=(promoUrl or None),
+        comment=(comment or None)
+    ).model_dump()
     if logo is not None:
         content = await logo.read()
         if len(content) > 2 * 1024 * 1024:
