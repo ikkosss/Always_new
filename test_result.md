@@ -101,3 +101,48 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+## user_problem_statement: Add promo.png image on Place Details page. When a place has promo code or link, display promo.png symmetrically to the place logo but on the right side. Clicking promo.png should open a promo dialog with the promo code/link information.
+
+## backend:
+  - task: "Place model has promo fields"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "main"
+        - comment: "Backend already supports promoCode and promoUrl fields for places and returns hasPromo flag"
+
+## frontend:
+  - task: "Add promo image on Place Details page"
+    implemented: false
+    working: false
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "main"
+        - comment: "Need to implement promo.png display on PlaceDetails page when place has promo, positioned symmetrically to logo but on right side, with click handler to open promo dialog"
+
+## metadata:
+  created_by: "main_agent"
+  version: "1.0"  
+  test_sequence: 0
+  run_ui: false
+
+## test_plan:
+  current_focus:
+    - "Add promo image on Place Details page"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+## agent_communication:
+    - agent: "main"
+    - message: "User requested to add promo.png image on Place Details page, positioned symmetrically to place logo but on right side. When clicked, should open existing promo dialog. The promo.png image has been uploaded and extracted to /app/frontend/public/promo.png"
