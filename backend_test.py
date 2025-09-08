@@ -463,7 +463,10 @@ class FIRSTAPITester:
 
 def main():
     tester = FIRSTAPITester()
-    success = tester.run_all_tests()
+    
+    # Run promo-specific tests as requested
+    print("Running promo functionality tests as requested...")
+    success = tester.run_promo_tests()
     return 0 if success else 1
 
 if __name__ == "__main__":
