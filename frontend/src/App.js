@@ -711,12 +711,13 @@ function NumberDetails({ id }) {
 function PlaceDetails({ id }) {
   const [place, setPlace] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
-  const [dirty, setDirty] = useState(false);
+  const [usedMap, setUsedMap] = useState({}); // numberId -> used
+  const initialMapRef = useRef({});
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
-  const [pendingToggle, setPendingToggle] = useState(null);
+  const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
+  const pendingRouteRef = useRef(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ 
     name: "", 
