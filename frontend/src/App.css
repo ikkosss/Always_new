@@ -220,6 +220,12 @@ body.is-fullscreen { }
 [data-page="number"] .pre-spaces,
 [data-page="number"] .gap-spaces { display: none !important; }
 
+
+/* Верхняя строка перед инструкцией: логотип оператора + номер той же высоты */
+.nh-row { display: flex; align-items: center; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding-left: 8px; }
+.nh-logo { width: var(--op-size); height: var(--op-size); object-fit: cover; border-radius: 5%; display: inline-block; }
+.nh-number { font-size: calc(var(--op-size) * 0.95); line-height: var(--op-size); margin-left: 8px; white-space: nowrap; }
+
 }
 
 /* Убираем разделители у мест — оставляем воздух */
