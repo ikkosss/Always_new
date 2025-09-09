@@ -161,7 +161,8 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
 }
 
 function SearchPage() {
-  const [q, setQ] = useState("");
+  const [qRaw, setQRaw] = useState("");
+  const [qDisplay, setQDisplay] = useState("");
   const [results, setResults] = useState({ numbers: [], places: [] });
   const [noFound, setNoFound] = useState(false);
   const [showNumberDialog, setShowNumberDialog] = useState(false);
@@ -172,14 +173,17 @@ function SearchPage() {
   const inputRef = useRef(null);
 
   const onChange = (val) => {
-    if (/^[0-9+\-()\s]*$/.test(val)) {
-      const formatted = formatRuPhonePartial(val);
-      setQ(formatted);
+    // нормализуем исходное значение (без многоточия в конце)
+    const base = val.endsWith("...") ? val.slice(0, -3) : val;
+
+    if (/^[0-9+\-()\s]*$/.test(base)) {
+      const formatted = formatRuPhonePartial(base);
+      setQRaw(formatted);
+      setQDisplay(formatted ? formatted + "..." : "");
       return;
     }
-    // добавляем многоточие визуально (не влияем на реальный поиск по API)
-    const clean = val.endsWith("...") ? val.slice(0, -3) : val;
-    setQ(clean + (clean ? "..." : ""));
+    setQRaw(base);
+    setQDisplay(base ? base + "..." : "");
   };
 
   useEffect(() => {
