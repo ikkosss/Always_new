@@ -10,6 +10,16 @@ body {
   @apply bg-white text-neutral-900; 
 }
 
+/* Light vertical gradient background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #ffffff 0%, #f7f7f7 100%);
+  z-index: -1;
+}
+
 /* Fullscreen safe-area support */
 body.is-fullscreen { background-color: #ffffff; }
 
