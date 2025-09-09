@@ -836,11 +836,12 @@ function PlaceDetails({ id }) {
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4">
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 top-base w-full">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             {place.hasLogo && (
-              <img alt={place.name} className="w-16 h-16 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
+              <img alt={place.name} className="w-20 h-20 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
             )}
-            <div className="marquee w-[55vw] text-xl font-semibold">
+            <div className="marquee text-2xl font-semibold flex-1 min-w-0">
               <span>{place.name}</span>
             </div>
           </div>
@@ -849,6 +850,7 @@ function PlaceDetails({ id }) {
             <button className="icon-btn" onClick={openEditDialog}>Правка</button>
             <button className="icon-btn" onClick={()=>setDeleteConfirmOpen(true)}>Акции</button>
           </div>
+        </div>
         </div>
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
