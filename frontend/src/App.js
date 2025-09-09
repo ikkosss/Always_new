@@ -664,20 +664,20 @@ function NumberDetails({ id }) {
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
-              <div className="left-pad" />
               <div className="op"><img alt="logo" src={`${API}/places/${p.id}/logo`} onError={(e)=>{ e.currentTarget.style.display='none'; }} /></div>
               <div className="phone font-medium">{p.name}</div>
-              <div className="right-pad" />
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={!!usedMap[p.id]}
-                onChange={(e)=> {
-                  if (confirm('Вы уверены, что хотите изменить?')) {
-                    setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }));
-                  }
-                }}
-              />
+              <div className="check">
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={!!usedMap[p.id]}
+                  onChange={(e)=> {
+                    if (confirm('Вы уверены, что хотите изменить?')) {
+                      setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }));
+                    }
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
