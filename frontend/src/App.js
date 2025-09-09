@@ -337,8 +337,7 @@ function SearchPage() {
             <div 
               role="button"
               onClick={handleSearch}
-              className="absolute right-[2px] top-1/2 -translate-y-1/2 h-[calc(var(--search-h)-4px)] w-20 flex items-center justify-center text-sm text-white select-none cursor-pointer"
-              style={{ background: '#2962FF' }}
+              className="search-action select-none cursor-pointer text-sm"
               title="Найти"
             >
               Найти
