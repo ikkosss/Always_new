@@ -853,7 +853,7 @@ function PlaceDetails({ id }) {
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
-              <a href={`/numbers/${n.id}`} className="font-medium truncate mr-3">{n.phone}</a>
+              <a href={`/numbers/${n.id}`} className="font-medium truncate mr-3" onClick={(e)=>{ if (window.__unsaved) { e.preventDefault(); if (confirm('Есть несохранённые изменения. Сохранить и перейти?')) { if (typeof window.__saveChanges==='function'){ window.__saveChanges().then(()=>{ window.location.href=`/numbers/${n.id}`; }); } } } }} >{n.phone}</a>
               <input
                 type="checkbox"
                 className="checkbox"
