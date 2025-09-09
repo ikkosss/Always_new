@@ -514,7 +514,7 @@ function NumberDetails({ id }) {
   const nav = useNavigate();
   const [number, setNumber] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
-  const [map, setMap] = useState({}); // placeId -> used bool
+  const [usedMap, setUsedMap] = useState({}); // placeId -> used
   const initialMapRef = useRef({});
   const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
   const pendingRouteRef = useRef(null);
