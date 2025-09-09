@@ -151,7 +151,7 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
     : "w-full";
   return (
     <div className={`min-h-screen pb-20 flex flex-col ${hideHeader ? topPadClass : ''}`}>
-      {!hideHeader && <div className="header">{title}</div>}
+      {!hideHeader && <div className="header" style={{paddingTop: 'var(--pad-header-top)'}}>{title}</div>}
       <div className={outerClass}>
         <div className={innerClass}>{children}</div>
       </div>
