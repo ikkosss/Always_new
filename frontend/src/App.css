@@ -67,15 +67,19 @@ body.is-fullscreen { background-color: #ffffff; }
 .suggestions { @apply bg-white border border-neutral-200 divide-y; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 
-/* Изображение размещаем на расстоянии 100% высоты поля поиска вверх от поля, не влияя на центрирование */
+/* Изображение размещаем на расстоянии ровно 100% высоты поискового окна от верхнего края поля.
+   Нижний край изображения находится на линии: (верх поля - высота поля).
+   Мы фиксируем top так, чтобы top изображения = (верх поля - высота поля) - высота изображения,
+   т.е. используем translateY(-100%), чтобы совместить нижний край с расчётной линией. */
 .search-promo-image {
   position: fixed;
   left: 50%;
-  transform: translateX(-50%);
-  top: calc(50vh - (var(--search-h, 48px) * 1.5)); /* центр минус полторы высоты поля => на одну высоту выше верхнего края поля */
+  transform: translate(-50%, -100%);
+  top: calc(50vh - var(--search-half, 24px) - var(--search-h, 48px));
   width: 50vw;
   height: auto;
   object-fit: contain;
+  pointer-events: none; /* изображение не должно мешать взаимодействию с полем */
 }
 
 .header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 px-4 py-3 font-semibold; }
