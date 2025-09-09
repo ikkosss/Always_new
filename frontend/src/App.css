@@ -143,6 +143,7 @@ body.is-fullscreen { background-color: #ffffff; }
   height: 12px;
   background: #ef4444; /* red-500 */
   clip-path: circle(50% at 50% 50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* Разделительные линии для номеров - между элементами */
