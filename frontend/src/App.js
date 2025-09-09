@@ -391,8 +391,8 @@ function SearchPage() {
                 ))}
               </select>
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setShowNumberDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveNumber}>Сохранить</button>
+                <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Отмена</button>
+                <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
               </div>
             </div>
           </div>
