@@ -27,7 +27,7 @@ body.is-fullscreen { background-color: #ffffff; }
 :root { --pad-x: 16px; --pad-header-top: 24px; --pad-card-y: 14px; }
 
 /* Bottom Nav (56px height) */
-.bottom-nav { @apply fixed bottom-0 left-0 right-0 bg-white z-50; padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); box-shadow: 0 -8px 24px rgba(0,0,0,0.06); }
+.bottom-nav { @apply fixed bottom-0 left-0 right-0 bg-white; padding-bottom: calc(env(safe-area-inset-bottom) + 0px); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); box-shadow: 0 -8px 24px rgba(0,0,0,0.06); z-index: 9999; }
 .bottom-nav-inner { @apply grid grid-cols-3 relative; }
 .bottom-nav-btn { @apply text-center text-sm font-medium transition-colors relative; border: none; height: 56px; display: flex; align-items: center; justify-content: center; }
 .bottom-nav-btn.active::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #2962FF; }
