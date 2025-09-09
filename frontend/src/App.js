@@ -332,7 +332,7 @@ function SearchPage() {
       {/* Place Dialog */}
       {showPlaceDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowPlaceDialog(false)}>
-          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Добавить место</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
