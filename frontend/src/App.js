@@ -309,7 +309,7 @@ function SearchPage() {
         {/* Измеряем фактическую высоту инпута и устанавливаем CSS-переменные для точного позиционирования */}
         <MeasureInputHeight targetRef={inputRef} />
 
-            {isDigits ? `Добавить номер "${q.trim()}"?` : `Добавить "${q.trim()}"?`}
+            {isDigits ? `Добавить номер "${qRaw.trim()}"?` : `Добавить "${qRaw.trim()}"?`}
           </div>
         )}
       </div>
