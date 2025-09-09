@@ -890,7 +890,7 @@ function PlaceDetails({ id }) {
             </div>
           </div>
           <div className="relative">
-            <button className="px-2" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}>⋮</button>
+            <button className="px-2" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}></button>
           </div>
         </div>
         </div>
