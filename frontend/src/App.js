@@ -263,7 +263,7 @@ function SearchPage() {
           <div className="relative w-full">
             <input
               ref={inputRef}
-              value={qDisplay}
+              value={qRaw}
               onChange={(e) => onChange(e.target.value)}
               className="search-input pr-20"
               placeholder="Номер или название места"
