@@ -112,6 +112,7 @@ body.is-fullscreen { background-color: #ffffff; }
   filter: saturate(0.9) contrast(0.95) brightness(1.02);
   pointer-events: none;
 }
+.search-promo-image[src$='.png'] { content-visibility: auto; }
 
 .header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 font-semibold; padding-left: var(--pad-x); padding-right: var(--pad-x); padding-bottom: 16px; }
 
