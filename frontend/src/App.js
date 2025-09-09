@@ -828,7 +828,11 @@ function PlaceDetails({ id }) {
                 type="checkbox"
                 className="checkbox"
                 checked={!!usedMap[n.id]}
-                onChange={(e)=> setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }))}
+                onChange={(e)=> {
+                  if (confirm('Вы уверены, что хотите изменить?')) {
+                    setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
+                  }
+                }}
               />
             </div>
           ))}
