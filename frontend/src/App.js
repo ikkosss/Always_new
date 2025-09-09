@@ -529,7 +529,7 @@ function NumberDetails({ id }) {
     setNumber(n.data);
     setUsage(u.data);
   };
-  useEffect(() => { setTab('unused'); load(); }, [id]);
+  useEffect(() => { load(); }, [id]);
 
   const toggle = async (placeId, used) => {
     // Always show confirmation for any toggle
