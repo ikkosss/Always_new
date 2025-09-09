@@ -665,9 +665,8 @@ function NumberDetails({ id }) {
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
               <div className="left-pad" />
-              <div className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
+              <div className="op"><img alt="logo" src={`${API}/places/${p.id}/logo`} onError={(e)=>{ e.currentTarget.style.display='none'; }} /></div>
               <div className="phone font-medium">{p.name}</div>
-              <div className="dots">⋮</div>
               <div className="right-pad" />
               <input
                 type="checkbox"
