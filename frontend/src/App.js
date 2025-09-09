@@ -653,7 +653,7 @@ function NumberDetails({ id }) {
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone} hideHeader>
-      <div className="p-4 grid gap-4 section">
+      <div className="p-4 grid gap-4 section" data-page="number">
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
         <div className="number-inline">
