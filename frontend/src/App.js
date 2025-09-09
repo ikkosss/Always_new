@@ -188,15 +188,15 @@ function SearchPage() {
 
   useEffect(() => {
     const t = setTimeout(async () => {
-      if (!q.trim()) { setResults({ numbers: [], places: [] }); setNoFound(false); return; }
+      if (!qRaw.trim()) { setResults({ numbers: [], places: [] }); setNoFound(false); return; }
       try {
-        const { data } = await api.get(`/search`, { params: { q } });
+        const { data } = await api.get(`/search`, { params: { q: qRaw } });
         setResults(data);
         setNoFound(data.numbers.length === 0 && data.places.length === 0);
       } catch (e) { console.error(e); }
     }, 250);
     return () => clearTimeout(t);
-  }, [q]);
+  }, [qRaw]);
 
   const isDigits = useMemo(() => /^[0-9+\-()\s]+$/.test(q.trim()), [q]);
 
