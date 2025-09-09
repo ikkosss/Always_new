@@ -336,7 +336,7 @@ function SearchPage() {
             <button 
               type="button" 
               onClick={handleSearch}
-              className="absolute right-0 top-0 h-full w-16 flex items-center justify-center text-sm bg-neutral-900 text-white"
+              className="absolute right-0 top-1/2 -translate-y-1/2 h-[var(--search-h)] w-16 flex items-center justify-center text-sm bg-neutral-900 text-white"
               title="Найти"
             >
               Найти
