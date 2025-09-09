@@ -121,9 +121,10 @@ body.is-fullscreen { }
 
 /* Simple checkbox for used markers */
 .checkbox {
-  width: var(--check-size); height: var(--check-size); cursor: pointer;
-  accent-color: #2962FF;
+  width: var(--check-size); height: var(--check-size); cursor: pointer; appearance: none; border: 1px solid #9ca3af; display: grid; place-items: center; background: #fff;
 }
+.checkbox:checked { background: #2962FF; border-color: #2962FF; }
+.checkbox:checked::after { content: ''; width: calc(var(--check-size) * 0.5); height: calc(var(--check-size) * 0.5); border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(45deg); }
 
 /* Модалки — общий паддинг и крупнее текст, строгие углы */
 .modal-panel { padding: 24px; border: 1px solid #e5e7eb; border-radius: 0; }
