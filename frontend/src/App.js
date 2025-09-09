@@ -68,6 +68,33 @@ function MeasureInputHeight({ targetRef }) {
 }
 
 function LongPressable({ duration = 2000, onLongPress, onClick, className, children }) {
+function PromoBadgeAuto({ imgSrc, onClick }){
+  const dotRef = useRef(null);
+  useEffect(()=>{
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const c = document.createElement('canvas');
+        c.width = 16; c.height = 16;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, 16, 16);
+        const d = ctx.getImageData(0,0,16,16).data;
+        let sum=0; for (let i=0;i<d.length;i+=4){ const r=d[i], g=d[i+1], b=d[i+2]; sum += 0.2126*r+0.7152*g+0.0722*b; }
+        const luma = sum/(d.length/4);
+        if (dotRef.current) dotRef.current.style.background = luma > 160 ? '#000' : '#fff';
+      } catch(e) { if (dotRef.current) dotRef.current.style.background = '#fff'; }
+    };
+    img.onerror = () => { if (dotRef.current) dotRef.current.style.background = '#fff'; };
+    img.src = imgSrc;
+  }, [imgSrc]);
+  return (
+    <div className="promo-badge" title="Промо" onClick={onClick}>
+      <div ref={dotRef} className="promo-dot" />
+    </div>
+  );
+}
+
   const timerRef = useRef(null);
   const handleStart = () => {
     clear();
