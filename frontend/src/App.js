@@ -538,28 +538,6 @@ function NumberDetails({ id }) {
   };
   useEffect(() => { load(); }, [id]);
 
-  const toggle = async (placeId, used) => {
-    // Always show confirmation for any toggle
-    setPendingToggle({ placeId, used });
-    setToggleConfirmOpen(true);
-  };
-
-  const performToggle = async (placeId, used) => {
-    try {
-      await api.post(`/usage`, { numberId: id, placeId, used });
-      await load();
-    } catch (e) {
-      alert(e.response?.data?.detail || "Не удалось обновить статус. Повторите позже");
-    }
-  };
-
-  const confirmToggle = async () => {
-    if (pendingToggle) {
-      await performToggle(pendingToggle.placeId, pendingToggle.used);
-      setPendingToggle(null);
-    }
-    setToggleConfirmOpen(false);
-  };
 
   const deleteNumber = async () => {
     try {
