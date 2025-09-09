@@ -138,6 +138,9 @@ body.is-fullscreen { }
 .list-row { display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; padding: 0 12px; border-bottom: 1px solid #e5e7eb; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); min-height: calc(var(--search-h) * 1.05); }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
+.list-row .op { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.list-row .op img { width: 14px; height: 14px; border-radius: 3px; object-fit: cover; display: block; }
+
 /* Контейнер ширины как у строк списка (для подсказок/заголовков) */
 .list-width { width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); box-sizing: border-box; padding: 0 12px; }
 
