@@ -107,7 +107,7 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
     ? wide ? "w-full" : "w-full max-w-xl"
     : "w-full";
   return (
-    <div className="min-h-screen pb-20 flex flex-col">
+    <div className={`min-h-screen pb-20 flex flex-col ${hideHeader ? 'pt-3' : ''}`}>
       {!hideHeader && <div className="header">{title}</div>}
       <div className={outerClass}>
         <div className={innerClass}>{children}</div>
