@@ -4,8 +4,7 @@
 
 :root { color-scheme: light; }
 
-/* Force sharp corners globally (except rounded elements) */
-*:not(.rounded-lg):not(.rounded):not(.rounded-full):not(.rounded-md):not(.rounded-sm) { border-radius: 0 !important; }
+/* Removed global force-sharp-corners to allow rounded elements per Material 3 */
 
 body { 
   @apply bg-white text-neutral-900; 
