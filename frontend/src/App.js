@@ -236,6 +236,7 @@ function SearchPage() {
         <form onSubmit={onSubmit} className="search-input-container search-box">
           <div className="relative w-full">
             <input
+              ref={inputRef}
               value={q}
               onChange={(e) => onChange(e.target.value)}
               className="search-input pr-20"
