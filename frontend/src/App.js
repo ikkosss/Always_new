@@ -1037,7 +1037,7 @@ function PlacesPage() {
   };
 
   return (
-    <Page title="МЕСТА">
+    <Page title="МЕСТА" hideHeader>
       <div className="p-4">
         <div className="flex gap-2 mb-3">
           <select className="search-input" value={filter.sort} onChange={(e)=>setFilter({ ...filter, sort: e.target.value })}>
