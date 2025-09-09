@@ -413,7 +413,7 @@ function NumbersPage() {
   };
 
   return (
-    <Page title="НОМЕРА" hideHeader>
+    <Page title="НОМЕРА" hideHeader topPadClass="pt-6">
       <div className="p-0">
         <div className="bg-white">
           {items.map((n) => (
