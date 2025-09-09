@@ -878,10 +878,8 @@ function PlaceDetails({ id }) {
               <span>{place.name}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="icon-btn" onClick={openPromoDialog}>Купоны</button>
-            <button className="icon-btn" onClick={openEditDialog}>Правка</button>
-            <button className="icon-btn" onClick={()=>setDeleteConfirmOpen(true)}>Акции</button>
+          <div className="relative">
+            <button className="px-2" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}>⋮</button>
           </div>
         </div>
         </div>
