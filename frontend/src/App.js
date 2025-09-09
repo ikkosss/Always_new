@@ -43,6 +43,28 @@ function formatRuPhonePartial(raw) {
   if (rest.length > 6) res += " " + rest.slice(6, 8);
   if (rest.length > 8) res += " " + rest.slice(8, 10);
   return res;
+
+function MeasureInputHeight({ targetRef }) {
+  useEffect(() => {
+    const update = () => {
+      const el = targetRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const h = Math.round(rect.height);
+      document.documentElement.style.setProperty('--search-h', h + 'px');
+      document.documentElement.style.setProperty('--search-half', (h / 2) + 'px');
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, [targetRef]);
+  return null;
+}
+
 }
 
 function LongPressable({ duration = 2000, onLongPress, onClick, className, children }) {
