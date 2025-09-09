@@ -77,9 +77,9 @@ body.is-fullscreen { }
 .search-box {
   position: fixed;
   left: 50%;
-  top: calc(50vh - var(--search-half, 24px)); /* центр по вертикали относительно всех краёв интерфейса */
+  top: var(--search-top, calc(50vh - var(--search-half, 24px)));
   transform: translate(-50%, 0);
-  width: 98vw; /* 1% слева/справа отступы суммарно 2% */
+  width: 98vw; /* 1% слева/справа суммарно 2% */
   padding: 0;
   margin: 0;
   z-index: 30;
@@ -90,7 +90,7 @@ body.is-fullscreen { }
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(50vh + var(--search-half, 24px) + 8px);
+  top: calc(var(--search-top, 50vh) + var(--search-half, 24px) + 8px);
   width: 98vw;
   z-index: 25;
 }
