@@ -654,14 +654,10 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section">
-        <div className="flex items-center gap-3 justify-between">
-          <div className="flex items-center gap-3">
-            <img alt="op" src={OPERATORS[number.operatorKey]?.icon} className="w-8 h-8 rounded-[3px]"/>
-            <div className="font-medium text-lg">{number.phone}</div>
-          </div>
-          <div className="relative">
-            <button className="px-2" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(number); }}>⋮</button>
-          </div>
+        <div className="number-header">
+          <div className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
+          <div className="font-medium text-lg flex-1 px-2 overflow-hidden text-ellipsis whitespace-nowrap">{number.phone}</div>
+          <button className="dots" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(number); }}>⋮</button>
         </div>
 
         <div className="text-sm text-neutral-600">Отмечайте галочкой места, где номер использован:</div>
