@@ -525,7 +525,7 @@ function NumbersPage() {
               onClick={() => onItemClick(n)}
             >
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden rounded-[3px]">
-                <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain rounded-[3px]"/>
+                <img alt="logo" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain rounded-[3px]"/>
               </div>
               <div className="flex-1">{n.phone}</div>
             </LongPressable>
