@@ -178,7 +178,7 @@ function SearchPage() {
     if (/^[0-9+\-()\s]*$/.test(base)) {
       const formatted = formatRuPhonePartial(base);
       setQRaw(formatted);
-      setQDisplay(formatted ? formatted + "..." : "");
+
       return;
     }
     setQRaw(base);
