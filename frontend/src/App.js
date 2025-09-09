@@ -330,7 +330,7 @@ function SearchPage() {
               ref={inputRef}
               value={qRaw}
               onChange={(e) => onChange(e.target.value)}
-              className="search-input pr-20"
+              className="search-input pr-16"
               placeholder="Номер или название места..."
             />
             {/* Кнопка — часть поля: отрисовываем поверх внутри границ инпута */}
