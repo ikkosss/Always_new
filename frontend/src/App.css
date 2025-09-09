@@ -51,9 +51,10 @@ body.is-fullscreen { background-color: #ffffff; }
 /* Абсолютное центрирование поля поиска. Ширина — от края до края */
 .search-box {
   position: fixed;
-  left: 0;
+  left: 50%;
   top: calc(50vh - (var(--bn-h, 0px) / 2) - var(--search-half, 24px));
-  width: 100vw;
+  transform: translate(-50%, 0);
+  width: 99vw;
   padding: 0;
   margin: 0;
   z-index: 30;
@@ -62,9 +63,10 @@ body.is-fullscreen { background-color: #ffffff; }
 /* Подсказки идут строго под полем, не двигая его */
 .search-suggestions {
   position: fixed;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   top: calc(50vh - (var(--bn-h, 0px) / 2) + var(--search-half, 24px) + 8px);
-  width: 100vw;
+  width: 99vw;
   z-index: 25;
 }
 .suggestions { @apply bg-white border border-neutral-200 divide-y; }
