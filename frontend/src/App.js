@@ -654,10 +654,9 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section">
-        <div className="number-header" style={{ minHeight: 'var(--op-size)', position: 'relative' }}>
-          <div className="op" style={{ position: 'absolute', left: 0 }}><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
-          <div className="number-center" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>{number.phone}</div>
-          <div className="dots" style={{ position: 'absolute', right: 0 }} onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}>⋮</div>
+        <div className="number-header" style={{ minHeight: 'var(--op-size)', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center' }}>
+          <div style={{ justifySelf: 'end' }} className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
+          <div style={{ justifySelf: 'start' }} className="dots" onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}>⋮</div>
         </div>
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
