@@ -67,9 +67,9 @@ body.is-fullscreen { }
 .search-box {
   position: fixed;
   left: 50%;
-  top: calc(50vh - (var(--bn-h, 0px) / 2) - var(--search-half, 24px));
+  top: calc(20vh - var(--search-half, 24px)); /* базовая линия 20vh */
   transform: translate(-50%, 0);
-  width: 99vw;
+  width: 98vw; /* 1% слева/справа отступы суммарно 2% */
   padding: 0;
   margin: 0;
   z-index: 30;
