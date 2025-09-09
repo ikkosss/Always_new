@@ -823,9 +823,9 @@ function PlaceDetails({ id }) {
             <button className="icon-btn" onClick={()=>setDeleteConfirmOpen(true)}>Акции</button>
           </div>
         </div>
-        <div className="grid gap-2">
+        <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
-            <div key={n.id} className="flex items-center justify-between py-2">
+            <div key={n.id} className="list-row">
               <a href={`/numbers/${n.id}`} className="font-medium truncate mr-3">{n.phone}</a>
               <input
                 type="checkbox"
