@@ -229,6 +229,12 @@ body.is-fullscreen { }
 .place-item { position: relative; margin-bottom: 8px; padding-left: var(--pad-x); padding-right: var(--pad-x); }
 .place-item .text-center { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Kill-switch: скрыть любой блок с логотипом оператора и номером под инструкцией на странице номера */
+[data-page="number"] img[src*="/operators/"] { display: none !important; }
+[data-page="number"] img[src*="/operators/"] + * { display: none !important; }
+[data-page="number"] .number-inline, [data-page="number"] .nh-row, [data-page="number"] .number-header { display: none !important; }
+
+
 /* Изображение над полем поиска */
 .search-promo-image {
   display: block;
