@@ -656,7 +656,7 @@ function NumberDetails({ id }) {
       <div className="p-4 grid gap-4 section">
         <div className="number-header">
           <div className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
-          <div className="number-center">{number.phone}</div>
+          <div className="number-center">{String(number.phone || '').replace(/\s/g, '')}</div>
           <div className="dots" onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}>⋮</div>
         </div>
 
