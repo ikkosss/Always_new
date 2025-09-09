@@ -42,11 +42,12 @@ body.is-fullscreen { }
 .card { @apply bg-white border border-neutral-200 p-4; }
 .grid-3 { @apply grid grid-cols-3 gap-3; }
 
-/* Картинки логотипов мест — круглые 56dp (56px) */
+/* Картинки логотипов мест — строгие плитки */
 /* Вернуть прежнюю форму логотипов мест (квадрат с скруглением) */
 .place-item button.w-24.h-24 { width: 88px !important; height: 88px !important; border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; background: #fafafa; }
 .place-item img.w-full.h-full { border-radius: 10px; }
 .place-item .text-center { @apply font-normal text-sm; max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.place-item .tile { border: 1px solid #e5e7eb; background: #fafafa; }
 
 
 /* Search */
