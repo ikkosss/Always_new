@@ -144,8 +144,8 @@ function BottomNav() {
 
 function Page({ title, children, hideHeader = false, center = false, wide = false, padX = true, topPadClass = 'pt-3' }) {
   const outerClass = center
-    ? `flex-1 flex items-center justify-center ${padX ? "px-4" : "px-0"}`
-    : "px-0";
+    ? `flex-1 flex items-center justify-center ${padX ? "px-[var(--pad-x)]" : "px-0"}`
+    : "px-[var(--pad-x)]";
   const innerClass = center
     ? wide ? "w-full" : "w-full max-w-xl"
     : "w-full";
