@@ -657,7 +657,7 @@ function NumberDetails({ id }) {
           <div className="font-medium text-lg">{number.phone}</div>
         </div>
 
-        <div className="text-sm text-neutral-600">Отмечайте галочкой места, где номер уже использован:</div>
+        <div className="text-sm text-neutral-600 truncate">Отмечайте галочкой места, где номер использован:</div>
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
