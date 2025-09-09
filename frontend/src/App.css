@@ -111,7 +111,7 @@ body.is-fullscreen { background-color: #ffffff; }
   pointer-events: none;
 }
 
-.header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 px-4 py-3 font-semibold; }
+.header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 font-semibold; padding-left: var(--pad-x); padding-right: var(--pad-x); padding-bottom: 16px; }
 
 /* Toggle (tumbler) */
 .toggle {
