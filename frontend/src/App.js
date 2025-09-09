@@ -654,6 +654,11 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section" data-page="number">
+        <div className="nb-bar">
+          <img className="nb-logo" alt="operator" src={OPERATORS[number.operatorKey]?.icon} />
+          <div className="nb-number">{String(number.phone || '').replace(/\s/g, '')}</div>
+          <div className="nb-dots" onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}>⋮</div>
+        </div>
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
         <div className="number-inline">
