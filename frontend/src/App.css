@@ -138,9 +138,9 @@ body.is-fullscreen { }
 .list-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; box-sizing: border-box; padding: 0 0; border-bottom: 1px solid #e5e7eb; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); min-height: calc(var(--search-h) * 1.05); }
 .list-row .left-pad { width: calc(1vw); }
 .list-row .right-pad { width: calc(1vw); }
-.list-row .op { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-left: calc(1vw); }
+.list-row .op { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
 .list-row .op img { width: 24px; height: 24px; border-radius: 3px; }
-.list-row .dots { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: calc(1vw); font-size: 24px; line-height: 1; }
+.list-row .dots { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
 
 
