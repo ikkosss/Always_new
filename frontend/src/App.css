@@ -30,11 +30,8 @@ body.is-fullscreen { background-color: #ffffff; }
 
 /* Search */
 .search-wrap { 
-  @apply p-4 pt-6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* Полноэкранный фиксированный слой, ничто не двигает элементы внутри */
+  display: block;
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -45,13 +42,41 @@ body.is-fullscreen { background-color: #ffffff; }
 .search-input { @apply w-full border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500; }
 
 /* Контейнер для поля поиска на всю ширину экрана без отступов */
-.search-input-container {
-  width: 100%;
-  max-width: none;
-  padding: 0; /* Убираем все отступы для 100% ширины экрана */
+.search-input-container { width: 100%; max-width: none; padding: 0; }
+
+/* Абсолютное центрирование поля поиска. Ширина — от края до края */
+.search-box {
+  position: fixed;
+  top: 50vh;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  z-index: 30;
 }
-.suggestions { @apply mt-3 bg-white border border-neutral-200 divide-y; }
+
+/* Подсказки идут строго под полем, не двигая его */
+.search-suggestions {
+  position: fixed;
+  left: 0;
+  top: calc(50vh + var(--search-half, 24px) + 8px);
+  width: 100vw;
+  z-index: 25;
+}
+.suggestions { @apply bg-white border border-neutral-200 divide-y; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
+
+/* Изображение размещаем на расстоянии 100% высоты поля поиска, не влияя на центрирование */
+.search-promo-image {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(50vh + var(--search-h, 48px));
+  width: 50vw;
+  height: auto;
+  object-fit: contain;
+}
 
 .header { @apply sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-neutral-200 px-4 py-3 font-semibold; }
 
