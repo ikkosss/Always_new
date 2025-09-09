@@ -308,10 +308,10 @@ function SearchPage() {
             <button 
               type="button" 
               onClick={handleSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-xl"
+              className="absolute right-0 top-0 h-full w-16 flex items-center justify-center text-sm bg-neutral-900 text-white"
               title="Найти"
             >
-              🔍
+              Найти
             </button>
           </div>
         </form>
