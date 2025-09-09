@@ -892,7 +892,11 @@ function PlaceDetails({ id }) {
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
-              <a href={`/numbers/${n.id}`} className="font-medium truncate mr-3" onClick={(e)=>{ if (window.__unsaved) { e.preventDefault(); if (confirm('Есть несохранённые изменения. Сохранить и перейти?')) { if (typeof window.__saveChanges==='function'){ window.__saveChanges().then(()=>{ window.location.href=`/numbers/${n.id}`; }); } } } }} >{n.phone}</a>
+              <div className="left-pad" />
+              <div className="op"><img alt="op" src={OPERATORS[n.operatorKey]?.icon} /></div>
+              <div className="phone font-medium">{n.phone}</div>
+              <div className="dots">⋮</div>
+              <div className="right-pad" />
               <input
                 type="checkbox"
                 className="checkbox"
