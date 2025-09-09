@@ -247,7 +247,8 @@ function SearchPage() {
       await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
       setShowPlaceDialog(false);
       setPlaceForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
-      setQ("");
+      setQRaw("");
+      setQDisplay("");
       // Refresh results
       window.location.reload();
     } catch (e) {
