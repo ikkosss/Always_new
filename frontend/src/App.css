@@ -153,20 +153,9 @@ body.is-fullscreen { background-color: #ffffff; }
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Разделительные линии для номеров - между элементами */
-.number-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.number-item {
-  position: relative;
-}
+/* Номера — карточки с тенью и скруглением */
+.number-item { position: relative; margin: 8px 12px; padding: 12px; background: #fff; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+.number-item:not(:last-child)::after { display: none; }
 
 /* Разделительные линии для сервисов в списках - между элементами */
 .service-item:not(:last-child)::after {
