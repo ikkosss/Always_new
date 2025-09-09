@@ -747,28 +747,25 @@ function PlaceDetails({ id }) {
   };
   useEffect(() => { load(); }, [id]);
 
-  const toggle = async (numberId, used) => {
-    // Always show confirmation for any toggle
-    setPendingToggle({ numberId, used });
-    setToggleConfirmOpen(true);
-  };
-
-  const performToggle = async (numberId, used) => {
-    try {
-      await api.post(`/usage`, { numberId, placeId: id, used });
-      await load();
-    } catch (e) {
-      alert(e.response?.data?.detail || "Не удалось обновить статус. Повторите позже");
-    }
-  };
-
-  const confirmToggle = async () => {
-    if (pendingToggle) {
-      await performToggle(pendingToggle.numberId, pendingToggle.used);
-      setPendingToggle(null);
-    }
-    setToggleConfirmOpen(false);
-  };
+  // track unsaved changes for this place page
+  useEffect(() => {
+    const hasDiff = JSON.stringify(usedMap) !== JSON.stringify(initialMapRef.current);
+    window.__unsaved = hasDiff;
+    window.__saveChanges = async () => {
+      const ops = [];
+      for (const [numberId, val] of Object.entries(usedMap)) {
+        if (initialMapRef.current[numberId] !== val) {
+          ops.push({ numberId, used: val });
+        }
+      }
+      for (const op of ops) {
+        await api.post(`/usage`, { numberId: op.numberId, placeId: id, used: op.used });
+      }
+      initialMapRef.current = { ...usedMap };
+      window.__unsaved = false;
+    };
+    return () => { window.__saveChanges = null; };
+  }, [usedMap, id]);
 
   const openPromoDialog = async () => {
     try {
