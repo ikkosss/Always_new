@@ -900,7 +900,7 @@ function PlaceDetails({ id }) {
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
               <div className="left-pad" />
-              <div className="op"><img alt="op" src={OPERATORS[n.operatorKey]?.icon} /></div>
+              <div className="op"><img alt="logo" src={OPERATORS[n.operatorKey]?.icon} /></div>
               <div className="phone font-medium">{n.phone}</div>
               <div className="dots"></div>
               <div className="right-pad" />
