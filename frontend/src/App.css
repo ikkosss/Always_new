@@ -71,7 +71,7 @@ body.is-fullscreen { }
 .search-box {
   position: fixed;
   left: 50%;
-  top: calc(20vh - var(--search-half, 24px)); /* базовая линия 20vh */
+  top: calc(50vh - var(--search-half, 24px)); /* центр по вертикали относительно всех краёв интерфейса */
   transform: translate(-50%, 0);
   width: 98vw; /* 1% слева/справа отступы суммарно 2% */
   padding: 0;
@@ -84,8 +84,8 @@ body.is-fullscreen { }
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(50vh - (var(--bn-h, 0px) / 2) + var(--search-half, 24px) + 8px);
-  width: 99vw;
+  top: calc(50vh + var(--search-half, 24px) + 8px);
+  width: 98vw;
   z-index: 25;
 }
 .suggestions { @apply bg-white divide-y; border: 1px solid #e5e7eb; box-shadow: none; border-radius: 0; overflow: hidden; }
