@@ -137,8 +137,8 @@ body.is-fullscreen { }
 /* Строгие ряды списков */
 .list-row { display: grid; grid-template-columns: 1vw var(--check-size) 1fr var(--check-size) 1vw; align-items: center; box-sizing: border-box; border-bottom: 1px solid #e5e7eb; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); min-height: calc(var(--search-h) * 1.05); }
 .list-row .phone { grid-column: 3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
-.list-row .op { grid-column: 2; }
-.list-row .check { grid-column: 4; display: flex; justify-content: center; }
+.list-row .op { grid-column: 2; justify-self: start; }
+.list-row .check { grid-column: 4; justify-self: end; display: flex; justify-content: center; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
 .list-row .op { width: var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 1vw; }
