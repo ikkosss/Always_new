@@ -6,7 +6,7 @@
     { "src": "/operators/mts.png", "sizes": "512x512", "type": "image/png" }
   ],
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#1976D2",
   "background_color": "#FAFAFA",
   "scope": "/"
