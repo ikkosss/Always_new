@@ -1116,7 +1116,7 @@ function PlacesPage() {
             >
               <button className="w-24 h-24 bg-neutral-100 overflow-hidden flex items-center justify-center relative rounded-full" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                 {p.hasLogo ? (
-                  <img alt={p.name} className="w-full h-full object-cover rounded-lg" src={`${API}/places/${p.id}/logo`} />
+                  <img alt={p.name} className="w-full h-full object-cover rounded-full" src={`${API}/places/${p.id}/logo`} />
                 ) : (
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
