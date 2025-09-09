@@ -95,6 +95,7 @@ body.is-fullscreen { background-color: #ffffff; }
 }
 .suggestions { @apply bg-white divide-y; border: none; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
+.suggestion .flex-1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Изображение: нижний край на расстоянии 200% высоты поискового окна выше верхнего края поля.
    Ширина изображения = 70% ширины экрана. */
