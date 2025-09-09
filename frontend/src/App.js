@@ -654,9 +654,10 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section">
-        <div className="number-header" style={{ minHeight: 'var(--op-size)' }}>
-          <div className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
-          <div className="flex-1 px-2 overflow-hidden text-ellipsis whitespace-nowrap" style={{ fontSize: 'calc(var(--op-size) * 0.63)', lineHeight: 'var(--op-size)' }}>{number.phone} {' ⋮'}</div>
+        <div className="number-header" style={{ minHeight: 'var(--op-size)', position: 'relative' }}>
+          <div className="op" style={{ position: 'absolute', left: 0 }}><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
+          <div className="number-center" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>{number.phone}</div>
+          <div className="dots" style={{ position: 'absolute', right: 0 }} onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }} onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}>⋮</div>
         </div>
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
