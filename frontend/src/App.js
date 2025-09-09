@@ -266,9 +266,10 @@ function SearchPage() {
             <button 
               type="button" 
               onClick={handleSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-blue-600 text-white text-xs font-medium"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-xl"
+              title="Найти"
             >
-              НАЙТИ
+              🔍
             </button>
           </div>
         </form>
