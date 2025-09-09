@@ -79,9 +79,9 @@ body.is-fullscreen { background-color: #ffffff; }
   top: calc(
     /* вертикальный центр поля с учётом высоты нижней навигации */
     50vh - (var(--bn-h, 0px) / 2) - var(--search-half, 24px)
-    - (2 * var(--search-h, 48px))
+    - (calc(var(--search-h, 48px) * 0.75))
   );
-  width: 70vw;
+  width: 85vw;
   height: auto;
   object-fit: contain;
   pointer-events: none;
