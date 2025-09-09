@@ -1124,7 +1124,7 @@ function PlacesPage() {
   return (
     <Page title="МЕСТА" hideHeader topPadClass="pt-6">
       <div className="p-4">
-        <div className="filter-bar">
+        <div className="filter-bar top-base">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>
             {SORT_OPTIONS.find(o=>o.key===filter.sort)?.label || 'Сортировка'}
           </button>
