@@ -578,6 +578,8 @@ function NumberDetails({ id }) {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxTarget, setCtxTarget] = useState(null);
 
 
   const load = async () => {
