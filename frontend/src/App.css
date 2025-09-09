@@ -149,9 +149,9 @@ body.is-fullscreen { }
 
 /* Шапка страницы номера с симметрией отступов и высотой точек = высоте иконки */
 .number-header { display: flex; align-items: center; justify-content: space-between; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); }
-.number-header .op { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 1vw; }
-.number-header .op img { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; display: block; }
-.number-header .dots { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; margin-right: 1vw; font-size: 22px; line-height: 1; }
+.number-header .op { width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 1vw; }
+.number-header .op img { width: calc(var(--op-size) - 4px); height: calc(var(--op-size) - 4px); border-radius: 5%; object-fit: cover; display: block; }
+.number-header .dots { width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; margin-right: 1vw; font-size: calc(var(--op-size) * 0.78); line-height: 1; }
 
 
 
