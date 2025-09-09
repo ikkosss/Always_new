@@ -77,13 +77,12 @@ code {
 
 
 @layer base {
-  * {
-    @apply border-border;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
 }
+
+/* Ensure consistent page background on all screens */
+.App { background: hsl(var(--background)); color: hsl(var(--foreground)); min-height: 100vh; }
 
 
 /* Глобальные переменные для высоты поля поиска */
