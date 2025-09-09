@@ -511,18 +511,14 @@ function NumbersPage() {
 }
 
 function NumberDetails({ id }) {
+  const nav = useNavigate();
   const [number, setNumber] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
-  const [map, setMap] = useState({}); // placeId -> used bool
+  const [map, setMap] = useState({}); // placeId -> used
   const initialMapRef = useRef({});
-  const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
-  const pendingRouteRef = useRef(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
-  const [tab, setTab] = useState('unused');
-  const [toggleConfirmOpen, setToggleConfirmOpen] = useState(false);
-  const [pendingToggle, setPendingToggle] = useState(null);
 
   const load = async () => {
     const [n, u] = await Promise.all([
