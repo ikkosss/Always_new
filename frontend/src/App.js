@@ -808,21 +808,20 @@ function PlaceDetails({ id }) {
   return (
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             {place.hasLogo && (
-              <img alt={place.name} className="w-10 h-10 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
+              <img alt={place.name} className="w-16 h-16 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
             )}
-            <div className="font-medium text-lg">{place.name}</div>
+            <div className="marquee w-[55vw] text-xl font-semibold">
+              <span>{place.name}</span>
+            </div>
           </div>
-          {place.hasPromo && (
-            <img 
-              alt="Promo" 
-              className="w-10 h-10 object-cover cursor-pointer" 
-              src="/promo.png" 
-              onClick={openPromoDialog}
-            />
-          )}
+          <div className="flex items-center gap-2">
+            <button className="icon-btn" onClick={openPromoDialog}>Купоны</button>
+            <button className="icon-btn" onClick={openEditDialog}>Правка</button>
+            <button className="icon-btn" onClick={()=>setDeleteConfirmOpen(true)}>Акции</button>
+          </div>
         </div>
         <div className="grid gap-2">
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
