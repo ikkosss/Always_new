@@ -84,7 +84,7 @@ body.is-fullscreen { }
   width: 99vw;
   z-index: 25;
 }
-.suggestions { @apply bg-white divide-y; border: none; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
+.suggestions { @apply bg-white divide-y; border: 1px solid #e5e7eb; box-shadow: none; border-radius: 0; overflow: hidden; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 .suggestion .flex-1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
