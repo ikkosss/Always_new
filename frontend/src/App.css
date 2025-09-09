@@ -178,7 +178,8 @@ body.is-fullscreen { background-color: #ffffff; }
 
 /* Убираем разделители у мест — оставляем воздух */
 .place-item:not(:last-child)::after { display: none; }
-.place-item { position: relative; margin-bottom: 8px; }
+.place-item { position: relative; margin-bottom: 8px; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+.place-item .text-center { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Изображение над полем поиска */
 .search-promo-image {
