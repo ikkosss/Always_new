@@ -110,6 +110,27 @@ function useBottomNav() {
 function BottomNav() {
   const active = useBottomNav();
   const nav = useNavigate();
+
+  useEffect(() => {
+    const updateBn = () => {
+      const el = document.querySelector('.bottom-nav');
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      document.documentElement.style.setProperty('--bn-h', rect.height + 'px');
+    };
+    updateBn();
+    window.addEventListener('resize', updateBn);
+    window.addEventListener('orientationchange', updateBn);
+    const ro = new ResizeObserver(updateBn);
+    const el = document.querySelector('.bottom-nav');
+    if (el) ro.observe(el);
+    return () => {
+      window.removeEventListener('resize', updateBn);
+      window.removeEventListener('orientationchange', updateBn);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <div className="bottom-nav">
       <div className="bottom-nav-inner">
