@@ -121,7 +121,7 @@ body.is-fullscreen { }
 
 /* Simple checkbox for used markers */
 .checkbox {
-  width: 20px; height: 20px; cursor: pointer;
+  width: var(--check-size); height: var(--check-size); cursor: pointer;
   accent-color: #2962FF;
 }
 
