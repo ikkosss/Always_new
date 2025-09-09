@@ -46,6 +46,13 @@ body.is-fullscreen { background-color: #ffffff; }
 .card { @apply bg-white border border-neutral-200 p-4; }
 .grid-3 { @apply grid grid-cols-3 gap-3; }
 
+/* Картинки логотипов мест — круглые 56dp (56px) */
+.place-item .w-24.h-24 { width: 56px; height: 56px; }
+.place-item button.w-24.h-24 { width: 56px !important; height: 56px !important; border-radius: 9999px; overflow: hidden; }
+.place-item img.w-full.h-full { border-radius: 9999px; }
+.place-item .text-center { @apply font-semibold text-sm; }
+
+
 /* Search */
 .search-wrap { 
   /* Полноэкранный фиксированный слой, ничто не двигает элементы внутри */
