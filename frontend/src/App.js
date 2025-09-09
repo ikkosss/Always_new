@@ -601,9 +601,9 @@ function NumberDetails({ id }) {
         </div>
 
         <div className="text-sm text-neutral-600">Отмечайте галочкой места, где номер уже использован:</div>
-        <div className="grid gap-2">
+        <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
-            <div key={p.id} className="flex items-center justify-between py-2">
+            <div key={p.id} className="list-row">
               <a href={`/places/${p.id}`} className="font-medium truncate mr-3">{p.name}</a>
               <input
                 type="checkbox"
