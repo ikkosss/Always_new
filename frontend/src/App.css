@@ -42,7 +42,7 @@ body.is-fullscreen { }
 .bottom-nav-btn.inactive { @apply text-gray-700 hover:text-blue-600 hover:bg-blue-50; }
 
 /* Floating Action Button (now square) */
-.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white w-12 h-12 flex items-center justify-center shadow-lg rounded-full; }
+.fab { position: fixed; bottom: 20px; right: 20px; background: #2962FF; color: #fff; width: var(--search-h); height: var(--search-h); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.2); border-radius: 0; font-size: 28px; line-height: 1; }
 
 /* высота нижних кнопок = высоте поля поиска */
 .bottom-nav-btn { height: var(--search-h); }
