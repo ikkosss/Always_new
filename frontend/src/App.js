@@ -285,7 +285,7 @@ function SearchPage() {
             <div className="suggestions w-full">
               {results.numbers.map((n) => (
                 <div key={n.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/numbers/${n.id}`)}>
-                  <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6"/>
+                  <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-12 h-12 object-contain"/>
                   <div className="flex-1">{n.phone}</div>
                   <div className="text-neutral-400 text-xs">номер</div>
                 </div>
