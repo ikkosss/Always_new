@@ -266,7 +266,7 @@ function SearchPage() {
               value={qRaw}
               onChange={(e) => onChange(e.target.value)}
               className="search-input pr-20"
-              placeholder="Номер или название места"
+              placeholder="Номер или название места..."
             />
             <button 
               type="button" 
