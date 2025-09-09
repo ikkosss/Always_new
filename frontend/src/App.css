@@ -151,7 +151,7 @@ body.is-fullscreen { }
 .number-header { display: flex; align-items: center; justify-content: space-between; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); }
 .number-header .op { width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: var(--edge-gap); }
 .number-header .op img { width: calc(var(--op-size) - 4px); height: calc(var(--op-size) - 4px); border-radius: 5%; object-fit: cover; display: block; }
-.number-header .dots { width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; margin-right: var(--edge-gap); font-size: calc(var(--op-size) * 0.78); line-height: 1; }
+.number-header .dots { width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; margin-right: var(--edge-gap); font-size: calc(var(--op-size) * 0.78); line-height: 1; cursor: pointer; touch-action: manipulation; position: relative; z-index: 20; }
 
 
 
