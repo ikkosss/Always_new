@@ -654,10 +654,6 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section" data-page="number">
-        <div className="nh-row">
-          <img className="nh-logo" alt="operator" src={OPERATORS[number.operatorKey]?.icon} />
-          <span className="nh-number">{String(number.phone || '').replace(/\s/g, '')}</span>
-        </div>
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
         <div className="number-inline">
