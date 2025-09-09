@@ -1101,7 +1101,9 @@ function PlacesPage() {
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
                 {p.hasPromo && (
-                  <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
+                  <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>
+                    <div className="promo-dot" style={{ background: '#fff' }} />
+                  </div>
                 )}
               </button>
               <div className="text-center text-sm font-normal text-black mt-1 truncate w-24">{p.name}</div>
