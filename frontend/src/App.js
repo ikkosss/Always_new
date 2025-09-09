@@ -1159,6 +1159,8 @@ function PlacesPage() {
                     <div className="promo-dot" style={{ background: '#fff' }} />
                   </div>
                 )}
+              {/* авто-цвет точки промо: определим позже, сейчас белый по умолчанию */}
+
               </button>
               <div className="text-center text-sm font-normal text-black mt-1 truncate w-24">{p.name}</div>
             </LongPressable>
