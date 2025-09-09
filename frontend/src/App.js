@@ -651,7 +651,7 @@ function NumberDetails({ id }) {
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone} hideHeader>
-      <div className="p-4 grid gap-4">
+      <div className="p-4 grid gap-4 section">
         <div className="flex items-center gap-3">
           <img alt="op" src={OPERATORS[number.operatorKey]?.icon} className="w-8 h-8"/>
           <div className="font-medium text-lg">{number.phone}</div>
