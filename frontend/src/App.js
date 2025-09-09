@@ -666,7 +666,7 @@ function NumberDetails({ id }) {
             onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
             tabIndex={0}
           >
-            <span style={{ whiteSpace: 'pre' }}>{'   ⋮'}</span>
+            <span style={{ whiteSpace: 'pre' }}>{'  ⋮'}</span>
           </div>
         </div>
 
