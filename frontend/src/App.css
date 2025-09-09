@@ -92,14 +92,12 @@ body.is-fullscreen { background-color: #ffffff; }
   position: fixed;
   left: 50%;
   transform: translate(-50%, -100%);
-  top: calc(
-    /* вертикальный центр поля с учётом высоты нижней навигации */
-    50vh - (var(--bn-h, 0px) / 2) - var(--search-half, 24px)
-    - (calc(var(--search-h, 48px) * 0.75))
-  );
+  top: calc(50vh - (var(--bn-h, 0px) / 2) - var(--search-half, 24px) - (calc(var(--search-h, 48px) * 0.75)));
   width: 85vw;
+  max-width: 560px;
   height: auto;
   object-fit: contain;
+  filter: saturate(0.9) contrast(0.95) brightness(1.02);
   pointer-events: none;
 }
 
