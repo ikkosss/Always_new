@@ -235,6 +235,34 @@ function SearchPage() {
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
 
   const inputRef = useRef(null);
+  useEffect(()=>{
+    // обновляем позицию поля при фокусе/блюре, чтобы держать его над клавиатурой
+    const el = inputRef.current;
+    if (!el) return;
+    const onFocus = () => {
+      // поместим поле на 25% от доступного пространства (чуть выше центра), чтобы избежать перекрытия клавиатурой
+      const bn = document.querySelector('.bottom-nav');
+      const bnTop = bn ? bn.getBoundingClientRect().top : window.innerHeight;
+      const h = bnTop; // доступная высота
+      const half = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--search-half')) || 24;
+      const y = Math.round(h * 0.35) - half; // 35% от доступной высоты
+      document.documentElement.style.setProperty('--search-top', `${y}px`);
+    };
+    const onBlur = () => {
+      // вернуть в центр доступного пространства
+      const bn = document.querySelector('.bottom-nav');
+      const bnTop = bn ? bn.getBoundingClientRect().top : window.innerHeight;
+      const centerY = Math.round(bnTop / 2);
+      const half = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--search-half')) || 24;
+      document.documentElement.style.setProperty('--search-top', `${centerY - half}px`);
+    };
+    el.addEventListener('focus', onFocus);
+    el.addEventListener('blur', onBlur);
+    return () => {
+      el.removeEventListener('focus', onFocus);
+      el.removeEventListener('blur', onBlur);
+    };
+  }, []);
 
   const onChange = (val) => {
     // нормализуем исходное значение (без многоточия в конце)
