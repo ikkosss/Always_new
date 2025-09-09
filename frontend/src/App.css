@@ -152,7 +152,7 @@ body.is-fullscreen { }
 .number-header { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: var(--op-size); --nh-edge: 8px; --nh-gap: 8px; }
 .number-header .op { position: absolute; left: var(--nh-edge); top: 50%; transform: translateY(-50%); width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
 .number-header .op img { width: calc(var(--op-size) - 4px); height: calc(var(--op-size) - 4px); border-radius: 5%; object-fit: cover; display: block; }
-.number-header .number-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; font-size: calc(var(--op-size) * 0.68); line-height: var(--op-size); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: calc(100vw - (2 * (var(--nh-edge) + var(--nh-gap) + var(--op-size)))); }
+.number-header .number-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; font-size: calc(var(--op-size) * 0.68); line-height: var(--op-size); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: calc(100vw - (2 * (var(--nh-edge) + var(--nh-gap) + var(--op-size)))); font-variant-numeric: tabular-nums; letter-spacing: 0; }
 .number-header .dots { position: absolute; right: var(--nh-edge); top: 50%; transform: translateY(-50%); width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; margin: 0; font-size: calc(var(--op-size) * 0.78); line-height: 1; cursor: pointer; touch-action: manipulation; z-index: 20; }
 
 
