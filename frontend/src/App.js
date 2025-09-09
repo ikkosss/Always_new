@@ -1184,7 +1184,9 @@ function PlacesPage() {
                   <div className="text-neutral-400 text-xs">нет лого</div>
                 )}
                 {p.hasPromo && (
-                  <PromoBadgeAuto imgSrc={`${API}/places/${p.id}/logo`} onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }} />
+                  <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>
+                    <div className="promo-dot" style={{ background: '#fff' }} />
+                  </div>
                 )}
               {/* авто-цвет точки промо: определим позже, сейчас белый по умолчанию */}
 
