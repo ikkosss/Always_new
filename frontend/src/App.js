@@ -425,7 +425,9 @@ function NumbersPage() {
               onLongPress={() => openContext(n)}
               onClick={() => onItemClick(n)}
             >
-              <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-8 h-8"/>
+              <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center overflow-hidden">
+                <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-5 h-5 object-contain"/>
+              </div>
               <div className="flex-1">{n.phone}</div>
             </LongPressable>
           ))}
