@@ -1077,18 +1077,13 @@ function PlacesPage() {
   return (
     <Page title="МЕСТА" hideHeader topPadClass="pt-6">
       <div className="p-4">
-        <div className="flex gap-2 mb-3">
-          <select className="search-input" value={filter.sort} onChange={(e)=>setFilter({ ...filter, sort: e.target.value })}>
-            <option value="new">Новые</option>
-            <option value="old">Старые</option>
-            <option value="popular">Популярные</option>
-          </select>
-          <select className="search-input" value={filter.category} onChange={(e)=>setFilter({ ...filter, category: e.target.value })}>
-            <option value="">Все категории</option>
-            {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        <div className="filter-bar">
+          <button className="filter-btn" onClick={()=>{ /* TODO: открыть сортировку */ }}>
+            {filter.sort === 'popular' ? 'Сортировка по популярности' : filter.sort === 'new' ? 'Сортировка: Новые' : 'Сортировка: Старые'}
+          </button>
+          <button className="filter-btn" onClick={()=>{ /* TODO: открыть категории */ }}>
+            {filter.category ? filter.category : 'Категории'}
+          </button>
         </div>
         <div className="grid-3">
           {items.map((p) => (
