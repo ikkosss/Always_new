@@ -1098,13 +1098,46 @@ function PlacesPage() {
     <Page title="МЕСТА" hideHeader topPadClass="pt-6">
       <div className="p-4">
         <div className="filter-bar">
-          <button className="filter-btn" onClick={()=>{ /* TODO: открыть сортировку */ }}>
-            {filter.sort === 'popular' ? 'Сортировка по популярности' : filter.sort === 'new' ? 'Сортировка: Новые' : 'Сортировка: Старые'}
+          <button className="filter-btn" onClick={()=> setSortOpen(true)}>
+            {SORT_OPTIONS.find(o=>o.key===filter.sort)?.label || 'Сортировка'}
           </button>
-          <button className="filter-btn" onClick={()=>{ /* TODO: открыть категории */ }}>
+          <button className="filter-btn" onClick={()=> setCatOpen(true)}>
             {filter.category ? filter.category : 'Категории'}
           </button>
         </div>
+
+        {/* Селектор сортировки */}
+        {sortOpen && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setSortOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm" onClick={(e)=>e.stopPropagation()}>
+              <div className="text-lg font-semibold mb-2">Сортировка</div>
+              <div className="grid">
+                {SORT_OPTIONS.map(opt => (
+                  <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, sort: opt.key })); setSortOpen(false); }}>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Селектор категорий */}
+        {catOpen && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setCatOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm" onClick={(e)=>e.stopPropagation()}>
+              <div className="text-lg font-semibold mb-2">Категории</div>
+              <div className="grid">
+                {CAT_OPTIONS.map(c => (
+                  <button key={c} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c })); setCatOpen(false); }}>
+                    {c}
+                  </button>
+                ))}
+                <button className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: '' })); setCatOpen(false); }}>Все категории</button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="grid-3">
           {items.map((p) => (
             <LongPressable
