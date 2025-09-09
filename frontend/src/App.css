@@ -47,10 +47,10 @@ body.is-fullscreen { background-color: #ffffff; }
 .grid-3 { @apply grid grid-cols-3 gap-3; }
 
 /* Картинки логотипов мест — круглые 56dp (56px) */
-.place-item .w-24.h-24 { width: 56px; height: 56px; }
-.place-item button.w-24.h-24 { width: 56px !important; height: 56px !important; border-radius: 9999px; overflow: hidden; }
-.place-item img.w-full.h-full { border-radius: 9999px; }
-.place-item .text-center { @apply font-semibold text-sm; }
+/* Вернуть прежнюю форму логотипов мест (квадрат с скруглением) */
+.place-item button.w-24.h-24 { width: 96px !important; height: 96px !important; border-radius: 12px; overflow: hidden; }
+.place-item img.w-full.h-full { border-radius: 12px; }
+.place-item .text-center { @apply font-normal text-sm; }
 
 
 /* Search */
