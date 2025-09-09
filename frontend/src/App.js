@@ -458,7 +458,7 @@ function NumbersPage() {
   return (
     <Page title="НОМЕРА" hideHeader topPadClass="pt-6">
       <div className="p-0">
-        <div className="bg-white">
+        <div>
           {items.map((n) => (
             <LongPressable
               key={n.id}
