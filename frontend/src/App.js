@@ -254,6 +254,10 @@ function SearchPage() {
         )}
         {noFound && (
           <div className="mt-3 text-sm text-neutral-600 w-full">
+
+        {/* Измеряем фактическую высоту инпута и устанавливаем CSS-переменные для точного позиционирования */}
+        <MeasureInputHeight targetRef={inputRef} />
+
             {isDigits ? `Добавить номер "${q.trim()}"?` : `Добавить "${q.trim()}"?`}
           </div>
         )}
