@@ -619,7 +619,7 @@ function NumberDetails({ id }) {
 
       {deleteConfirmOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setDeleteConfirmOpen(false)}>
-          <div className="bg-white p-4 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Удалить номер</div>
             <div className="text-sm text-neutral-600 mb-4">
               Вы уверены, что хотите удалить номер "{number?.phone}"? Это действие нельзя отменить.
