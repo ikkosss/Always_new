@@ -33,7 +33,7 @@ body.is-fullscreen { }
 .bottom-nav-btn.inactive { @apply text-gray-700 hover:text-blue-600 hover:bg-blue-50; }
 
 /* Floating Action Button (now square) */
-.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white w-12 h-12 flex items-center justify-center shadow-lg; }
+.fab { @apply fixed bottom-20 right-5 bg-blue-600 text-white w-12 h-12 flex items-center justify-center shadow-lg rounded-full; }
 
 /* Cards & Grid */
 .card { @apply bg-white border border-neutral-200 p-4; }
