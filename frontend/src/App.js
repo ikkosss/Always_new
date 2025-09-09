@@ -623,19 +623,23 @@ function NumberDetails({ id }) {
           <img alt="op" src={OPERATORS[number.operatorKey]?.icon} className="w-8 h-8"/>
           <div className="font-medium text-lg">{number.phone}</div>
         </div>
+
+        <div className="text-sm text-neutral-600">Отмечайте галочкой места, где номер уже использован:</div>
+        <div className="grid gap-2">
+          {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
+            <div key={p.id} className="flex items-center justify-between py-2">
+              <a href={`/places/${p.id}`} className="font-medium truncate mr-3">{p.name}</a>
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={!!usedMap[p.id]}
+                onChange={(e)=> setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }))}
+              />
+            </div>
+          ))}
+        </div>
+
         <div className="flex gap-2 items-center">
-          <button
-            className={`px-4 py-2 ${tab === 'unused' ? 'bg-green-200 text-green-800' : 'bg-green-100 text-green-700'}`}
-            onClick={() => setTab('unused')}
-          >
-            Доступен
-          </button>
-          <button
-            className={`px-4 py-2 ${tab === 'used' ? 'bg-red-200 text-red-800' : 'bg-red-100 text-red-700'}`}
-            onClick={() => setTab('used')}
-          >
-            Использован
-          </button>
           <button
             className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
             onClick={openEditDialog}
@@ -651,34 +655,6 @@ function NumberDetails({ id }) {
             🗑️
           </button>
         </div>
-        {tab === 'unused' ? (
-          <>
-            <div className="text-sm text-neutral-600">Сервисы, в которых ещё не производилась регистрация:</div>
-            <div className="grid gap-2">
-              {usage.unused.map((p)=> (
-                <div key={p.id} className="flex items-center justify-between py-2 service-item">
-                  <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
-                  <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                    <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(p.id, true)} />
-                  </label>
-                </div>
-              ))}
-              {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных мест</div>}
-            </div>
-          </>
-        ) : (
-          <div className="grid gap-2">
-            {usage.used.map((p)=> (
-              <div key={p.id} className="flex items-center justify-between py-2 service-item">
-                <a href={`/places/${p.id}`} className="font-medium">{p.name}</a>
-                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                  <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(p.id, false)} />
-                </label>
-              </div>
-            ))}
-            {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных мест</div>}
-          </div>
-        )}
       </div>
 
       {toggleConfirmOpen && (
