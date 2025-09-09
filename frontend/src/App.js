@@ -226,7 +226,6 @@ function SearchPage() {
       setShowNumberDialog(false);
       setNumberForm({ phone: "", operatorKey: "mts" });
       setQRaw("");
-      setQDisplay("");
       // Refresh results
       window.location.reload();
     } catch (e) {
