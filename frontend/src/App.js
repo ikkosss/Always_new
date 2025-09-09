@@ -656,8 +656,8 @@ function NumberDetails({ id }) {
       <div className="p-4 grid gap-4 section">
         <div className="number-header" style={{ minHeight: 'var(--op-size)' }}>
           <div className="op"><img alt="op" src={OPERATORS[number.operatorKey]?.icon} /></div>
-          <div className="flex-1 px-2 overflow-hidden text-ellipsis whitespace-nowrap" style={{ fontSize: 'calc(var(--op-size) * 0.42)', lineHeight: 'var(--op-size)' }}>{number.phone}</div>
-          <button className="dots" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(number); }}>⋮</button>
+          <div className="flex-1 px-2 overflow-hidden text-ellipsis whitespace-nowrap" style={{ fontSize: 'calc(var(--op-size) * 0.63)', lineHeight: 'var(--op-size)' }}>{number.phone}</div>
+          <button className="dots" onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); return false; }}>⋮</button>
         </div>
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
