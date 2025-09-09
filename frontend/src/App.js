@@ -177,7 +177,9 @@ function SearchPage() {
       setQ(formatted);
       return;
     }
-    setQ(val);
+    // добавляем многоточие визуально (не влияем на реальный поиск по API)
+    const clean = val.endsWith("...") ? val.slice(0, -3) : val;
+    setQ(clean + (clean ? "..." : ""));
   };
 
   useEffect(() => {
