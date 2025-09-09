@@ -183,20 +183,9 @@ body.is-fullscreen { background-color: #ffffff; }
   position: relative;
 }
 
-/* Разделительные линии для мест - только между строками */
-.place-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.place-item {
-  position: relative;
-}
+/* Убираем разделители у мест — оставляем воздух */
+.place-item:not(:last-child)::after { display: none; }
+.place-item { position: relative; margin-bottom: 8px; }
 
 /* Изображение над полем поиска */
 .search-promo-image {
