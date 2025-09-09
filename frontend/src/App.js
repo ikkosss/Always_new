@@ -162,7 +162,6 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
 
 function SearchPage() {
   const [qRaw, setQRaw] = useState("");
-  const [qDisplay, setQDisplay] = useState("");
   const [results, setResults] = useState({ numbers: [], places: [] });
   const [noFound, setNoFound] = useState(false);
   const [showNumberDialog, setShowNumberDialog] = useState(false);
