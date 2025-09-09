@@ -226,7 +226,8 @@ function SearchPage() {
       await api.post(`/numbers`, numberForm);
       setShowNumberDialog(false);
       setNumberForm({ phone: "", operatorKey: "mts" });
-      setQ("");
+      setQRaw("");
+      setQDisplay("");
       // Refresh results
       window.location.reload();
     } catch (e) {
