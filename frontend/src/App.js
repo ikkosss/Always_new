@@ -201,16 +201,16 @@ function SearchPage() {
   const isDigits = useMemo(() => /^[0-9+\-()\s]+$/.test(qRaw.trim()), [qRaw]);
 
   const handleSearch = () => {
-    if (!q.trim()) return;
+    if (!qRaw.trim()) return;
     if (noFound) {
       if (isDigits) {
         // Open number dialog
-        const digits = extractDigits(q);
-        setNumberForm({ phone: formatRuPhonePartial(q), operatorKey: "mts" });
+        const digits = extractDigits(qRaw);
+        setNumberForm({ phone: formatRuPhonePartial(qRaw), operatorKey: "mts" });
         setShowNumberDialog(true);
       } else {
         // Open place dialog
-        setPlaceForm({ name: q.trim(), category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+        setPlaceForm({ name: qRaw.trim(), category: "Магазины", promoCode: "", promoUrl: "", logo: null });
         setShowPlaceDialog(true);
       }
     }
