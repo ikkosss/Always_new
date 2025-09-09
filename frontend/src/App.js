@@ -1102,6 +1102,7 @@ function PlacesPage() {
                 )}
                 {p.hasPromo && (
                   <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>
+                    {/* Цвет точки вычислим по яркости логотипа в будущем; пока белый по умолчанию */}
                     <div className="promo-dot" style={{ background: '#fff' }} />
                   </div>
                 )}
