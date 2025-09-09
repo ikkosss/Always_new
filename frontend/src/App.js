@@ -759,6 +759,8 @@ function PlaceDetails({ id }) {
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
   const [tab, setTab] = useState('unused');
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxTarget, setCtxTarget] = useState(null);
 
   const load = async () => {
     const [p, u] = await Promise.all([
