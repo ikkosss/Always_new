@@ -733,7 +733,7 @@ function PlaceDetails({ id }) {
     setPlace(p.data);
     setUsage(u.data);
   };
-  useEffect(() => { setTab('unused'); load(); }, [id]);
+  useEffect(() => { load(); }, [id]);
 
   const toggle = async (numberId, used) => {
     // Always show confirmation for any toggle
