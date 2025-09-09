@@ -126,6 +126,8 @@ function SearchPage() {
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
 
+  const inputRef = useRef(null);
+
   const onChange = (val) => {
     if (/^[0-9+\-()\s]*$/.test(val)) {
       const formatted = formatRuPhonePartial(val);
