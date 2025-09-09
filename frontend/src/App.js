@@ -997,7 +997,15 @@ function PlacesPage() {
   });
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
-  const [filter, setFilter] = useState({ category: "", sort: "new" });
+  const [filter, setFilter] = useState({ category: "", sort: "popular" });
+  const [sortOpen, setSortOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false);
+  const SORT_OPTIONS = [
+    { key: 'popular', label: 'Сортировка по популярности' },
+    { key: 'new', label: 'Сортировка: Новые' },
+    { key: 'old', label: 'Сортировка: Старые' },
+  ];
+  const CAT_OPTIONS = ['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'];
   const [editing, setEditing] = useState(null);
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
