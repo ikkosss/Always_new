@@ -198,7 +198,7 @@ function SearchPage() {
     return () => clearTimeout(t);
   }, [qRaw]);
 
-  const isDigits = useMemo(() => /^[0-9+\-()\s]+$/.test(q.trim()), [q]);
+  const isDigits = useMemo(() => /^[0-9+\-()\s]+$/.test(qRaw.trim()), [qRaw]);
 
   const handleSearch = () => {
     if (!q.trim()) return;
