@@ -84,3 +84,10 @@ code {
     @apply bg-background text-foreground;
     }
 }
+
+
+/* Глобальные переменные для высоты поля поиска */
+:root {
+  --search-h: 48px;
+  --search-half: 24px;
+}
