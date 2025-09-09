@@ -230,8 +230,9 @@ body.is-fullscreen { }
 .place-item .text-center { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Kill-switch: скрыть любой блок с логотипом оператора и номером под инструкцией на странице номера */
-[data-page="number"] img[src*="/operators/"] { display: none !important; }
-[data-page="number"] img[src*="/operators/"] + * { display: none !important; }
+/* отключаем kill-switch, чтобы показать новый бар */
+/* [data-page="number"] img[src*="/operators/"] { display: none !important; }
+[data-page="number"] img[src*="/operators/"] + * { display: none !important; } */
 [data-page="number"] .number-inline, [data-page="number"] .nh-row, [data-page="number"] .number-header { display: none !important; }
 
 
