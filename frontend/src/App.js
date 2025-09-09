@@ -182,7 +182,7 @@ function SearchPage() {
       return;
     }
     setQRaw(base);
-    setQDisplay(base ? base + "..." : "");
+
   };
 
   useEffect(() => {
