@@ -21,7 +21,11 @@ window.addEventListener('beforeunload', (e) => {
 }
 
 // Initialize immersive fullscreen helper
-try { setupImmersiveMode(); } catch (e) { /* noop */ }
+// Включаем иммерсивный режим только если приложение запущено как standalone (установленное PWA)
+try {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (isStandalone) setupImmersiveMode();
+} catch (e) { /* noop */ }
 
 // Динамическая вертикаль для поля поиска: центр между верхом и верхним краем нижних кнопок.
 function computeSearchTop() {
