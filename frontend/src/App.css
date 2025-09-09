@@ -6,9 +6,7 @@
 
 /* Removed global force-sharp-corners to allow rounded elements per Material 3 */
 
-body { 
-  @apply bg-white text-neutral-900; 
-}
+/* Use theme variables from index.css; no explicit body bg here */
 
 /* Light vertical gradient background */
 body::before {
@@ -21,7 +19,7 @@ body::before {
 }
 
 /* Fullscreen safe-area support */
-body.is-fullscreen { background-color: #ffffff; }
+body.is-fullscreen { }
 
 /* Spacing variables */
 :root { --pad-x: 16px; --pad-header-top: 24px; --pad-card-y: 14px; }
