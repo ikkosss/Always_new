@@ -145,6 +145,15 @@ body.is-fullscreen { background-color: #ffffff; }
   left: 22px;
 }
 
+/* Модалки — общий паддинг и крупнее текст */
+.modal-panel { padding: 24px; }
+.modal-panel .text-lg { font-size: 16px; line-height: 1.25; }
+.modal-actions { margin-top: 16px; display: flex; justify-content: flex-end; gap: 12px; }
+.btn { border-radius: 8px; }
+.btn-primary { background: #2962FF; color: #fff; }
+.btn-danger { background: #e53935; color: #fff; }
+.btn-text { background: transparent; color: #666; }
+
 /* Promo badge (circular via clip-path to bypass global sharp-corners rule) */
 .promo-badge {
   position: absolute;
