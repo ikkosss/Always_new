@@ -660,7 +660,7 @@ function NumberDetails({ id }) {
           <button className="dots" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(number); }}>⋮</button>
         </div>
 
-        <div className="text-sm text-neutral-600">Отмечайте галочкой места, где номер использован:</div>
+        <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
