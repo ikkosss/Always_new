@@ -664,7 +664,7 @@ function NumberDetails({ id }) {
 function PlaceDetails({ id }) {
   const [place, setPlace] = useState(null);
   const [usage, setUsage] = useState({ used: [], unused: [] });
-  const [tab, setTab] = useState('unused');
+  const [dirty, setDirty] = useState(false);
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
