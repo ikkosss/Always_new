@@ -246,7 +246,6 @@ function SearchPage() {
       setShowPlaceDialog(false);
       setPlaceForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
       setQRaw("");
-      setQDisplay("");
       // Refresh results
       window.location.reload();
     } catch (e) {
