@@ -68,7 +68,7 @@ body.is-fullscreen { background-color: #ffffff; }
   width: 99vw;
   z-index: 25;
 }
-.suggestions { @apply bg-white border border-neutral-200 divide-y; }
+.suggestions { @apply bg-white divide-y; border: none; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 
 /* Изображение: нижний край на расстоянии 200% высоты поискового окна выше верхнего края поля.
