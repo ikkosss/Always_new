@@ -128,7 +128,7 @@ body.is-fullscreen { }
 .list-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
 
 /* Кнопки в шапке места */
-.icon-btn { border: 1px solid #d1d5db; background: #fff; padding: 8px 10px; min-width: 64px; text-align: center; }
+.icon-btn { border: 1px solid #d1d5db; background: #fff; padding: 8px 10px; min-width: 72px; text-align: center; }
 
 /* Бегущая строка названия */
 .marquee { position: relative; overflow: hidden; white-space: nowrap; }
