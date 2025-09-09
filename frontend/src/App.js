@@ -206,12 +206,10 @@ function SearchPage() {
   return (
     <Page title="ПОИСК" hideHeader center wide padX={false}>
       <div className="search-wrap">
-        <img 
-          src="/promofon.png" 
-          alt="Promo" 
-          className="search-promo-image"
-        />
-        <form onSubmit={onSubmit} className="search-input-container">
+        <img src="/promofon.png" alt="Promo" className="search-promo-image" />
+
+        {/* Поле поиска — фиксировано по центру экрана, ширина 100vw */}
+        <form onSubmit={onSubmit} className="search-input-container search-box">
           <div className="relative w-full">
             <input
               value={q}
@@ -228,24 +226,28 @@ function SearchPage() {
             </button>
           </div>
         </form>
+
+        {/* Подсказки — фиксировано под полем, не влияет на центрирование */}
         {(results.numbers.length > 0 || results.places.length > 0) && (
-          <div className="suggestions w-full">
-            {results.numbers.map((n) => (
-              <div key={n.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/numbers/${n.id}`)}>
-                <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6"/>
-                <div className="flex-1">{n.phone}</div>
-                <div className="text-neutral-400 text-xs">номер</div>
-              </div>
-            ))}
-            {results.places.map((p) => (
-              <div key={p.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/places/${p.id}`)}>
-                <div className="w-6 h-6 bg-neutral-200 overflow-hidden">
-                  {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover" src={`${API}/places/${p.id}/logo`} />}
+          <div className="search-suggestions">
+            <div className="suggestions w-full">
+              {results.numbers.map((n) => (
+                <div key={n.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/numbers/${n.id}`)}>
+                  <img alt="op" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6"/>
+                  <div className="flex-1">{n.phone}</div>
+                  <div className="text-neutral-400 text-xs">номер</div>
                 </div>
-                <div className="flex-1">{p.name}</div>
-                <div className="text-neutral-400 text-xs">место</div>
-              </div>
-            ))}
+              ))}
+              {results.places.map((p) => (
+                <div key={p.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/places/${p.id}`)}>
+                  <div className="w-6 h-6 bg-neutral-200 overflow-hidden">
+                    {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover" src={`${API}/places/${p.id}/logo`} />}
+                  </div>
+                  <div className="flex-1">{p.name}</div>
+                  <div className="text-neutral-400 text-xs">место</div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         {noFound && (
