@@ -10,6 +10,14 @@ if ("serviceWorker" in navigator) {
       .register("/service-worker.js")
       .catch((err) => console.error("SW registration failed", err));
   });
+// Предупреждение при закрытии вкладки при несохраненных изменениях
+window.addEventListener('beforeunload', (e) => {
+  if (window.__unsaved) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
 }
 
 // Initialize immersive fullscreen helper
