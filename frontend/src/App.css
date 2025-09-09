@@ -156,7 +156,7 @@ body.is-fullscreen { }
 .promo-dot { width: 12px; height: 12px; border-radius: 50%; }
 
 /* Номера — карточки с тенью и скруглением */
-.number-item { position: relative; margin: 8px 0; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: var(--pad-card-y); background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; }
+.number-item { position: relative; margin: 8px auto; width: 98vw; padding: 0 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; min-height: calc(var(--search-h) * 1.05); display: flex; align-items: center; }
 .number-item:not(:last-child)::after { display: none; }
 .number-item .flex-1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
