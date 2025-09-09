@@ -739,6 +739,11 @@ function PlaceDetails({ id }) {
     ]);
     setPlace(p.data);
     setUsage(u.data);
+    const m = {};
+    (u.data.used || []).forEach(n => { m[n.id] = true; });
+    (u.data.unused || []).forEach(n => { if (!(n.id in m)) m[n.id] = false; });
+    setUsedMap(m);
+    initialMapRef.current = { ...m };
   };
   useEffect(() => { load(); }, [id]);
 
