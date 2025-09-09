@@ -532,6 +532,11 @@ function NumberDetails({ id }) {
     ]);
     setNumber(n.data);
     setUsage(u.data);
+    const m = {};
+    (u.data.used || []).forEach(p => { m[p.id] = true; });
+    (u.data.unused || []).forEach(p => { if (!(p.id in m)) m[p.id] = false; });
+    setUsedMap(m);
+    initialMapRef.current = { ...m };
   };
   useEffect(() => { load(); }, [id]);
 
