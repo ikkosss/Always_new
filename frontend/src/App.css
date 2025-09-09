@@ -198,6 +198,14 @@ body.is-fullscreen { }
 .filter-btn { border: 1px solid #d1d5db; background: #fff; padding: 10px 12px; font-weight: 500; }
 
 
+
+/* Инлайновая строка под инструкцией на странице номера */
+.number-inline { display: flex; align-items: center; margin-left: 5px; }
+.number-inline .pre-spaces { display: inline-block; width: 2ch; }
+.number-inline .gap-spaces { display: inline-block; width: 2ch; }
+.number-inline .logo { width: var(--op-size); height: var(--op-size); object-fit: cover; border-radius: 5%; display: inline-block; }
+.number-inline .num { font-size: calc(var(--op-size) * 0.7); line-height: var(--op-size); white-space: nowrap; }
+
 .service-item {
   position: relative;
 }
