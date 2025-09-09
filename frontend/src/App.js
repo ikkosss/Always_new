@@ -609,7 +609,11 @@ function NumberDetails({ id }) {
                 type="checkbox"
                 className="checkbox"
                 checked={!!usedMap[p.id]}
-                onChange={(e)=> setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }))}
+                onChange={(e)=> {
+                  if (confirm('Вы уверены, что хотите изменить?')) {
+                    setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }));
+                  }
+                }}
               />
             </div>
           ))}
