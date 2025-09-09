@@ -1,6 +1,6 @@
 {
-  "short_name": "FIRST",
-  "name": "FIRST",
+  "short_name": "Всегда новый",
+  "name": "Всегда новый",
   "icons": [
     { "src": "/operators/mts.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/operators/mts.png", "sizes": "512x512", "type": "image/png" }
