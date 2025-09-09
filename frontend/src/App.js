@@ -333,15 +333,16 @@ function SearchPage() {
               className="search-input pr-20"
               placeholder="Номер или название места..."
             />
-            <button 
-              type="button" 
+            {/* Кнопка — часть поля: отрисовываем поверх внутри границ инпута */}
+            <div 
+              role="button"
               onClick={handleSearch}
-              className="absolute right-0 top-1/2 -translate-y-1/2 h-[var(--search-h)] w-20 flex items-center justify-center text-sm text-white"
+              className="absolute right-[2px] top-1/2 -translate-y-1/2 h-[calc(var(--search-h)-4px)] w-20 flex items-center justify-center text-sm text-white select-none cursor-pointer"
               style={{ background: '#2962FF' }}
               title="Найти"
             >
               Найти
-            </button>
+            </div>
           </div>
         </form>
 
