@@ -850,6 +850,11 @@ function PlaceDetails({ id }) {
           </button>
         </div>
       </div>
+      {/* Комментарий места */}
+      {place?.comment && (
+        <div className="px-[var(--pad-x)] text-sm text-neutral-700 whitespace-pre-wrap border-t border-neutral-200 pt-2 mt-2">{place.comment}</div>
+      )}
+
 
       {promoOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
