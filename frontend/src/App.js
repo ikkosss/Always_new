@@ -856,19 +856,20 @@ function PlaceDetails({ id }) {
             />
           )}
         </div>
-        <div className="flex gap-2 items-center">
-          <button
-            className={`px-4 py-2 ${tab === 'unused' ? 'bg-green-200 text-green-800' : 'bg-green-100 text-green-700'}`}
-            onClick={() => setTab('unused')}
-          >
-            Доступен
-          </button>
-          <button
-            className={`px-4 py-2 ${tab === 'used' ? 'bg-red-200 text-red-800' : 'bg-red-100 text-red-700'}`}
-            onClick={() => setTab('used')}
-          >
-            Использован
-          </button>
+        <div className="grid gap-2">
+          {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
+            <div key={n.id} className="flex items-center justify-between py-2">
+              <a href={`/numbers/${n.id}`} className="font-medium truncate mr-3">{n.phone}</a>
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={!!usedMap[n.id]}
+                onChange={(e)=> setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }))}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-2 items-center mt-2">
           <button
             className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
             onClick={openEditDialog}
@@ -884,32 +885,6 @@ function PlaceDetails({ id }) {
             🗑️
           </button>
         </div>
-        {tab === 'unused' && (
-          <div className="grid gap-2">
-            {usage.unused.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between py-2 service-item">
-                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                  <input type="checkbox" className="toggle" checked={false} onChange={()=>toggle(n.id, true)} />
-                </label>
-              </div>
-            ))}
-            {usage.unused.length === 0 && <div className="text-sm text-neutral-500">Нет доступных номеров</div>}
-          </div>
-        )}
-        {tab === 'used' && (
-          <div className="grid gap-2">
-            {usage.used.map((n)=> (
-              <div key={n.id} className="flex items-center justify-between py-2 service-item">
-                <a href={`/numbers/${n.id}`} className="font-medium">{n.phone}</a>
-                <label className="inline-flex items-center" onClick={(e)=>e.stopPropagation()}>
-                  <input type="checkbox" className="toggle" checked={true} onChange={()=>toggle(n.id, false)} />
-                </label>
-              </div>
-            ))}
-            {usage.used.length === 0 && <div className="text-sm text-neutral-500">Нет использованных номеров</div>}
-          </div>
-        )}
       </div>
 
       {promoOpen && (
