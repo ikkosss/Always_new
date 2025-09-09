@@ -256,7 +256,7 @@ function SearchPage() {
   return (
     <Page title="ПОИСК" hideHeader center wide padX={false}>
       <div className="search-wrap">
-        <img src="/promofon.png" alt="Promo" className="search-promo-image" />
+        <img src="/promofon.svg" alt="Promo" className="search-promo-image" />
 
         {/* Поле поиска — фиксировано по центру экрана, ширина 100vw */}
         <form onSubmit={onSubmit} className="search-input-container search-box">
