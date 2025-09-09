@@ -110,6 +110,8 @@ function useBottomNav() {
 function BottomNav() {
   const active = useBottomNav();
   const nav = useNavigate();
+  const [confirmNav, setConfirmNav] = useState(false);
+  const pendingRouteRef = useRef(null);
 
   useEffect(() => {
     const updateBn = () => {
@@ -131,13 +133,48 @@ function BottomNav() {
     };
   }, []);
 
+  const tryNav = (to) => {
+    const hasUnsaved = !!window.__unsaved;
+    if (hasUnsaved) {
+      pendingRouteRef.current = to;
+      setConfirmNav(true);
+      return;
+    }
+    nav(to);
+  };
+
+  const proceedNav = async (save) => {
+    const to = pendingRouteRef.current;
+    setConfirmNav(false);
+    if (save && typeof window.__saveChanges === 'function') {
+      try { await window.__saveChanges(); } catch (e) { /* ignore */ }
+    }
+    // reset unsaved flag if discard
+    if (!save) { window.__unsaved = false; }
+    if (to) nav(to);
+  };
+
   return (
     <div className="bottom-nav">
       <div className="bottom-nav-inner">
-        <button className={`bottom-nav-btn ${active === "search" ? "active" : "inactive"}`} onClick={() => nav("/")}>ПОИСК</button>
-        <button className={`bottom-nav-btn ${active === "numbers" ? "active" : "inactive"}`} onClick={() => nav("/numbers")}>НОМЕРА</button>
-        <button className={`bottom-nav-btn ${active === "places" ? "active" : "inactive"}`} onClick={() => nav("/places")}>МЕСТА</button>
+        <button className={`bottom-nav-btn ${active === "search" ? "active" : "inactive"}`} onClick={() => tryNav("/")}>ПОИСК</button>
+        <button className={`bottom-nav-btn ${active === "numbers" ? "active" : "inactive"}`} onClick={() => tryNav("/numbers")}>НОМЕРА</button>
+        <button className={`bottom-nav-btn ${active === "places" ? "active" : "inactive"}`} onClick={() => tryNav("/places")}>МЕСТА</button>
       </div>
+
+      {confirmNav && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setConfirmNav(false)}>
+          <div className="bg-white modal-panel w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Сохранить изменения?</div>
+            <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
+            <div className="modal-actions">
+              <button className="btn btn-text" onClick={() => setConfirmNav(false)}>Отмена</button>
+              <button className="btn" onClick={() => proceedNav(false)}>Не сохранять</button>
+              <button className="btn btn-primary" onClick={() => proceedNav(true)}>Сохранить</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
