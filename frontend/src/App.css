@@ -55,7 +55,7 @@ body.is-fullscreen { }
 .place-item { position: relative; }
 .place-item .tile { border: 1px solid #e5e7eb; background: #fafafa; }
 .place-item .card-wrap { border: 1px solid #e5e7eb; background: #fff; width: 100%; box-sizing: border-box; padding: 8px; display: flex; align-items: center; justify-content: flex-start; gap: 6px; flex-direction: column; border-radius: 0; }
-.place-item .name { text-align: center; font-size: 0.875rem; font-weight: 400; color: #000; margin-top: 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 6rem; }
+.place-item .name { text-align: center; font-size: 0.875rem; font-weight: 400; color: #000; margin-top: 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; min-width: 0; }
 
 /* Картинки логотипов мест — строгие плитки */
 /* Вернуть прежнюю форму логотипов мест (квадрат с скруглением) */
