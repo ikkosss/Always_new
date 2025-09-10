@@ -1373,6 +1373,37 @@ function RouterOutlet() {
 }
 
 function App() {
+  useEffect(() => {
+    const docEl = document.documentElement;
+    const update = () => {
+      try {
+        const vv = window.visualViewport;
+        let lift = 0;
+        if (vv) {
+          const layoutH = window.innerHeight || document.documentElement.clientHeight || 0;
+          const top = vv.offsetTop || 0;
+          lift = Math.max(0, layoutH - (vv.height + top));
+        }
+        docEl.style.setProperty('--vv-lift', (lift || 0) + 'px');
+      } catch (e) {
+        // ignore
+      }
+    };
+    update();
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', update);
+      window.visualViewport.addEventListener('scroll', update);
+    }
+    window.addEventListener('orientationchange', update);
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', update);
+        window.visualViewport.removeEventListener('scroll', update);
+      }
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+
   return (
     <div className="App min-h-screen">
       <BrowserRouter>
