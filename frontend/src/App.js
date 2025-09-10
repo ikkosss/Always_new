@@ -922,13 +922,7 @@ function PlaceDetails({ id }) {
             </button>
           </div>
         </div>
-        {place?.comment && (
-          <div className="place-comment whitespace-pre-line mt-0"
-            style={{ position:'absolute', left: 'calc(80px + 12px)', top: '0px', right: '1vw', maxHeight: '80px', overflow:'hidden' }}
-          >
-            {place.comment}
-          </div>
-        )}
+
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
