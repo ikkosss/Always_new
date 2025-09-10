@@ -1004,9 +1004,9 @@ function PlaceDetails({ id }) {
 
       {editDialogOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setEditDialogOpen(false)}>
-          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Редактировать место</div>
-            <div className="grid gap-3">
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2 sticky top-0 bg-white">Редактировать место</div>
+            <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
               <select className="search-input" value={editForm.category} onChange={(e)=>setEditForm({...editForm, category: e.target.value})}>
                 {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
