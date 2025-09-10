@@ -160,12 +160,4 @@
 
 ## agent_communication:
     - agent: "main"
-    - message: "COMPLETED: Successfully implemented both requested features:
-      1. ✅ PROMO IMAGE ON PLACE DETAILS: promo.png displays symmetrically to logo on right side, opens dialog on click
-      2. ✅ НАЙТИ BUTTON FUNCTIONALITY: Added НАЙТИ button in search field, auto-opens appropriate dialogs when no results found:
-         - Digits input → Number dialog with pre-filled formatted phone
-         - Letters input → Place dialog with pre-filled name
-         - Works on both button click and Enter key press
-      Both features tested manually and working perfectly. Ready for additional testing if needed."
-    - agent: "testing"
-    - message: "BACKEND TESTING COMPLETED: All promo functionality tests passed successfully (7/7 - 100% success rate). Verified all requirements from review request: 1) GET /api/places/{id} correctly returns hasPromo flag when place has promoCode or promoUrl, 2) Places with promo data return hasPromo=true, places without return hasPromo=false, 3) НЕФТЛ place (c4c95482-5229-40bc-a5d1-9b555035235a) correctly returns hasPromo=true with promoCode='1111111', 4) Promo data (promoCode, promoUrl) is correctly returned in place details endpoint. Backend logic for hasPromo flag and promo data retrieval is working perfectly. No issues found."
+    - message: "UI TWEAKS IMPLEMENTED per user request: 1) List rows on Number/Place details — horizontal paddings halved (left and right reduced 2x), 2) Row height equals search input height via --search-h, 3) Separators span full width minus 1% on each side, 4) Removed inline edit/delete emoji buttons from PlaceDetails under the list, 5) FAB now always floats above bottom nav and system bars, lifts with keyboard using visualViewport (--vv-lift). Please verify on narrow screens."
