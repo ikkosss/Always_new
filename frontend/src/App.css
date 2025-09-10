@@ -136,7 +136,7 @@ body.is-fullscreen { }
 .btn-text { background: transparent; color: #666; border: none; }
 
 /* Строгие ряды списков */
-.list-row { position: relative; display: flex; align-items: center; padding: 0 8px; box-sizing: border-box; width: 100%; height: var(--search-h); overflow: hidden; }
+.list-row { position: relative; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box; width: 100%; height: var(--search-h); overflow: hidden; }
 .list-row::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
 .list-row .op { flex: 0 0 var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .op img { width: var(--check-size); height: var(--check-size); object-fit: cover; display: block; }
