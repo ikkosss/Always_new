@@ -49,7 +49,7 @@ body.is-fullscreen { }
 
 /* Cards & Grid */
 .card { @apply bg-white border border-neutral-200 p-4; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 5px; row-gap: 8px; width: 100vw; padding-left: 1vw; padding-right: 1vw; margin-left: 0; margin-right: 0; box-sizing: border-box; overflow-x: hidden; }
+.grid-3 { display: grid; --col: calc((100vw - 2vw - 10px) / 3); grid-template-columns: repeat(3, var(--col)); column-gap: 5px; row-gap: 8px; width: 100vw; padding-left: 1vw; padding-right: 1vw; margin-left: 0; margin-right: 0; box-sizing: border-box; overflow-x: hidden; }
 
 /* Плиточная рамка для каждого места на странице всех мест */
 .place-item { position: relative; }
