@@ -917,7 +917,9 @@ function PlaceDetails({ id }) {
           </div>
         </div>
         {place?.comment && (
-          <div className="place-comment text-neutral-700 whitespace-pre-wrap mt-2">
+          <div className="place-comment whitespace-pre-line mt-0"
+            style={{ position:'absolute', left: 'calc(80px + 12px)', top: '0px', right: '1vw', maxHeight: '80px', overflow:'hidden' }}
+          >
             {place.comment}
           </div>
         )}
