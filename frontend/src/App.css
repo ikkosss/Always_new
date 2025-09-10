@@ -59,6 +59,9 @@ body.is-fullscreen { }
 .place-dots { font-size: calc(1.5rem); line-height: 1; padding: 0; margin: 0; }
 .dots-btn { padding: 0 !important; margin: 0 !important; border: none; background: transparent; line-height: 1; width: auto; height: auto; display: inline-flex; align-items: flex-start; justify-content: center; }
 
+/* framed header around logo+title+comment+dots with same thin line as search input */
+.place-head-frame { width: calc(100vw - 2vw); margin-left: 1vw; margin-right: 1vw; border: 1.5px solid #cbd5e1; border-radius: 0; box-sizing: border-box; padding-top: 6px; padding-bottom: 6px; }
+
 /* 4-line clamp utility */
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .place-item .card-wrap { border: 1px solid #e5e7eb; background: #fff; width: 100%; box-sizing: border-box; padding: 8px; display: flex; align-items: center; justify-content: flex-start; gap: 6px; flex-direction: column; border-radius: 0; }
