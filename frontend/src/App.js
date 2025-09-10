@@ -950,6 +950,19 @@ function PlaceDetails({ id }) {
         </div>
       </div>
 
+      {commentDialogOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setCommentDialogOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Комментарий</div>
+            <div className="grid gap-3">
+              <div className="text-base whitespace-pre-wrap">{place.comment}</div>
+              <div className="flex justify-end">
+                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {promoOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
