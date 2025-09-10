@@ -921,7 +921,6 @@ function PlaceDetails({ id }) {
             {place.comment}
           </div>
         )}
-        </div>
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
