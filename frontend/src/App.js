@@ -1210,8 +1210,8 @@ function PlacesPage() {
 
         {/* Селектор категорий */}
         {catOpen && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setCatOpen(false)}>
-            <div className="bg-white modal-panel w-full max-w-sm" onClick={(e)=>e.stopPropagation()}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setCatOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Категории</div>
               <div className="grid">
                 {CAT_OPTIONS.map(c => (
