@@ -1194,8 +1194,8 @@ function PlacesPage() {
 
         {/* Селектор сортировки */}
         {sortOpen && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setSortOpen(false)}>
-            <div className="bg-white modal-panel w-full max-w-sm" onClick={(e)=>e.stopPropagation()}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Сортировка</div>
               <div className="grid">
                 {SORT_OPTIONS.map(opt => (
