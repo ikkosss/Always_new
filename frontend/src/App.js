@@ -892,7 +892,7 @@ function PlaceDetails({ id }) {
             {place.hasLogo && (
               <img alt={place.name} className="w-20 h-20 object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${id}/logo`} />
             )}
-            <div className="marquee text-2xl font-semibold flex-1 min-w-0">
+            <div className="marquee text-2xl font-semibold flex-1 min-w-0" style={{ display: 'flex', alignItems: 'center' }}>
               <span>{place.name}</span>
             </div>
           </div>
