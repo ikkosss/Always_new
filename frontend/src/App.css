@@ -202,7 +202,7 @@ body.is-fullscreen { }
   background: rgba(0, 0, 0, 0.4);
 }
 /* Секция сортировки/категорий — базовая линия на всех экранах */
-.filter-bar { position: relative; margin-top: var(--section-top); display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); box-sizing: border-box; }
+.filter-bar { position: relative; margin-top: var(--section-top); display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 2%; row-gap: 0; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); box-sizing: border-box; }
 .filter-btn { border: 1px solid #d1d5db; background: #fff; padding: 0 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; height: calc(var(--search-h) / 2); }
 
 
