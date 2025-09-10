@@ -891,18 +891,25 @@ function PlaceDetails({ id }) {
             {place.hasLogo && (
               <img alt={place.name} className="w-20 h-20 object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${id}/logo`} />
             )}
-            <div className="marquee text-2xl font-semibold flex-1 min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
-              if (!el) return;
-              const check = () => {
-                const span = el.querySelector('span');
-                if (!span) return;
-                const overflow = span.scrollWidth > el.clientWidth;
-                el.setAttribute('data-overflow', overflow ? 'true' : 'false');
-              };
-              requestAnimationFrame(check);
-              window.addEventListener('resize', check);
-            }}>
-              <span style={{ lineHeight: 1 }}>{place.name}</span>
+            <div className="flex flex-col flex-1 min-w-0">
+              <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
+                if (!el) return;
+                const check = () => {
+                  const span = el.querySelector('span');
+                  if (!span) return;
+                  const overflow = span.scrollWidth > el.clientWidth;
+                  el.setAttribute('data-overflow', overflow ? 'true' : 'false');
+                };
+                requestAnimationFrame(check);
+                window.addEventListener('resize', check);
+              }}>
+                <span style={{ lineHeight: 1 }}>{place.name}</span>
+              </div>
+              {place?.comment && (
+                <div className="place-comment whitespace-pre-line mt-1 truncate" style={{ maxWidth: '100%' }}>
+                  {place.comment}
+                </div>
+              )}
             </div>
           </div>
           <div className="relative" style={{ alignSelf: 'flex-start' }}>
