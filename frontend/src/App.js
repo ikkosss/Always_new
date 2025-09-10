@@ -887,7 +887,7 @@ function PlaceDetails({ id }) {
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4 section">
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 top-base w-full">
+          <div className="flex items-center gap-3 w-full">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             {place.hasLogo && (
               <img alt={place.name} className="w-20 h-20 object-cover rounded-lg" src={`${API}/places/${id}/logo`} />
