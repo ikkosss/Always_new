@@ -79,6 +79,7 @@ code {
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
+html, body { overflow-x: hidden; }
 }
 
 /* Ensure consistent page background on all screens */
