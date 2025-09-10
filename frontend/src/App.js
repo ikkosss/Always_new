@@ -886,13 +886,12 @@ function PlaceDetails({ id }) {
   return (
     <Page title={place.name} hideHeader>
       <div className="p-4 grid gap-4 section">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 w-full">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
             {place.hasLogo && (
               <img alt={place.name} className="w-20 h-20 object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${id}/logo`} />
             )}
-            <div className="marquee text-2xl font-semibold flex-1 min-w-0" style={{ display: 'flex', alignItems: 'center' }} ref={el=>{
+            <div className="marquee text-2xl font-semibold flex-1 min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
               if (!el) return;
               const check = () => {
                 const span = el.querySelector('span');
@@ -903,13 +902,25 @@ function PlaceDetails({ id }) {
               requestAnimationFrame(check);
               window.addEventListener('resize', check);
             }}>
-              <span>{place.name}</span>
+              <span style={{ lineHeight: 1 }}>{place.name}</span>
             </div>
           </div>
-          <div className="relative">
-            <button className="px-2" onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}></button>
+          <div className="relative" style={{ alignSelf: 'flex-start' }}>
+            <button
+              onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}
+              className="select-none"
+              title="Меню"
+              style={{ fontSize: 'calc(1.5rem)', lineHeight: 1, padding: 0, margin: 0 }}
+            >
+              ⋮
+            </button>
           </div>
         </div>
+        {place?.comment && (
+          <div className="place-comment text-neutral-700 whitespace-pre-wrap mt-2">
+            {place.comment}
+          </div>
+        )}
         </div>
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
