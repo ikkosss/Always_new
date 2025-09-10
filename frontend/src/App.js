@@ -1223,21 +1223,21 @@ function PlacesPage() {
               onLongPress={() => openContext(p)}
               onClick={() => onItemClick(p)}
             >
-              <button className="w-24 h-24 overflow-hidden flex items-center justify-center relative rounded-lg tile" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
-                {p.hasLogo ? (
-                  <img alt={p.name} className="w-full h-full object-cover rounded-lg" src={`${API}/places/${p.id}/logo`} />
-                ) : (
-                  <div className="text-neutral-400 text-xs">нет лого</div>
-                )}
-                {p.hasPromo && (
-                  <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>
-                    <div className="promo-dot" style={{ background: '#fff' }} />
-                  </div>
-                )}
-              {/* авто-цвет точки промо: определим позже, сейчас белый по умолчанию */}
-
-              </button>
-              <div className="text-center text-sm font-normal text-black mt-1 truncate w-24">{p.name}</div>
+              <div className="card-wrap">
+                <button className="w-24 h-24 overflow-hidden flex items-center justify-center relative rounded-lg tile" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
+                  {p.hasLogo ? (
+                    <img alt={p.name} className="w-full h-full object-cover rounded-lg" src={`${API}/places/${p.id}/logo`} />
+                  ) : (
+                    <div className="text-neutral-400 text-xs">нет лого</div>
+                  )}
+                  {p.hasPromo && (
+                    <div className="promo-badge" title="Промо" onClick={(e)=>{ e.stopPropagation(); openPromoDialog(p); }}>
+                      <div className="promo-dot" style={{ background: '#fff' }} />
+                    </div>
+                  )}
+                </button>
+                <div className="name">{p.name}</div>
+              </div>
             </LongPressable>
           ))}
         </div>
