@@ -37,7 +37,7 @@ body.is-fullscreen { }
 @media (max-width: 420px) { :root { --bn-h: 56px; } }
 
 .bottom-nav-inner { @apply grid grid-cols-3; }
-.bottom-nav-btn { @apply py-4 text-center text-sm font-bold transition-colors; }
+.bottom-nav-btn { padding-top: 1rem; padding-bottom: 1rem; text-align: center; font-size: 0.875rem; font-weight: 700; transition: color 0.2s ease; }
 .bottom-nav-btn.active { @apply bg-blue-600 text-white; }
 .bottom-nav-btn.inactive { @apply text-gray-700 hover:text-blue-600 hover:bg-blue-50; }
 
