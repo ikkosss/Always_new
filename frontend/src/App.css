@@ -60,7 +60,7 @@ body.is-fullscreen { }
 .dots-btn { padding: 0 !important; margin: 0 !important; border: none; background: transparent; line-height: 1; width: auto; height: auto; display: inline-flex; align-items: flex-start; justify-content: center; }
 
 /* framed header around logo+title+comment+dots with same thin line as search input */
-.place-head-frame { position: relative; box-sizing: border-box; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; padding: 6px 6px; }
+.place-head-frame { position: relative; box-sizing: border-box; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; padding: 6px 6px; margin-bottom: 8px; }
 
 /* 4-line clamp utility */
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
