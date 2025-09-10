@@ -904,39 +904,22 @@ function PlaceDetails({ id }) {
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
             <div key={n.id} className="list-row">
-              <div className="left-pad" />
               <div className="op"><img alt="logo" src={OPERATORS[n.operatorKey]?.icon} /></div>
               <div className="phone font-medium">{n.phone}</div>
-              <div className="dots"></div>
-              <div className="right-pad" />
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={!!usedMap[n.id]}
-                onChange={(e)=> {
-                  if (confirm('Вы уверены, что хотите изменить?')) {
-                    setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
-                  }
-                }}
-              />
+              <div className="check">
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={!!usedMap[n.id]}
+                  onChange={(e)=> {
+                    if (confirm('Вы уверены, что хотите изменить?')) {
+                      setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
+                    }
+                  }}
+                />
+              </div>
             </div>
           ))}
-        </div>
-        <div className="flex gap-2 items-center mt-2">
-          <button
-            className="px-3 py-2 bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-            onClick={openEditDialog}
-            title="Редактировать место"
-          >
-            ✏️
-          </button>
-          <button
-            className="px-3 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200"
-            onClick={() => setDeleteConfirmOpen(true)}
-            title="Удалить место"
-          >
-            🗑️
-          </button>
         </div>
       </div>
       {/* Комментарий места */}
