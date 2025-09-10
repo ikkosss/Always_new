@@ -245,7 +245,7 @@ body.is-fullscreen { }
 .place-item:not(:last-child)::after { display: none; }
 .place-item { position: relative; margin: 0; padding: 0; }
 .place-item .text-center { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.place-comment { font-size: 6px; line-height: 1; color: #374151; }
+.place-comment { font-size: 12px; line-height: 1.1; color: #374151; }
 
 /* Kill-switch: скрыть любой блок с логотипом оператора и номером под инструкцией на странице номера */
 /* отключаем kill-switch, чтобы показать новый бар */
