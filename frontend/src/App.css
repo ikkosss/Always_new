@@ -14,7 +14,7 @@
 body.is-fullscreen { }
 
 /* Spacing variables */
-:root { --pad-x: 16px; --pad-header-top: 24px; --pad-card-y: 14px; --section-top: calc(var(--pad-header-top) * 2); --check-size: 24px; --op-size: 45px; --edge-gap: 4vw; }
+:root { --pad-x: 16px; --pad-header-top: 24px; --pad-card-y: 14px; --section-top: calc(var(--pad-header-top) * 2); --check-size: 20px; --op-size: 45px; --edge-gap: 4vw; }
 
 /* Базовая верхняя линия 20vh для всех верхних блоков */
 .top-base { margin-top: 20vh; }
