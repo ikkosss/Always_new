@@ -1056,9 +1056,17 @@ function PlaceDetails({ id }) {
               <textarea 
                 className="search-input" 
                 placeholder="Комментарий" 
-                rows="3"
+                rows="4"
                 value={editForm.comment} 
-                onChange={(e)=>setEditForm({...editForm, comment: e.target.value})} 
+                onChange={(e)=>setEditForm({...editForm, comment: e.target.value})}
+                onFocus={() => {
+                  const bn = document.querySelector('.bottom-nav');
+                  const h = bn ? bn.getBoundingClientRect().height : 56;
+                  document.documentElement.style.setProperty('--vv-lift', h + 'px');
+                }}
+                onBlur={() => {
+                  document.documentElement.style.setProperty('--vv-lift', '0px');
+                }}
               />
               
               <input className="search-input" type="file" accept="image/*" onChange={(e)=>setEditForm({...editForm, logo: e.target.files?.[0] || null})} />
