@@ -886,7 +886,8 @@ function PlaceDetails({ id }) {
   if (!place) return <Page title="Загрузка..."/>;
   return (
     <Page title={place.name} hideHeader padX={false}>
-      <div className="p-0 grid gap-4 section place-header place-head-frame">
+      <div className="p-0 section place-header">
+        <div className="place-head-frame">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 flex-1 min-w-0 w-full">
             {place.hasLogo && (
