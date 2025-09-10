@@ -943,10 +943,6 @@ function PlaceDetails({ id }) {
           ))}
         </div>
       </div>
-      {/* Комментарий места */}
-      {place?.comment && (
-        <div className="px-[var(--pad-x)] text-sm text-neutral-700 whitespace-pre-wrap border-t border-neutral-200 pt-2 mt-2">{place.comment}</div>
-      )}
 
 
       {promoOpen && (
