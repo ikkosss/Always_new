@@ -908,9 +908,8 @@ function PlaceDetails({ id }) {
           <div className="relative" style={{ alignSelf: 'flex-start' }}>
             <button
               onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}
-              className="select-none"
+              className="select-none place-dots"
               title="Меню"
-              style={{ fontSize: 'calc(1.5rem)', lineHeight: 1, padding: 0, margin: 0 }}
             >
               ⋮
             </button>
