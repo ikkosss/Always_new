@@ -759,6 +759,7 @@ function PlaceDetails({ id }) {
   const initialMapRef = useRef({});
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
+  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
   const pendingRouteRef = useRef(null);
