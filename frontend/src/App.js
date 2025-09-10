@@ -909,7 +909,7 @@ function PlaceDetails({ id }) {
               {place?.comment && (
                 <div
                   className="place-comment whitespace-pre-line mt-1 clamp-4 cursor-pointer"
-                  style={{ maxWidth: 'calc(100% - 10px)', paddingRight: '10px' }}
+                  style={{ width: 'calc(100vw - 23px - 80px - 12px - 22px - 1px)', marginRight: '1px' }}
                   onClick={() => setCommentDialogOpen(true)}
                 >
                   {place.comment}
