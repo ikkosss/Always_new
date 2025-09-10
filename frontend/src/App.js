@@ -920,7 +920,7 @@ function PlaceDetails({ id }) {
           <div className="relative" style={{ alignSelf: 'flex-start' }}>
             <button
               onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}
-              className="select-none place-dots"
+              className="select-none place-dots dots-btn"
               title="Меню"
             >
               ⋮
