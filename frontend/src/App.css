@@ -136,11 +136,11 @@ body.is-fullscreen { }
 .btn-text { background: transparent; color: #666; border: none; }
 
 /* Строгие ряды списков */
-.list-row { display: grid; grid-template-columns: 16px 24px 1fr 24px 16px; align-items: center; box-sizing: border-box; border-bottom: 1px solid #e5e7eb; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); height: 56px; }
-.list-row .op img { width: 24px; height: 24px; object-fit: cover; display: block; }
-.list-row .phone { grid-column: 3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
-.list-row .op { grid-column: 2; justify-self: start; }
-.list-row .check { grid-column: 4; justify-self: end; display: flex; justify-content: center; }
+.list-row { display: flex; align-items: center; padding: 0 16px; box-sizing: border-box; border-bottom: 1px solid #e5e7eb; width: 100%; height: 56px; overflow: hidden; }
+.list-row .op { flex: 0 0 var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; }
+.list-row .op img { width: var(--check-size); height: var(--check-size); object-fit: cover; display: block; }
+.list-row .phone { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
+.list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
 .list-row .op { width: var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 1vw; }
