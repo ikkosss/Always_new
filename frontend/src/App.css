@@ -61,7 +61,7 @@ body.is-fullscreen { }
 /* Вернуть прежнюю форму логотипов мест (квадрат с скруглением) */
 .place-item button.w-24.h-24 { width: 88px !important; height: 88px !important; border-radius: 2%; overflow: hidden; border: 1px solid #e5e7eb; background: #fafafa; }
 .place-item img.w-full.h-full { border-radius: 2%; }
-.place-item .text-center { @apply font-normal text-sm; max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.place-item .text-center { text-align: center; font-weight: 400; font-size: 0.875rem; max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .place-item .tile { border: 1px solid #e5e7eb; background: #fafafa; }
 
 
