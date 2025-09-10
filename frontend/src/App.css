@@ -49,7 +49,7 @@ body.is-fullscreen { }
 
 /* Cards & Grid */
 .card { @apply bg-white border border-neutral-200 p-4; }
-.grid-3 { @apply grid grid-cols-3 gap-3; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; row-gap: 16px; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); box-sizing: border-box; }
 
 /* Плиточная рамка для каждого места на странице всех мест */
 .place-item { position: relative; }
