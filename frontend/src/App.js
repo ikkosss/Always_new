@@ -975,12 +975,14 @@ function PlaceDetails({ id }) {
       )}
 
       {ctxOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center p-4 z-[10001]" onClick={() => setCtxOpen(false)}>
-          <div className="bg-white w-full max-w-sm overflow-hidden relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => { setPromoOpen(true); setCtxOpen(false); }}>Промо‑материалы</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setCtxOpen(false); }}>Редактировать</button>
-            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>Удалить</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
+        <div className="fixed inset-0 bg-black/50 z-[10001]" onClick={() => setCtxOpen(false)}>
+          <div className="absolute" style={{ top: '72px', right: '1vw', zIndex: 10002 }} onClick={(e)=>e.stopPropagation()}>
+            <div className="bg-white border border-neutral-200 shadow-lg">
+              <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => { setPromoOpen(true); setCtxOpen(false); }}>Промо‑материалы</button>
+              <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setCtxOpen(false); }}>Редактировать</button>
+              <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>Удалить</button>
+              <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
+            </div>
           </div>
         </div>
       )}
