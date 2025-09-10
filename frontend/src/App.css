@@ -144,7 +144,7 @@ body.is-fullscreen { }
 .list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
-.list-row .op { width: var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 1vw; }
+.list-row .op { width: var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 0.5vw; }
 .list-row .op img { width: var(--check-size); height: var(--check-size); border-radius: 3px; object-fit: cover; display: block; }
 
 /* Контейнер ширины как у строк списка (для подсказок/заголовков) */
