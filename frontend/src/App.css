@@ -140,7 +140,7 @@ body.is-fullscreen { }
 .list-row::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
 .list-row .op { flex: 0 0 var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .op img { width: var(--check-size); height: var(--check-size); object-fit: cover; display: block; }
-.list-row .phone { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
+.list-row .phone { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
 .list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
