@@ -1226,7 +1226,7 @@ function PlacesPage() {
               <div className="card-wrap">
                 <button className="w-full aspect-square overflow-hidden flex items-center justify-center relative tile" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                   {p.hasLogo ? (
-                    <img alt={p.name} className="w-full h-full object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${p.id}/logo`} />
+                    <img alt={p.name} className="w-[92%] h-[92%] object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${p.id}/logo`} />
                   ) : (
                     <div className="text-neutral-400 text-xs">нет лого</div>
                   )}
