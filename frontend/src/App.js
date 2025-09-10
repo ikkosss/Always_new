@@ -906,7 +906,11 @@ function PlaceDetails({ id }) {
                 <span style={{ lineHeight: 1 }}>{place.name}</span>
               </div>
               {place?.comment && (
-                <div className="place-comment whitespace-pre-line mt-1 truncate" style={{ maxWidth: '100%' }}>
+                <div
+                  className="place-comment whitespace-pre-line mt-1 clamp-4 cursor-pointer"
+                  style={{ maxWidth: 'calc(100% - 10px)', paddingRight: '10px' }}
+                  onClick={() => setPromoOpen && setPromoOpen(false) || setCommentDialogOpen(true)}
+                >
                   {place.comment}
                 </div>
               )}
