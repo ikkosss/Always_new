@@ -1175,10 +1175,10 @@ function PlacesPage() {
       <div className="p-4">
         <div className="filter-bar top-base">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>
-            {SORT_OPTIONS.find(o=>o.key===filter.sort)?.label || 'Сортировка'}
+            Сортировка
           </button>
           <button className="filter-btn" onClick={()=> setCatOpen(true)}>
-            {filter.category ? filter.category : 'Категории'}
+            Категории
           </button>
         </div>
 
