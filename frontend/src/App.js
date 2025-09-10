@@ -890,7 +890,7 @@ function PlaceDetails({ id }) {
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 flex-1 min-w-0">
             {place.hasLogo && (
-              <img alt={place.name} className="w-20 h-20 object-cover" style={{ borderRadius: '2%', marginLeft: 'calc(20px - var(--pad-x))' }} src={`${API}/places/${id}/logo`} />
+              <img alt={place.name} className="w-20 h-20 object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${id}/logo`} />
             )}
             <div className="flex flex-col flex-1 min-w-0">
               <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
