@@ -141,7 +141,7 @@ body.is-fullscreen { }
 .list-row .op { flex: 0 0 var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .op img { width: var(--check-size); height: var(--check-size); object-fit: cover; display: block; }
 .list-row .phone { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
-.list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: center; }
+.list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: center; margin-right: 0; }
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
 
 .list-row .op { width: var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 0; }
