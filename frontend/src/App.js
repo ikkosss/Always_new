@@ -917,7 +917,7 @@ function PlaceDetails({ id }) {
               )}
             </div>
           </div>
-          <div className="relative" style={{ alignSelf: 'flex-start' }}>
+          <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '22px' }}>
             <button
               onClick={(e)=>{ e.stopPropagation(); setCtxOpen(true); setCtxTarget(place); }}
               className="select-none place-dots dots-btn"
