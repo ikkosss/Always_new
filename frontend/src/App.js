@@ -929,26 +929,28 @@ function PlaceDetails({ id }) {
           </div>
         </div>
 
-        <div>
-          {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
-            <div key={n.id} className="list-row">
-              <div className="op"><img alt="logo" src={OPERATORS[n.operatorKey]?.icon} /></div>
-              <div className="phone font-medium">{n.phone}</div>
-              <div className="check">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  checked={!!usedMap[n.id]}
-                  onChange={(e)=> {
-                    if (confirm('Вы уверены, что хотите изменить?')) {
-                      setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          ))}
         </div>
+      </div>
+
+      <div>
+        {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
+          <div key={n.id} className="list-row">
+            <div className="op"><img alt="logo" src={OPERATORS[n.operatorKey]?.icon} /></div>
+            <div className="phone font-medium">{n.phone}</div>
+            <div className="check">
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={!!usedMap[n.id]}
+                onChange={(e)=> {
+                  if (confirm('Вы уверены, что хотите изменить?')) {
+                    setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
+                  }
+                }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
 
       {commentDialogOpen && (
