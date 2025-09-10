@@ -165,6 +165,8 @@ body.is-fullscreen { }
 
 /* Шапка страницы номера с симметрией отступов и высотой точек = высоте иконки */
 .number-header { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: var(--op-size); --nh-edge-spaces: 2ch; }
+/* ensure left-aligned block can touch the screen edge */
+.place-header { width: 100vw; margin-left: calc(50% - 50vw); }
 .number-header .op { position: absolute; left: calc(var(--nh-edge-spaces) - 1px); top: 50%; transform: translateY(-50%); width: var(--op-size); height: var(--op-size); display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
 .number-header .op img { width: calc(var(--op-size) - 4px); height: calc(var(--op-size) - 4px); border-radius: 5%; object-fit: cover; display: block; }
 .number-header .number-left { position: absolute; left: calc(var(--nh-edge-spaces) + var(--op-size) + 1ch); top: 50%; transform: translateY(-45%); text-align: left; font-size: calc(var(--op-size) * 0.75); line-height: var(--op-size); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100vw - (var(--nh-edge-spaces) + var(--op-size) + 1ch + var(--op-size) + var(--nh-edge-spaces))); }
