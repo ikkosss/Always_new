@@ -970,6 +970,9 @@ function PlaceDetails({ id }) {
                 <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
 
       {ctxOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center p-4 z-[10001]" onClick={() => setCtxOpen(false)}>
