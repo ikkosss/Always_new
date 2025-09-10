@@ -1224,7 +1224,7 @@ function PlacesPage() {
               onClick={() => onItemClick(p)}
             >
               <div className="card-wrap">
-                <button className="w-[104px] h-[104px] overflow-hidden flex items-center justify-center relative tile" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
+                <button className="w-full aspect-square overflow-hidden flex items-center justify-center relative tile" onClick={(e)=>{ e.stopPropagation(); nav(`/places/${p.id}`); }}>
                   {p.hasLogo ? (
                     <img alt={p.name} className="w-full h-full object-cover" style={{ borderRadius: '2%' }} src={`${API}/places/${p.id}/logo`} />
                   ) : (
