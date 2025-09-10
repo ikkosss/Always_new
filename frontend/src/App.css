@@ -51,6 +51,12 @@ body.is-fullscreen { }
 .card { @apply bg-white border border-neutral-200 p-4; }
 .grid-3 { @apply grid grid-cols-3 gap-3; }
 
+/* Плиточная рамка для каждого места на странице всех мест */
+.place-item { position: relative; }
+.place-item .tile { border: 1px solid #e5e7eb; background: #fafafa; }
+.place-item .card-wrap { border: 1px solid #e5e7eb; background: #fff; width: 100%; padding: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.place-item .name { @apply text-center text-sm font-normal text-black mt-1 truncate w-24; }
+
 /* Картинки логотипов мест — строгие плитки */
 /* Вернуть прежнюю форму логотипов мест (квадрат с скруглением) */
 .place-item button.w-24.h-24 { width: 88px !important; height: 88px !important; border-radius: 2%; overflow: hidden; border: 1px solid #e5e7eb; background: #fafafa; }
