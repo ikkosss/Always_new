@@ -57,6 +57,7 @@ body.is-fullscreen { }
 
 /* header dots align and size */
 .place-dots { font-size: calc(1.5rem); line-height: 1; padding: 0; margin: 0; }
+.dots-btn { padding: 0 !important; margin: 0 !important; border: none; background: transparent; line-height: 1; width: auto; height: auto; display: inline-flex; align-items: flex-start; justify-content: center; }
 
 /* 4-line clamp utility */
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
