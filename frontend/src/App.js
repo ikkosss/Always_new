@@ -995,6 +995,8 @@ function PlaceDetails({ id }) {
         </div>
       </div>
 
+      <div className="mt-5 px-[var(--pad-x)] text-sm text-neutral-600">Отмечайте галочкой использованные номера:</div>
+
       <div>
         {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
           <div key={n.id} className="list-row">
