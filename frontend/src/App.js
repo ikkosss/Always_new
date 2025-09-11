@@ -1330,7 +1330,7 @@ function PlacesPage() {
                 />
                 <button 
                   type="button"
-                  className="px-3 bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg h-[43px]"
+                  className="bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg w-[43px] h-[43px] flex items-center justify-center p-0 rounded-none"
                   onClick={handlePlusClick}
                   title="Добавить поле"
                 >
