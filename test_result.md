@@ -149,7 +149,7 @@
     implemented: true
     working: false
     file: "App.js"
-    stuck_count: 3
+    stuck_count: 4
     priority: "high"
     needs_retesting: false
     status_history:
@@ -159,6 +159,9 @@
         - working: false
         - agent: "testing"
         - comment: "TESTED: NumberDetails page loads correctly with proper framed header and ⋮ button (title='Меню'). Button is visible, enabled, and clickable. However, CRITICAL ISSUE: Menu does not appear after clicking despite multiple click methods (regular click, force click, JavaScript click, event dispatch, touch events). Console shows 'Unable to preventDefault inside passive event listener invocation' error. The React Portal menu with z-index 2147483647 is not rendering or becoming visible. This indicates a JavaScript/React state management issue where the nbMenuOpen state is not being properly set to true when the button is clicked. All UI elements are present but the click handler is not functioning correctly."
+        - working: false
+        - agent: "testing"
+        - comment: "RE-TESTED after event handler fix: Successfully navigated to NumberDetails page (URL: /numbers/ae1a2f25-bce1-4362-8bb9-a44f7deab5a5). ⋮ button is visible, enabled, and clickable. CRITICAL ISSUE PERSISTS: Menu still does not appear after clicking. Tested multiple click methods (force click, JavaScript click, event dispatch) - none work. No console errors detected. The openNbMenu function is not properly setting nbMenuOpen state to true. React Portal with menu items ('Редактировать', 'Удалить') is not rendering. This is a persistent React state management bug that requires main agent investigation into the openNbMenu function and nbMenuOpen state handling."
 
 ## metadata:
   created_by: "main_agent"
