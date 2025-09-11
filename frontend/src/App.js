@@ -755,20 +755,6 @@ function NumberDetails({ id }) {
                 </div>
               </div>
             </div>
-            {/* Слой 5: три точки */}
-            <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px', zIndex: 20001 }}>
-              <button
-                type="button"
-                ref={nbDotsRef}
-                onClick={openNbMenu}
-                onTouchStart={openNbMenu}
-                onPointerDown={openNbMenu}
-                className="select-none place-dots dots-btn"
-                title="Меню"
-              >
-                ⋮
-              </button>
-            </div>
           </div>
         </div>
 
