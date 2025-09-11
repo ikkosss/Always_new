@@ -403,7 +403,7 @@ function SearchPage() {
       </div>
 
       {confirmAdd.open && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10020]" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Подтверждение</div>
             <div className="text-sm text-neutral-700 mb-4">
