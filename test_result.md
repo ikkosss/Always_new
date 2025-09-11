@@ -165,8 +165,9 @@
 
 ## test_plan:
   current_focus:
-    - "Add НАЙТИ button and auto-dialog functionality"
-  stuck_tasks: []
+    - "NumberDetails header copied from PlaceDetails; ⋮ menu and Edit dialog accessibility"
+  stuck_tasks:
+    - "NumberDetails header/menu persistent device-specific clickability issue"
   test_all: false
   test_priority: "high_first"
 
