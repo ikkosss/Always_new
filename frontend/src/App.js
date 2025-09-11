@@ -1419,7 +1419,7 @@ function PlacesPage() {
               <textarea 
                 className="search-input" 
                 placeholder="Комментарий" 
-                rows="3"
+                rows="6"
                 value={form.comment} 
                 onChange={(e)=>setForm({...form, comment: e.target.value})} 
               />
