@@ -990,6 +990,20 @@ function PlaceDetails({ id }) {
               }}>
                 <span style={{ lineHeight: 1 }}>{place.name}</span>
               </div>
+              <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
+                {(() => {
+                  const pad = (n) => String(n).padStart(2, '0');
+                  const src = place?.updatedAt || place?.lastActionAt;
+                  if (!src) return '';
+                  const d = new Date(src);
+                  const DD = pad(d.getDate());
+                  const MM = pad(d.getMonth()+1);
+                  const YYYY = d.getFullYear();
+                  const HH = pad(d.getHours());
+                  const mm = pad(d.getMinutes());
+                  return (<><span className="font-medium">Последнее действие:</span> {`${DD}.${MM}.${YYYY} в ${HH}:${mm}`}</>);
+                })()}
+              </div>
               {place?.comment && (
                 <div
                   className="place-comment whitespace-pre-line mt-1 clamp-2 cursor-pointer"
