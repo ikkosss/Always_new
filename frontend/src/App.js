@@ -379,8 +379,8 @@ function SearchPage() {
             <div className="suggestions w-full">
               {results.numbers.map((n) => (
                 <div key={n.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/numbers/${n.id}`)}>
-                  <div className="w-6 h-6 overflow-hidden flex items-center justify-center">
-                    <img alt="logo" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain"/>
+                  <div className="w-6 h-6 overflow-hidden flex items-center justify-center sugg-box">
+                    <img alt="logo" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain sugg-logo"/>
                   </div>
                   <div className="flex-1">{n.phone}</div>
                   <div className="text-neutral-400 text-xs">номер</div>
@@ -388,8 +388,8 @@ function SearchPage() {
               ))}
               {results.places.map((p) => (
                 <div key={p.id} className="suggestion flex items-center gap-3" onClick={() => (window.location.href = `/places/${p.id}`)}>
-                  <div className="w-6 h-6 bg-neutral-200 overflow-hidden flex items-center justify-center">
-                    {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover" src={`${API}/places/${p.id}/logo`} />}
+                  <div className="w-6 h-6 bg-neutral-200 overflow-hidden flex items-center justify-center sugg-box">
+                    {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover sugg-logo" src={`${API}/places/${p.id}/logo`} />}
                   </div>
                   <div className="flex-1">{p.name}</div>
                   <div className="text-neutral-400 text-xs">место</div>
