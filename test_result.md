@@ -145,6 +145,18 @@
         - agent: "main"
         - comment: "Successfully implemented НАЙТИ button in search field. When search returns no results and user clicks НАЙТИ or presses Enter: 1) If input contains only digits, opens number dialog with pre-filled phone number 2) If input contains letters, opens place dialog with pre-filled name. Both button click and Enter key work perfectly. Tested manually with phone numbers and place names."
 
+  - task: "NumberDetails header copied from PlaceDetails; ⋮ menu and Edit dialog accessibility"
+    implemented: true
+    working: false
+    file: "App.js"
+    stuck_count: 2
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "main"
+        - comment: "Implemented PlaceDetails-like framed header on NumberDetails with operator 48x48, phone as title (marquee), no comment, bottom-aligned last-event line shown iff there is at least one saved usage change. ⋮ menu rendered via portal with max z-index; items reduced to 'Редактировать' and 'Удалить'. Requires UI automation test: tap ⋮ -> open menu -> tap 'Редактировать' -> edit dialog appears."
+
 ## metadata:
   created_by: "main_agent"
   version: "1.0"  
