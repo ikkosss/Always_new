@@ -177,6 +177,9 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 [data-page="place"] .list-row .op img { border-radius: 1% !important; }
 /* precise rule for operator icons inside list rows */
 .list-row .op img[src*="/operators/"] { border-radius: 1px !important; }
+/* force 1px rounding for small operator icons with Tailwind classes */
+img.w-6.h-6.object-contain.rounded-\[3px\] { border-radius: 1px !important; }
+img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
 .list-row .phone { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 10px; font-weight: 300; }
 .list-row .check { flex: 0 0 var(--check-size); display: flex; align-items: center; justify-content: flex-end; margin-right: 0; } /* right padding on row supplies the 20px gap to screen edge */
 .list-row .phone { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
