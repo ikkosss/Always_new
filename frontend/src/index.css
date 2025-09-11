@@ -82,11 +82,10 @@ code {
 html, body { overflow-x: hidden; }
 
 /* Splash screen */
-#splash { position: fixed; inset: 0; background: #227EEF; display: grid; place-items: center; z-index: 999999; }
+#splash { position: fixed; inset: 0; background: #227EEF; display: none; place-items: center; z-index: 999999; }
 #splash img { width: 100vw; height: auto; display: block; }
-
-/* Hide splash after time */
-.splash-hide #splash { display: none; }
+/* Показываем заставку только когда явно включено тело .splash-show */
+.splash-show #splash { display: grid; }
 }
 
 /* Ensure consistent page background on all screens */
