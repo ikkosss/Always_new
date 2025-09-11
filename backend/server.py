@@ -201,7 +201,14 @@ async def number_usage(number_id: str):
         {k: v for k, v in p.items() if k not in ["logo", "_id"]}
         for p in places if p["id"] in unused_place_ids
     ]
-    return {"used": used, "unused": unused}
+    # Compute last event time = latest usage.updatedAt (if any)
+    last_event_dt = None
+    for u in usage_list:
+        dt = u.get("updatedAt")
+        if dt and (last_event_dt is None or dt > last_event_dt):
+            last_event_dt = dt
+    last_event = last_event_dt.isoformat() if last_event_dt else None
+    return {"used": used, "unused": unused, "lastEventAt": last_event}
 
 # ---------------------
 # Places
