@@ -765,6 +765,10 @@ function NumberDetails({ id }) {
                 <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
                   if (!el) return;
                   const check = () => {
+                {debugDots && dotRect && (
+                  <div style={{ position: 'fixed', left: dotRect.x, top: dotRect.y, width: dotRect.w, height: dotRect.h, border: '2px solid red', zIndex: 2147483646, pointerEvents: 'none' }} />
+                )}
+
                     const span = el.querySelector('span');
                     if (!span) return;
                     const overflow = span.scrollWidth > el.clientWidth;
