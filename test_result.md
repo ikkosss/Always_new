@@ -170,7 +170,7 @@
   current_focus:
     - "NumberDetails header copied from PlaceDetails; ⋮ menu and Edit dialog accessibility"
   stuck_tasks:
-    - "NumberDetails header/menu persistent device-specific clickability issue"
+    - "NumberDetails ⋮ menu click handler not functioning - React state management issue"
   test_all: false
   test_priority: "high_first"
 
