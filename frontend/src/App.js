@@ -990,9 +990,7 @@ function PlaceDetails({ id }) {
                     <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(url)}>⧉</button>
                   </div>
                 </div>
-              ) : (
-                <div className="text-sm text-neutral-500">Ссылка не указана</div>
-              ); })()}
+              ) : null; })()}
 
               <div className="flex justify-end">
                 <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
