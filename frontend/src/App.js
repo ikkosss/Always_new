@@ -977,7 +977,7 @@ function PlaceDetails({ id }) {
                   <div className="text-sm text-neutral-600 mb-1">Актуальный промокод</div>
                   <div className="promo-row">
                     <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{code}</div>
-                    <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(code)}>⧉</button>
+                    <button className="btn-copy" title="Скопировать" onClick={()=>{ navigator.clipboard.writeText(code); const el=this; }}>{"⧉"}</button>
                   </div>
                 </div>
               ) : null; })()}
