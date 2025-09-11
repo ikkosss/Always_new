@@ -483,7 +483,7 @@ function NumbersPage() {
     if (sortKey === 'usedLeast') arr = arr.slice().sort((a,b)=> (a.usedCount||0) - (b.usedCount||0));
     setItems(arr);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [sortKey, opFilter]);
 
   const onPhoneChange = (val) => {
     setForm((f) => ({ ...f, phone: formatRuPhonePartial(val) }));
