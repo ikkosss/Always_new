@@ -70,12 +70,4 @@ const coldStart = !sessionStorage.getItem('appInitialized');
 showSplashFor(coldStart ? 3000 : 1000);
 sessionStorage.setItem('appInitialized', '1');
 
-// Show short splash when returning from background
-let wasHidden = false;
-window.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') wasHidden = true;
-  if (document.visibilityState === 'visible' && wasHidden) {
-    wasHidden = false;
-    showSplashFor(1000);
-  }
-});
+// No repeated splash on tab switching/resume
