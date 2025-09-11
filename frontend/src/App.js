@@ -636,9 +636,28 @@ function NumberDetails({ id }) {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
-  const [ctxOpen, setCtxOpen] = useState(false);
-  const [ctxTarget, setCtxTarget] = useState(null);
+  // контекстное меню (локально для страницы номера)
+  const nbDotsRef = useRef(null);
+  const [nbMenuOpen, setNbMenuOpen] = useState(false);
+  const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
+
+  const openNbMenu = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    try {
+      const rect = nbDotsRef.current ? nbDotsRef.current.getBoundingClientRect() : null;
+      if (rect) {
+        const menuW = 280;
+        const pad = 8;
+        let left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
+        let top = Math.max(0, rect.bottom + pad);
+        setNbMenuPos({ top, left, right: null });
+      } else {
+        setNbMenuPos(prev => ({ ...prev, right: '1vw' }));
+      }
+    } catch { /* ignore */ }
+    setNbMenuOpen(true);
+  };
 
 
   const load = async () => {
