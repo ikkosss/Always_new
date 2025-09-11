@@ -177,3 +177,5 @@
 ## agent_communication:
     - agent: "main"
     - message: "Requesting frontend UI automation: On NumberDetails page, tap ⋮, verify menu opens, tap 'Редактировать', verify edit dialog is visible. Menu is rendered via React Portal with very high z-index. Please run this scenario and report if any overlay or pointer-events block the tap on Honor-like mobile viewport." 
+    - agent: "testing"
+    - message: "CRITICAL ISSUE IDENTIFIED: NumberDetails ⋮ menu click handler is not working. The button is properly implemented and clickable, but the React state (nbMenuOpen) is not being set to true when clicked. Console error: 'Unable to preventDefault inside passive event listener invocation' suggests event handling issue. The openNbMenu function may not be executing properly. This is a JavaScript/React functionality bug that prevents the menu from appearing despite the UI being correctly structured. REQUIRES MAIN AGENT TO FIX: Check event handlers, React state management, and ensure openNbMenu function is properly bound and executing." 
