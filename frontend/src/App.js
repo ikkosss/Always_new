@@ -44,6 +44,7 @@ function formatRuPhonePartial(raw) {
   if (rest.length > 6) res += " " + rest.slice(6, 8);
   if (rest.length > 8) res += " " + rest.slice(8, 10);
   return res;
+}
 
 function MeasureInputHeight({ targetRef }) {
   useEffect(() => {
