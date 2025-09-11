@@ -854,9 +854,8 @@ function NumberDetails({ id }) {
         <div className="fixed inset-0 bg-black/50" style={{ zIndex: 2147483647 }} onClick={()=> setNbBotOpen(false)}>
           <div className="absolute" style={{ bottom: `calc(var(--bn-h) + 60px + env(safe-area-inset-bottom))`, right: 16, zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
             <div className="bg-white modal-panel shadow-xl w-[280px] p-2 menu-list">
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50">тест 1</button>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50">тест 2</button>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50">тест 3</button>
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setNbBotOpen(false); }}>Редактировать</button>
+              <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbBotOpen(false); }}>Удалить</button>
             </div>
           </div>
         </div>, document.body)}
