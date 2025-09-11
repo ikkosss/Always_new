@@ -642,6 +642,7 @@ function NumberDetails({ id }) {
       api.get(`/numbers/${id}/usage`),
     ]);
     setNumber(n.data);
+    setLastAt(n.data?.updatedAt || n.data?.lastActionAt || n.data?.createdAt || null);
     setUsage(u.data);
     const m = {};
     (u.data.used || []).forEach(p => { m[p.id] = true; });
