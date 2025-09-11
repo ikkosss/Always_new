@@ -65,7 +65,8 @@ body.is-fullscreen { }
 /* framed header around logo+title+comment+dots with same thin line as search input */
 .place-head-frame { position: relative; box-sizing: border-box; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; padding-top: 6px; padding-bottom: 6px; padding-left: calc(20px - 1vw); padding-right: calc(20px - 1vw); margin-bottom: 8px; }
 
-/* 4-line clamp utility */
+/* 2-line & 4-line clamp utilities */
+.clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* Center file input button vertically inside 43px field */
