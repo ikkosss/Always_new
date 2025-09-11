@@ -1195,9 +1195,10 @@ function PlacesPage() {
   const [sortOpen, setSortOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
   const SORT_OPTIONS = [
-    { key: 'new', label: 'По новым' },
-    { key: 'old', label: 'По старым' },
-    { key: 'popular', label: 'По популярности' },
+    { key: 'new', label: 'Сначала новые' },
+    { key: 'old', label: 'Сначала старые' },
+    { key: 'popular', label: 'Наиболее используемые' },
+    { key: 'least', label: 'Наименее используемые' },
   ];
   const CAT_OPTIONS = ['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'];
   const [editing, setEditing] = useState(null);
