@@ -176,6 +176,10 @@ function PromoBadgeAuto({ imgSrc, onClick }){
     setConfirmNav(false);
     if (save && typeof window.__saveChanges === 'function') {
       try { await window.__saveChanges(); } catch (e) { /* ignore */ }
+      // обновим метку "последнее действие"
+      const now = new Date().toISOString();
+      setLastAt && setLastAt(now);
+      setPlace && setPlace((p)=> p ? ({...p, updatedAt: now }) : p);
     }
     // reset unsaved flag if discard
     if (!save) { window.__unsaved = false; }
