@@ -66,8 +66,8 @@ body.is-fullscreen { }
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* separators in modal lists (sort, categories, context menu) */
-.menu-list > button { position: relative; }
-.menu-list > button:not(:last-child)::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
+.menu-list > * { position: relative; }
+.menu-list > *:not(:last-child)::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
 
 /* Promo dialog rows */
 .promo-row { display: flex; align-items: center; gap: 8px; }
