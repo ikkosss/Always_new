@@ -98,7 +98,7 @@ body.is-fullscreen { }
   overflow: hidden;
   z-index: 10; /* ниже нижней навигации */
 }
-.search-input { @apply w-full px-4 py-3 outline-none; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; }
+.search-input { @apply w-full outline-none; height: 43px; padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; }
 
 /* Контейнер для поля поиска на всю ширину экрана без отступов */
 .search-input-container { width: 100%; max-width: none; padding: 0; }
