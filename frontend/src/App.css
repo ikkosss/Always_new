@@ -131,7 +131,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(var(--search-top, 50vh) + var(--search-half, 24px) + 8px);
+  /* Чуть ниже поля: низ инпута + 12px */
+  top: calc(var(--search-top, 50vh) + var(--search-h, 48px) + 12px);
   width: 98vw;
   z-index: 25;
 }
