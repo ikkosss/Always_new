@@ -823,9 +823,6 @@ function NumberDetails({ id }) {
         </div>
       )}
 
-        </div>
-      )}
-
                 {Object.entries(OPERATORS).map(([key, op]) => (
                   <option key={key} value={key}>{op.name}</option>
                 ))}
