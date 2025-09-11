@@ -333,12 +333,13 @@ function SearchPage() {
       fd.append("promoUrl", placeForm.promoUrl);
       fd.append("comment", placeForm.comment);
       if (placeForm.logo) fd.append("logo", placeForm.logo);
-      await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
+      const { data } = await api.post(`/places`, fd, { headers: { "Content-Type": "multipart/form-data" } });
       setShowPlaceDialog(false);
       setPlaceForm({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
       setQRaw("");
-      // Refresh results
-      window.location.reload();
+      // перейти сразу на страницу созданного места, если вернулся id
+      if (data?.id) window.location.href = `/places/${data.id}`;
+      else window.location.reload();
     } catch (e) {
       alert(e.response?.data?.detail || "Не удалось добавить место. Повторите позже");
     }
