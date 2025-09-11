@@ -1143,7 +1143,7 @@ function PlaceDetails({ id }) {
               <textarea 
                 className="search-input" 
                 placeholder="Комментарий" 
-                rows="4"
+                rows="8"
                 value={editForm.comment} 
                 onChange={(e)=>setEditForm({...editForm, comment: e.target.value})}
                 onFocus={() => {
