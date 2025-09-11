@@ -1007,7 +1007,7 @@ function PlaceDetails({ id }) {
               </div>
               {place?.comment && (
                 <div
-                  className="place-comment whitespace-pre-line mt-1 clamp-4 cursor-pointer"
+                  className="place-comment whitespace-pre-line mt-1 clamp-2 cursor-pointer"
                   style={{ width: 'calc(-126px + 100vw)', marginRight: '1px' }}
                   onClick={() => setCommentDialogOpen(true)}
                 >
