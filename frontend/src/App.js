@@ -233,6 +233,7 @@ function SearchPage() {
   const [showPlaceDialog, setShowPlaceDialog] = useState(false);
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+  const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
 
   const inputRef = useRef(null);
   useEffect(()=>{
