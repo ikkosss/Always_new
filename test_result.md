@@ -147,7 +147,7 @@
 
   - task: "NumberDetails header copied from PlaceDetails; ⋮ menu and Edit dialog accessibility"
     implemented: true
-    working: false
+    working: true
     file: "App.js"
     stuck_count: 4
     priority: "high"
@@ -162,6 +162,9 @@
         - working: false
         - agent: "testing"
         - comment: "RE-TESTED after event handler fix: Successfully navigated to NumberDetails page (URL: /numbers/ae1a2f25-bce1-4362-8bb9-a44f7deab5a5). ⋮ button is visible, enabled, and clickable. CRITICAL ISSUE PERSISTS: Menu still does not appear after clicking. Tested multiple click methods (force click, JavaScript click, event dispatch) - none work. No console errors detected. The openNbMenu function is not properly setting nbMenuOpen state to true. React Portal with menu items ('Редактировать', 'Удалить') is not rendering. This is a persistent React state management bug that requires main agent investigation into the openNbMenu function and nbMenuOpen state handling."
+        - working: true
+        - agent: "testing"
+        - comment: "TESTED SUCCESSFULLY after Portal repositioning fix: All functionality now working perfectly! Successfully navigated to NumberDetails page (URL: /numbers/86e6a6e6-9eab-4367-8b13-7a9717688a13). ⋮ button (title='Меню') is visible, enabled, and clickable. CRITICAL ISSUE RESOLVED: Menu now appears correctly after clicking with 'Редактировать' and 'Удалить' buttons visible and functional. Clicking 'Редактировать' successfully opens the 'Редактировать номер' dialog with all required elements (phone input, operator select, save/cancel buttons). No console errors detected. The Portal repositioning closer to the header in JSX structure has fixed the React state management issue. Complete test flow successful: ⋮ click → menu appears → edit click → dialog opens."
 
 ## metadata:
   created_by: "main_agent"
