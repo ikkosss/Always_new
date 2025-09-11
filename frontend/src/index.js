@@ -77,8 +77,7 @@ try {
     localStorage.setItem('splashLastShown', String(now));
   } else {
     // мгновенно скрыть, если не время показывать
-    const splash = document.getElementById('splash');
-    if (splash) document.body.classList.add('splash-hide');
+    // по новой схеме просто ничего не показываем (класс splash-show не ставим)
   }
 } catch (e) {
   // на всякий случай скрыть
