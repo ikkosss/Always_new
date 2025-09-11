@@ -52,9 +52,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 function showSplashFor(ms) {
   const splash = document.getElementById('splash');
   if (!splash) return;
-  document.body.classList.remove('splash-hide');
+  document.body.classList.add('splash-show');
   setTimeout(() => {
-    document.body.classList.add('splash-hide');
+    document.body.classList.remove('splash-show');
   }, ms);
 }
 
