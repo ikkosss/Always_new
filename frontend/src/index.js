@@ -81,8 +81,7 @@ try {
   }
 } catch (e) {
   // на всякий случай скрыть
-  const splash = document.getElementById('splash');
-  if (splash) document.body.classList.add('splash-hide');
+  // новая схема — ничего не делаем, заставка скрыта по умолчанию
 }
 
 // No repeated splash on tab switching/resume
