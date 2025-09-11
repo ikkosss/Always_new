@@ -1113,7 +1113,7 @@ function PlacesPage() {
   const [promoData, setPromoData] = useState({ code: "", url: "" });
   const [form, setForm] = useState({ 
     name: "", 
-    category: "Магазины", 
+    category: "", 
     promoCode: "", 
     promoCode2: "", 
     promoUrl: "", 
