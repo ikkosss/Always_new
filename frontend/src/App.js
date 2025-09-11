@@ -526,7 +526,7 @@ function NumbersPage() {
   };
 
   return (
-    <Page title="НОМЕРА" hideHeader topPadClass="pt-6">
+    <Page title="НОМЕРА" hideHeader topPadClass="pt-6" padX={false}>
       <div className="p-0 section">
         <div className="numbers-topbar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
