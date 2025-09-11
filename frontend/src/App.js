@@ -814,6 +814,15 @@ function NumberDetails({ id }) {
         </div>
 
 
+        {debugDots && dotRect && (
+          <div style={{ position: 'fixed', left: dotRect.x, top: dotRect.y, width: dotRect.w, height: dotRect.h, border: '2px solid red', zIndex: 2147483646, pointerEvents: 'none' }} />
+        )}
+        {debugDots && (
+          <div style={{ position: 'fixed', right: 6, top: 6, background: '#000', color: '#0f0', padding: '6px 8px', fontSize: 12, zIndex: 2147483647 }}>
+            ⋮ dbg: {dbg.clicks} taps, last {dbg.last}
+          </div>
+        )}
+
         {nbMenuOpen && createPortal(
           <div className="fixed inset-0 bg-black/50" style={{ zIndex: 2147483647 }} onClick={() => setNbMenuOpen(false)}>
             <div className="absolute" style={{ top: nbMenuPos.top, left: nbMenuPos.left ?? 'auto', right: nbMenuPos.right ?? 'auto', zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
