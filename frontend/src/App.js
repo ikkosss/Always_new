@@ -856,17 +856,6 @@ function NumberDetails({ id }) {
               <select className="search-input" value={editForm.operatorKey} onChange={(e) => setEditForm({ ...editForm, operatorKey: e.target.value })}>
 
 
-      {nbMenuOpen && createPortal(
-        <div className="fixed inset-0 bg-black/50" style={{ zIndex: 2147483647 }} onClick={() => setNbMenuOpen(false)}>
-          <div className="absolute" style={{ top: nbMenuPos.top, left: nbMenuPos.left ?? 'auto', right: nbMenuPos.right ?? 'auto', zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
-            <div className="bg-white modal-panel shadow-xl w-[280px] p-2 menu-list" style={{ pointerEvents: 'auto' }}>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setNbMenuOpen(false); }}>Редактировать</button>
-              <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbMenuOpen(false); }}>Удалить</button>
-            </div>
-          </div>
-        </div>, document.body)
-      }
-
                 {Object.entries(OPERATORS).map(([key, op]) => (
                   <option key={key} value={key}>{op.name}</option>
                 ))}
