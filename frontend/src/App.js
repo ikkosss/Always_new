@@ -854,7 +854,6 @@ function NumberDetails({ id }) {
             <div className="bg-white modal-panel shadow-xl w-[280px] p-2 menu-list" style={{ pointerEvents: 'auto' }}>
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setNbMenuOpen(false); }}>Редактировать</button>
               <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbMenuOpen(false); }}>Удалить</button>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setNbMenuOpen(false)}>Отмена</button>
             </div>
           </div>
         </div>, document.body)
