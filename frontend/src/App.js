@@ -975,9 +975,9 @@ function PlaceDetails({ id }) {
               {(() => { const code = promoData.code || place?.promoCode || ""; return code ? (
                 <div>
                   <div className="text-sm text-neutral-600 mb-1">Актуальный промокод</div>
-                  <div className="flex items-center gap-2">
-                    <input className="search-input flex-1" readOnly value={code} />
-                    <button className="px-3 py-2 bg-blue-600 text-white" onClick={()=>navigator.clipboard.writeText(code)}>Копировать</button>
+                  <div className="promo-row">
+                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{code}</div>
+                    <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(code)}>⧉</button>
                   </div>
                 </div>
               ) : (
@@ -985,7 +985,13 @@ function PlaceDetails({ id }) {
               ); })()}
 
               {(() => { const url = promoData.url || place?.promoUrl || ""; return url ? (
-                <a className="px-4 py-2 bg-neutral-100 text-blue-700 underline text-left" href={url} target="_blank" rel="noreferrer">Перейти по ссылке</a>
+                <div>
+                  <div className="text-sm text-neutral-600 mb-1">Ссылка на акцию</div>
+                  <div className="promo-row">
+                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{url}</div>
+                    <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(url)}>⧉</button>
+                  </div>
+                </div>
               ) : (
                 <div className="text-sm text-neutral-500">Ссылка не указана</div>
               ); })()}
