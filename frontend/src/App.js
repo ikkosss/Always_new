@@ -713,51 +713,53 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section" data-page="number">
-        <div className="place-head-frame">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3 flex-1 min-w-0">
-              <img alt="operator" className="object-cover" style={{ width: '48px', height: '48px', borderRadius: '2%', marginLeft: '-3px' }} src={OPERATORS[number.operatorKey]?.icon} />
-              <div className="flex flex-col flex-1 min-w-0" style={{ height: '48px', justifyContent: 'space-between' }}>
-                <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
-                  if (!el) return;
-                  const check = () => {
-                    const span = el.querySelector('span');
-                    if (!span) return;
-                    const overflow = span.scrollWidth > el.clientWidth;
-                    el.setAttribute('data-overflow', overflow ? 'true' : 'false');
-                  };
-                  requestAnimationFrame(check);
-                  window.addEventListener('resize', check);
-                }}>
-                  <span style={{ lineHeight: 1 }}>{formatRuPhonePartial(number.phone || '')}</span>
-                </div>
-                <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
-                  {(() => {
-                    const pad = (n) => String(n).padStart(2, '0');
-                    const src = lastAt;
-                    if (!src) return '';
-                    const d = new Date(src);
-                    const DD = pad(d.getDate());
-                    const MM = pad(d.getMonth()+1);
-                    const YYYY = d.getFullYear();
-                    const HH = pad(d.getHours());
-                    const mm = pad(d.getMinutes());
-                    return (<><span className="font-medium">Последнее действие:</span> {`${DD}.${MM}.${YYYY} в ${HH}:${mm}`}</>);
-                  })()}
+        {[0,1].map(idx => (
+          <div key={idx} className="place-head-frame">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3 flex-1 min-w-0">
+                <img alt="operator" className="object-cover" style={{ width: '48px', height: '48px', borderRadius: '2%', marginLeft: '-3px' }} src={OPERATORS[number.operatorKey]?.icon} />
+                <div className="flex flex-col flex-1 min-w-0" style={{ height: '48px', justifyContent: 'space-between' }}>
+                  <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
+                    if (!el) return;
+                    const check = () => {
+                      const span = el.querySelector('span');
+                      if (!span) return;
+                      const overflow = span.scrollWidth > el.clientWidth;
+                      el.setAttribute('data-overflow', overflow ? 'true' : 'false');
+                    };
+                    requestAnimationFrame(check);
+                    window.addEventListener('resize', check);
+                  }}>
+                    <span style={{ lineHeight: 1 }}>{formatRuPhonePartial(number.phone || '')}</span>
+                  </div>
+                  <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
+                    {(() => {
+                      const pad = (n) => String(n).padStart(2, '0');
+                      const src = lastAt;
+                      if (!src) return '';
+                      const d = new Date(src);
+                      const DD = pad(d.getDate());
+                      const MM = pad(d.getMonth()+1);
+                      const YYYY = d.getFullYear();
+                      const HH = pad(d.getHours());
+                      const mm = pad(d.getMinutes());
+                      return (<><span className="font-medium">Последнее действие:</span> {`${DD}.${MM}.${YYYY} в ${HH}:${mm}`}</>);
+                    })()}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px' }}>
-              <button
-                onClick={(e)=>{ e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
-                className="select-none place-dots dots-btn"
-                title="Меню"
-              >
-                ⋮
-              </button>
+              <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px' }}>
+                <button
+                  onClick={(e)=>{ e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
+                  className="select-none place-dots dots-btn"
+                  title="Меню"
+                >
+                  ⋮
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
