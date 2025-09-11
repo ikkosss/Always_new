@@ -459,6 +459,10 @@ function SearchPage() {
 function NumbersPage() {
   const nav = useNavigate();
   const [items, setItems] = useState([]);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [opsOpen, setOpsOpen] = useState(false);
+  const [sortKey, setSortKey] = useState('new');
+  const [opFilter, setOpFilter] = useState({ mts: true, beeline: true, megafon: true, tele2: true });
   const [showDialog, setShowDialog] = useState(false);
   const [form, setForm] = useState({ phone: "", operatorKey: "mts" });
   const [editing, setEditing] = useState(null);
