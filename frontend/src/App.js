@@ -982,7 +982,7 @@ function PlaceDetails({ id }) {
                 </div>
               ) : null; })()}
 
-              {(() => { const url = promoData.url || place?.promoUrl || ""; return url ? (
+              {(() => { const url = promoData.url || place?.promoUrl || ""; if (url) return (
                 <div>
                   <div className="text-sm text-neutral-600 mb-1">Ссылка на акцию</div>
                   <div className="promo-row">
@@ -990,7 +990,7 @@ function PlaceDetails({ id }) {
                     <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(url)}>⧉</button>
                   </div>
                 </div>
-              ) : null; })()}
+              ); })()}
 
               <div className="flex justify-end">
                 <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
