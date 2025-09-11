@@ -68,6 +68,12 @@ body.is-fullscreen { }
 /* separators in modal lists (sort, categories, context menu) */
 .menu-list > button { position: relative; }
 .menu-list > button:not(:last-child)::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
+
+/* Promo dialog rows */
+.promo-row { display: flex; align-items: center; gap: 8px; }
+.promo-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-copy { width: 36px; height: 36px; border: 1px solid #d1d5db; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: 0; cursor: pointer; }
+.btn-copy:hover { background: #e5e7eb; }
 .place-item .card-wrap { border: 1px solid #e5e7eb; background: #fff; width: 100%; box-sizing: border-box; padding: 8px; display: flex; align-items: center; justify-content: flex-start; gap: 6px; flex-direction: column; border-radius: 0; }
 .place-item .name { text-align: center; font-size: 0.875rem; font-weight: 400; color: #000; margin-top: 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; min-width: 0; line-height: 1.2; height: 18px; }
 
