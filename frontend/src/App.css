@@ -291,7 +291,8 @@ img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
 /* [data-page="number"] img[src*="/operators/"] { display: none !important; }
 [data-page="number"] img[src*="/operators/"] + * { display: none !important; } */
 [data-page="number"] .number-inline, [data-page="number"] .nh-row, [data-page="number"] .number-header { display: none !important; }
-[data-page="number"] .place-head-frame { display: none !important; }
+/* Разрешаем использовать единый фрейм шапки и на странице номера */
+[data-page="number"] .place-head-frame { display: block !important; }
 
 
 /* Изображение над полем поиска */
