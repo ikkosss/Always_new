@@ -235,6 +235,20 @@ function SearchPage() {
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
+  // Плюсик в диалоге добавления места из поиска
+  const [showExtraPromoS, setShowExtraPromoS] = useState(false);
+  const [showPromoUrlS, setShowPromoUrlS] = useState(false);
+  const handlePlusClickS = (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    const lastClick = e.currentTarget.lastClick || 0;
+    if (now - lastClick < 300) {
+      setShowPromoUrlS(true);
+    } else {
+      setShowExtraPromoS(true);
+    }
+    e.currentTarget.lastClick = now;
+  };
 
   const inputRef = useRef(null);
   useEffect(()=>{
