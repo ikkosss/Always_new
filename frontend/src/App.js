@@ -644,6 +644,10 @@ function NumberDetails({ id }) {
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
   const [hasAnySavedUsage, setHasAnySavedUsage] = useState(false);
+  // Debug overlay for ⋮ button
+  const [debugDots, setDebugDots] = useState(false);
+  const [dbg, setDbg] = useState({ clicks: 0, last: '-' });
+  const [dotRect, setDotRect] = useState(null);
 
   const openNbMenu = (e) => {
     try {
