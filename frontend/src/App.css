@@ -68,6 +68,10 @@ body.is-fullscreen { }
 /* 4-line clamp utility */
 .clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
+/* Center file input button vertically inside 43px field */
+input[type="file"].search-input { height: 43px; padding: 0 12px; }
+input[type="file"].search-input::file-selector-button { height: 43px; line-height: 43px; padding: 0 12px; margin: 0; border: 1px solid #cbd5e1; background: #f9fafb; border-radius: 0; }
+
 /* separators in modal lists (sort, categories, context menu) */
 .menu-list > * { position: relative; }
 .menu-list > *:not(:last-child)::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
