@@ -19,8 +19,9 @@ body.is-fullscreen { }
 /* Базовая верхняя линия 20vh для всех верхних блоков */
 .top-base { margin-top: 20vh; }
 
-/* Единый верхний отступ секции на всех экранах, кроме экрана поиска */
-.section { margin-top: var(--section-top); }
+/* Единый верхний отступ: переносим в обёртку Page. Здесь секции без доп. отступа */
+.section { margin-top: 0; }
+/* Поиск имеет свои правила — без изменений */
 [data-page="search"] .section, .search-wrap + .section { margin-top: 0; }
 
 /* Bottom Nav (56px height) */
