@@ -48,8 +48,13 @@ window.addEventListener('orientationchange', setSearchTop);
 window.visualViewport && window.visualViewport.addEventListener('resize', setSearchTop);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+
+// show splash for 3.5s, then render app and hide splash
+setTimeout(() => {
+  document.body.classList.add('splash-hide');
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}, 3500);
