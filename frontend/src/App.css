@@ -289,10 +289,10 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 .search-promo-image {
 
 /* Новый единый бар вверху страницы номера */
-.nb-bar { display: grid; grid-template-columns: auto 1fr auto; align-items: center; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); padding: 6px 0; }
-.nb-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 5%; }
-.nb-number { font-size: 35px; line-height: 50px; margin-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nb-dots { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; }
+.nb-bar { display: grid; grid-template-columns: auto 1fr auto; align-items: start; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); padding: 6px 6px; border: 1px solid #e5e7eb; background: #fff; }
+.nb-logo { width: 80px; height: 80px; object-fit: cover; border-radius: 2%; margin-left: 20px; }
+.nb-number { font-size: 32px; line-height: 1; margin-left: 12px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nb-dots { width: 32px; height: 32px; display: flex; align-items: flex-start; justify-content: center; cursor: pointer; user-select: none; margin-right: 20px; }
 
   display: block;
   margin: 0 auto;
