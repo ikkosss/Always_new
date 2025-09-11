@@ -49,12 +49,33 @@ window.visualViewport && window.visualViewport.addEventListener('resize', setSea
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// show splash for 3.5s, then render app and hide splash
-setTimeout(() => {
-  document.body.classList.add('splash-hide');
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}, 3500);
+function showSplashFor(ms) {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+  document.body.classList.remove('splash-hide');
+  setTimeout(() => {
+    document.body.classList.add('splash-hide');
+  }, ms);
+}
+
+// Render app immediately; keep splash overlay to cover it for the desired time
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// Decide cold start vs warm resume
+const coldStart = !sessionStorage.getItem('appInitialized');
+showSplashFor(coldStart ? 3000 : 1000);
+sessionStorage.setItem('appInitialized', '1');
+
+// Show short splash when returning from background
+let wasHidden = false;
+window.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') wasHidden = true;
+  if (document.visibilityState === 'visible' && wasHidden) {
+    wasHidden = false;
+    showSplashFor(1000);
+  }
+});
