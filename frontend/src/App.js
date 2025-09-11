@@ -730,7 +730,7 @@ function NumberDetails({ id }) {
                 <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
                   {(() => {
                     const pad = (n) => String(n).padStart(2, '0');
-                    const src = number?.updatedAt || number?.lastActionAt || number?.createdAt;
+                    const src = lastAt;
                     if (!src) return '';
                     const d = new Date(src);
                     const DD = pad(d.getDate());
