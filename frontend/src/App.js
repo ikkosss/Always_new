@@ -519,8 +519,9 @@ function NumbersPage() {
   return (
     <Page title="НОМЕРА" hideHeader topPadClass="pt-6">
       <div className="p-0 section">
-        <div className="filter-bar-single">
-          <button className="filter-btn-full" onClick={()=> alert('Тут будет сортировка номеров')}>Сортировка</button>
+        <div className="filter-bar" style={{ gridTemplateColumns: '1fr 1fr' }}>
+          <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
+          <button className="filter-btn" onClick={()=> setOpsOpen(true)}>Операторы</button>
         </div>
         <div>
           {items.map((n) => (
