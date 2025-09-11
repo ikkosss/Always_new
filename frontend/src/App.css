@@ -141,8 +141,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
 .suggestion .flex-1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Скругление логотипов в подсказках 1.5% */
-.sugg-box { border-radius: 1.5%; }
-.sugg-logo { border-radius: 1.5%; }
+.sugg-box { border-radius: 2px; }
+.sugg-logo { border-radius: 2px; }
 
 /* Изображение: нижний край на расстоянии 200% высоты поискового окна выше верхнего края поля.
    Ширина изображения = 70% ширины экрана. */
