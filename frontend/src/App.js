@@ -715,6 +715,37 @@ function NumberDetails({ id }) {
   return (
     <Page title={number.phone} hideHeader>
       <div className="p-4 grid gap-4 section" data-page="number">
+        <div className="place-head-frame">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3 flex-1 min-w-0">
+              <img alt="operator" className="w-20 h-20 object-cover" style={{ borderRadius: '2%', marginLeft: '-3px' }} src={OPERATORS[number.operatorKey]?.icon} />
+              <div className="flex flex-col min-w-0" style={{ width: 'calc(100vw - 23px - 80px - 12px - 1px)' }}>
+                <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
+                  if (!el) return;
+                  const check = () => {
+                    const span = el.querySelector('span');
+                    if (!span) return;
+                    const overflow = span.scrollWidth > el.clientWidth;
+                    el.setAttribute('data-overflow', overflow ? 'true' : 'false');
+                  };
+                  requestAnimationFrame(check);
+                  window.addEventListener('resize', check);
+                }}>
+                  <span style={{ lineHeight: 1 }}>{String(number.phone || '').replace(/\s/g, '')}</span>
+                </div>
+              </div>
+            </div>
+            <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px' }}>
+              <button
+                onClick={(e)=>{ e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
+                className="select-none place-dots dots-btn"
+                title="Меню"
+              >
+                ⋮
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
