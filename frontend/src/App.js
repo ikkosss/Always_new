@@ -730,7 +730,7 @@ function NumberDetails({ id }) {
                   requestAnimationFrame(check);
                   window.addEventListener('resize', check);
                 }}>
-                  <span style={{ lineHeight: 1 }}>{String(number.phone || '').replace(/\s/g, '')}</span>
+                  <span style={{ lineHeight: 1 }}>{formatRuPhonePartial(number.phone || '')}</span>
                 </div>
                 <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
                   {(() => {
@@ -743,7 +743,7 @@ function NumberDetails({ id }) {
                     const YYYY = d.getFullYear();
                     const HH = pad(d.getHours());
                     const mm = pad(d.getMinutes());
-                    return `Последнее действие: ${DD}.${MM}.${YYYY} в ${HH}:${mm}`;
+                    return (<><span className="font-medium">Последнее действие:</span> {`${DD}.${MM}.${YYYY} в ${HH}:${mm}`}</>);
                   })()}
                 </div>
               </div>
