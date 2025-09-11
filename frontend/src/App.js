@@ -646,20 +646,27 @@ function NumberDetails({ id }) {
   const [hasAnySavedUsage, setHasAnySavedUsage] = useState(false);
 
   const openNbMenu = (e) => {
-    e.preventDefault(); e.stopPropagation();
     try {
-      const rect = nbDotsRef.current ? nbDotsRef.current.getBoundingClientRect() : null;
-      if (rect) {
-        const menuW = 280;
-        const pad = 8;
-        let left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
-        let top = Math.max(0, rect.bottom + pad);
-        setNbMenuPos({ top, left, right: null });
-      } else {
-        setNbMenuPos(prev => ({ ...prev, right: '1vw' }));
-      }
-    } catch { /* ignore */ }
-    setNbMenuOpen(true);
+      if (e && e.stopPropagation) e.stopPropagation();
+      // avoid preventDefault on passive events
+      if (e && e.cancelable && e.preventDefault) e.preventDefault();
+    } catch {}
+    // position and open on next frame to avoid same-tick bubbling issues
+    requestAnimationFrame(() => {
+      try {
+        const rect = nbDotsRef.current ? nbDotsRef.current.getBoundingClientRect() : null;
+        if (rect) {
+          const menuW = 280;
+          const pad = 8;
+          let left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
+          let top = Math.max(0, rect.bottom + pad);
+          setNbMenuPos({ top, left, right: null });
+        } else {
+          setNbMenuPos(prev => ({ ...prev, right: '1vw' }));
+        }
+      } catch {}
+      setNbMenuOpen(true);
+    });
   };
 
 
