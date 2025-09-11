@@ -718,8 +718,8 @@ function NumberDetails({ id }) {
         <div className="place-head-frame">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3 flex-1 min-w-0">
-              <img alt="operator" className="w-20 h-20 object-cover" style={{ borderRadius: '2%', marginLeft: '-3px' }} src={OPERATORS[number.operatorKey]?.icon} />
-              <div className="flex flex-col min-w-0" style={{ width: 'calc(100vw - 23px - 80px - 12px - 1px)' }}>
+              <img alt="operator" className="object-cover" style={{ width: '48px', height: '48px', borderRadius: '2%', marginLeft: '-3px' }} src={OPERATORS[number.operatorKey]?.icon} />
+              <div className="flex flex-col flex-1 min-w-0" style={{ height: '48px', justifyContent: 'space-between' }}>
                 <div className="marquee text-2xl font-semibold min-w-0" style={{ display: 'flex', alignItems: 'flex-start', lineHeight: 1 }} ref={el=>{
                   if (!el) return;
                   const check = () => {
@@ -732,6 +732,20 @@ function NumberDetails({ id }) {
                   window.addEventListener('resize', check);
                 }}>
                   <span style={{ lineHeight: 1 }}>{String(number.phone || '').replace(/\s/g, '')}</span>
+                </div>
+                <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
+                  {(() => {
+                    const pad = (n) => String(n).padStart(2, '0');
+                    const src = number?.updatedAt || number?.lastActionAt || number?.createdAt;
+                    if (!src) return '';
+                    const d = new Date(src);
+                    const DD = pad(d.getDate());
+                    const MM = pad(d.getMonth()+1);
+                    const YYYY = d.getFullYear();
+                    const HH = pad(d.getHours());
+                    const mm = pad(d.getMinutes());
+                    return `Последнее действие: ${DD}.${MM}.${YYYY} в ${HH}:${mm}`;
+                  })()}
                 </div>
               </div>
             </div>
