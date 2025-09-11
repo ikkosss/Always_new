@@ -636,6 +636,8 @@ function NumberDetails({ id }) {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxTarget, setCtxTarget] = useState(null);
   // контекстное меню (локально для страницы номера)
   const nbDotsRef = useRef(null);
   const [nbMenuOpen, setNbMenuOpen] = useState(false);
