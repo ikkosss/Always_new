@@ -649,6 +649,9 @@ function NumbersPage() {
                 </label>
               ))}
             </div>
+            <div className="flex justify-end gap-2 mt-3">
+              <button className="btn btn-primary" onClick={()=>setOpsOpen(false)}>OK</button>
+            </div>
           </div>
         </div>
       )}
