@@ -515,6 +515,9 @@ function NumbersPage() {
   return (
     <Page title="НОМЕРА" hideHeader topPadClass="pt-6">
       <div className="p-0 section">
+        <div className="filter-bar-single">
+          <button className="filter-btn-full" onClick={()=> alert('Тут будет сортировка номеров')}>Сортировка</button>
+        </div>
         <div>
           {items.map((n) => (
             <LongPressable
