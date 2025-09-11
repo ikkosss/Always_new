@@ -105,7 +105,9 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   left: 0;
   overflow: hidden;
   z-index: 10; /* ниже нижней навигации */
+  pointer-events: none; /* чтобы оверлеи модалок всегда были поверх */
 }
+.search-wrap * { pointer-events: auto; } /* внутри элементы по-прежнему интерактивны */
 .search-input { @apply w-full outline-none; height: 43px; padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; }
 
 /* Контейнер для поля поиска на всю ширину экрана без отступов */
