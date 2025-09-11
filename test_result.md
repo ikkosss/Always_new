@@ -149,13 +149,16 @@
     implemented: true
     working: false
     file: "App.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
         - agent: "main"
         - comment: "Implemented PlaceDetails-like framed header on NumberDetails with operator 48x48, phone as title (marquee), no comment, bottom-aligned last-event line shown iff there is at least one saved usage change. ⋮ menu rendered via portal with max z-index; items reduced to 'Редактировать' and 'Удалить'. Requires UI automation test: tap ⋮ -> open menu -> tap 'Редактировать' -> edit dialog appears."
+        - working: false
+        - agent: "testing"
+        - comment: "TESTED: NumberDetails page loads correctly with proper framed header and ⋮ button (title='Меню'). Button is visible, enabled, and clickable. However, CRITICAL ISSUE: Menu does not appear after clicking despite multiple click methods (regular click, force click, JavaScript click, event dispatch, touch events). Console shows 'Unable to preventDefault inside passive event listener invocation' error. The React Portal menu with z-index 2147483647 is not rendering or becoming visible. This indicates a JavaScript/React state management issue where the nbMenuOpen state is not being properly set to true when the button is clicked. All UI elements are present but the click handler is not functioning correctly."
 
 ## metadata:
   created_by: "main_agent"
