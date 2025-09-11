@@ -760,6 +760,8 @@ function PlaceDetails({ id }) {
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoData, setPromoData] = useState({ code: "", url: "" });
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [copied, setCopied] = useState({ code: false, url: false });
+  useEffect(() => { if (promoOpen) setCopied({ code: false, url: false }); }, [promoOpen]);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
   const pendingRouteRef = useRef(null);
