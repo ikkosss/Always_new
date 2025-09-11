@@ -47,6 +47,21 @@ window.addEventListener('orientationchange', setSearchTop);
 // На открытие клавиатуры (мобильные браузеры меняют viewport height)
 window.visualViewport && window.visualViewport.addEventListener('resize', setSearchTop);
 
+// Глобальная поддержка подъёма модалок при появлении клавиатуры
+function setupModalLift() {
+  try {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const handler = () => {
+      const keyboardShown = Math.abs(window.innerHeight - vv.height) > 120; // эвристика
+      document.documentElement.style.setProperty('--vv-lift', keyboardShown ? `${(window.innerHeight - vv.height)}px` : '0px');
+    };
+    vv.addEventListener('resize', handler);
+    handler();
+  } catch {}
+}
+setupModalLift();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 function showSplashFor(ms) {
