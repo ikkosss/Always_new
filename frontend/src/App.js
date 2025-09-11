@@ -970,7 +970,7 @@ function PlaceDetails({ id }) {
       {promoOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Промо</div>
+            <div className="text-lg font-semibold mb-2">Промо-материалы</div>
             <div className="grid gap-3">
               {promoData.code ? (
                 <div>
