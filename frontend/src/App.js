@@ -583,13 +583,6 @@ function NumbersPage() {
                 </label>
               ))}
             </div>
-            <div className="flex justify-between mt-3 px-3 pb-2">
-              <button className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200" onClick={()=> setOpFilter(Object.fromEntries(Object.keys(OPERATORS).map(k=>[k,true])))}>Выбрать все</button>
-              <div className="flex items-center gap-2">
-                <button className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200" onClick={()=> setOpFilter(Object.fromEntries(Object.keys(OPERATORS).map(k=>[k,false])))}>Очистить</button>
-                <button className="px-3 py-2" onClick={()=> setOpsOpen(false)}>Готово</button>
-              </div>
-            </div>
           </div>
         </div>
       )}
