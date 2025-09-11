@@ -978,8 +978,8 @@ function PlaceDetails({ id }) {
                 <div>
                   <div className="text-sm text-neutral-600 mb-1">Актуальный промокод</div>
                   <div className="promo-row">
-                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{code}</div>
-                    <button className="btn-copy" title="Скопировать" onClick={()=>{ navigator.clipboard.writeText(code); const el=this; }}>{"⧉"}</button>
+                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{copied.code ? 'СКОПИРОВАНО' : code}</div>
+                    <button className="btn-copy" title="Скопировать" onClick={()=>{ navigator.clipboard.writeText(code); setCopied(prev=>({...prev, code:true})); }}>{"⧉"}</button>
                   </div>
                 </div>
               ) : null; })()}
