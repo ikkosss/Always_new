@@ -347,7 +347,7 @@ function SearchPage() {
   };
 
   return (
-    <Page title="ПОИСК" hideHeader center wide padX={false}>
+    <Page title="ПОИСК" hideHeader center wide padX={false} skipSafeTop>
       <div className="search-wrap">
         <img src="/promofon.png" alt="Promo" className="search-promo-image" />
 
