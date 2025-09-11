@@ -1065,6 +1065,7 @@ function PlaceDetails({ id }) {
                 onChange={(e)=> {
                   if (confirm('Вы уверены, что хотите изменить?')) {
                     setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
+                    window.__unsaved = true;
                   }
                 }}
               />
