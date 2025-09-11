@@ -775,6 +775,7 @@ function NumberDetails({ id }) {
                   onChange={(e)=> {
                     if (confirm('Вы уверены, что хотите изменить?')) {
                       setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }));
+                      window.__unsaved = true;
                     }
                   }}
                 />
