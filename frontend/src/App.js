@@ -296,15 +296,11 @@ function SearchPage() {
   const handleSearch = () => {
     if (!qRaw.trim()) return;
     if (noFound) {
+      // вместо мгновенного открытия диалогов показываем подтверждение
       if (isDigits) {
-        // Open number dialog
-        const digits = extractDigits(qRaw);
-        setNumberForm({ phone: formatRuPhonePartial(qRaw), operatorKey: "mts" });
-        setShowNumberDialog(true);
+        setConfirmAdd({ open: true, type: 'number', label: formatRuPhonePartial(qRaw) });
       } else {
-        // Open place dialog
-        setPlaceForm({ name: qRaw.trim(), category: "Магазины", promoCode: "", promoUrl: "", logo: null });
-        setShowPlaceDialog(true);
+        setConfirmAdd({ open: true, type: 'place', label: qRaw.trim() });
       }
     }
   };
