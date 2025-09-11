@@ -779,9 +779,10 @@ function NumberDetails({ id }) {
             <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px', zIndex: 20001 }}>
               <button
                 type="button"
-                onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
-                onTouchStart={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
-                onPointerDown={(e)=>{ e.preventDefault(); e.stopPropagation(); setCtxTarget(number); setCtxOpen(true); }}
+                ref={nbDotsRef}
+                onClick={openNbMenu}
+                onTouchStart={openNbMenu}
+                onPointerDown={openNbMenu}
                 className="select-none place-dots dots-btn"
                 title="Меню"
               >
