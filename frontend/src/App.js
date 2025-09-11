@@ -498,13 +498,17 @@ function NumbersPage() {
 
   const load = async () => {
     const { data } = await api.get(`/numbers`);
-    let arr = data;
+    // нормализуем даты (из бэка приходят ISO-строки)
+    let arr = data.map(n => ({
+      ...n,
+      createdAtMs: n.createdAt ? Date.parse(n.createdAt) || 0 : 0,
+      updatedAtMs: n.updatedAt ? Date.parse(n.updatedAt) || 0 : 0,
+    }));
     // фильтрация по операторам
     arr = arr.filter(n => opFilter[n.operatorKey]);
     // сортировка
-    const now = Date.now();
-    if (sortKey === 'new') arr = arr.slice().sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
-    if (sortKey === 'old') arr = arr.slice().sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
+    if (sortKey === 'new') arr = arr.slice().sort((a,b)=> (b.createdAtMs||0) - (a.createdAtMs||0));
+    if (sortKey === 'old') arr = arr.slice().sort((a,b)=> (a.createdAtMs||0) - (b.createdAtMs||0));
     if (sortKey === 'usedMost') arr = arr.slice().sort((a,b)=> (b.usedCount||0) - (a.usedCount||0));
     if (sortKey === 'usedLeast') arr = arr.slice().sort((a,b)=> (a.usedCount||0) - (b.usedCount||0));
     setItems(arr);
