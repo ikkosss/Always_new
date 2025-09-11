@@ -797,12 +797,23 @@ function NumberDetails({ id }) {
         </div>
       )}
 
-      {/* нижние три точки */}
-      <button className="nb-bottom-dots" onClick={()=> setNbBotOpen(true)} title="Меню">⋮</button>
+      {/* верхние три точки (перенесены из низа) */}
+      <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px', zIndex: 20001 }}>
+        <button
+          type="button"
+          className="select-none place-dots dots-btn"
+          title="Меню"
+          onClick={()=> setNbBotOpen(true)}
+          onTouchStart={()=> setNbBotOpen(true)}
+          onPointerDown={()=> setNbBotOpen(true)}
+        >
+          ⋮
+        </button>
+      </div>
 
       {nbBotOpen && createPortal(
         <div className="fixed inset-0 bg-black/50" style={{ zIndex: 2147483647 }} onClick={()=> setNbBotOpen(false)}>
-          <div className="absolute" style={{ bottom: `calc(var(--bn-h) + 60px + env(safe-area-inset-bottom))`, right: 16, zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
+          <div className="absolute" style={{ top: '72px', right: '1vw', zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
             <div className="bg-white modal-panel shadow-xl w-[280px] p-2 menu-list">
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setNbBotOpen(false); }}>Редактировать</button>
               <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbBotOpen(false); }}>Удалить</button>
