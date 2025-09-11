@@ -643,6 +643,7 @@ function NumberDetails({ id }) {
   const [nbMenuOpen, setNbMenuOpen] = useState(false);
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
+  const [hasAnySavedUsage, setHasAnySavedUsage] = useState(false);
 
   const openNbMenu = (e) => {
     e.preventDefault(); e.stopPropagation();
