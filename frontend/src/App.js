@@ -1020,6 +1020,7 @@ function PlaceDetails({ id }) {
                   {place.comment}
                 </div>
               )}
+              <div className="text-[10px] text-neutral-500 mt-1">7777777</div>
               <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
                 {(() => {
                   const pad = (n) => String(n).padStart(2, '0');
