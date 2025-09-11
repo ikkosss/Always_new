@@ -718,12 +718,7 @@ function NumberDetails({ id }) {
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
-        <div className="number-inline">
-          <span className="pre-spaces">  </span>
-          <img className="logo" alt="operator" src={OPERATORS[number.operatorKey]?.icon} />
-          <span className="gap-spaces">  </span>
-          <span className="num">{String(number.phone || '').replace(/\s/g, '')}</span>
-        </div>
+
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
