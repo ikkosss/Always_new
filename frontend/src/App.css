@@ -141,8 +141,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   position: fixed;
   left: 50%;
   transform: translate(-50%, -100%);
-  /* Нижний край изображения отстоит от верхнего края поля на 95% высоты поля */
-  top: calc(50vh - var(--search-half, 24px) - (calc(var(--search-h, 48px) * 0.95)));
+  /* Нижний край изображения отстоит от верхнего края поля на 95% высоты поля и движется вместе с полем поиска */
+  top: calc(var(--search-top, 50vh) - (calc(var(--search-h, 48px) * 0.95)));
   width: 85vw;
   max-width: 560px;
   height: auto;
