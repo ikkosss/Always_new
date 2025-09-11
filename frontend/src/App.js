@@ -418,14 +418,17 @@ function SearchPage() {
             <div className="flex justify-end gap-2">
               <button className="btn btn-text" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>Нет</button>
               <button className="btn btn-primary" onClick={()=>{
-                if (confirmAdd.type === 'number') {
-                  setNumberForm({ phone: confirmAdd.label, operatorKey: 'mts' });
-                  setShowNumberDialog(true);
-                } else if (confirmAdd.type === 'place') {
-                  setPlaceForm({ name: confirmAdd.label, category: 'Магазины', promoCode:'', promoUrl:'', logo:null });
-                  setShowPlaceDialog(true);
-                }
-                setConfirmAdd({ open:false, type:null, label:'' });
+                try { inputRef.current && inputRef.current.blur(); } catch {}
+                setTimeout(()=>{
+                  if (confirmAdd.type === 'number') {
+                    setNumberForm({ phone: confirmAdd.label, operatorKey: 'mts' });
+                    setShowNumberDialog(true);
+                  } else if (confirmAdd.type === 'place') {
+                    setPlaceForm({ name: confirmAdd.label, category: 'Магазины', promoCode:'', promoUrl:'', logo:null });
+                    setShowPlaceDialog(true);
+                  }
+                  setConfirmAdd({ open:false, type:null, label:'' });
+                }, 50);
               }}>Да</button>
             </div>
           </div>
