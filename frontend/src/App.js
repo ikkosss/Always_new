@@ -575,7 +575,11 @@ function NumbersPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setOpsOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Операторы</div>
-            <div className="grid gap-2">
+            <div className="grid menu-list">
+              <div className="flex items-center justify-between px-3 py-2">
+                <button className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200" onClick={()=> setOpFilter(Object.fromEntries(Object.keys(OPERATORS).map(k=>[k,true])))}>Выбрать все</button>
+                <button className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200" onClick={()=> setOpFilter(Object.fromEntries(Object.keys(OPERATORS).map(k=>[k,false])))}>Очистить</button>
+              </div>
               {Object.keys(OPERATORS).map(key => (
                 <label key={key} className="flex items-center px-3 py-2 cursor-pointer">
                   <input type="checkbox" className="ops-check" checked={!!opFilter[key]} onChange={(e)=> setOpFilter(prev=> ({...prev, [key]: e.target.checked}))} />
