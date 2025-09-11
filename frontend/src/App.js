@@ -404,8 +404,14 @@ function SearchPage() {
       {confirmAdd.open && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Добавить?</div>
-            <div className="text-sm text-neutral-700 mb-4">{confirmAdd.type === 'number' ? `Добавить номер "${confirmAdd.label}"?` : `Добавить место "${confirmAdd.label}"?`}</div>
+            <div className="text-lg font-semibold mb-2">Подтверждение</div>
+            <div className="text-sm text-neutral-700 mb-4">
+              {confirmAdd.type === 'number' ? (
+                <>Добавить номер <b>{confirmAdd.label}</b>?</>
+              ) : (
+                <>Добавить место <b>{confirmAdd.label}</b>?</>
+              )}
+            </div>
             <div className="flex justify-end gap-2">
               <button className="btn btn-text" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>Нет</button>
               <button className="btn btn-primary" onClick={()=>{
