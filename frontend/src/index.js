@@ -65,9 +65,25 @@ root.render(
   </React.StrictMode>
 );
 
-// Decide cold start vs warm resume
-const coldStart = !sessionStorage.getItem('appInitialized');
-showSplashFor(coldStart ? 3000 : 1000);
-sessionStorage.setItem('appInitialized', '1');
+// Решаем: показывать ли заставку
+try {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const now = Date.now();
+  const lastShown = parseInt(localStorage.getItem('splashLastShown') || '0', 10);
+  const oneHour = 60 * 60 * 1000;
+  const canShow = isStandalone && (now - lastShown > oneHour);
+  if (canShow) {
+    showSplashFor(3000);
+    localStorage.setItem('splashLastShown', String(now));
+  } else {
+    // мгновенно скрыть, если не время показывать
+    const splash = document.getElementById('splash');
+    if (splash) document.body.classList.add('splash-hide');
+  }
+} catch (e) {
+  // на всякий случай скрыть
+  const splash = document.getElementById('splash');
+  if (splash) document.body.classList.add('splash-hide');
+}
 
 // No repeated splash on tab switching/resume
