@@ -1293,7 +1293,7 @@ function PlacesPage() {
       </div>
       <button className="fab" onClick={() => { 
         setEditing(null); 
-        setForm({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null }); 
+        setForm({ name: "", category: "", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null }); 
         setShowExtraPromo(false);
         setShowPromoUrl(false);
         setShowDialog(true); 
