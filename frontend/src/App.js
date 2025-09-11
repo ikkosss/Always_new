@@ -297,6 +297,8 @@ function SearchPage() {
   const handleSearch = () => {
     if (!qRaw.trim()) return;
     if (noFound) {
+      // спрячем клавиатуру заранее для корректного центрирования модалки
+      try { inputRef.current && inputRef.current.blur(); } catch {}
       // вместо мгновенного открытия диалогов показываем подтверждение
       if (isDigits) {
         setConfirmAdd({ open: true, type: 'number', label: formatRuPhonePartial(qRaw) });
