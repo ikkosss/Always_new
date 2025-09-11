@@ -469,6 +469,9 @@ function NumbersPage() {
   const [editing, setEditing] = useState(null);
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
+  // Number page local menu state (avoid collisions)
+  const [nbMenuOpen, setNbMenuOpen] = useState(false);
+  const [nbMenuPos, setNbMenuPos] = useState({ top: 72, right: 16 });
   const suppressClickRef = useRef(false);
 
   const load = async () => {
