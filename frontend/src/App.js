@@ -214,7 +214,8 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
   const innerClass = center
     ? wide ? "w-full" : "w-full max-w-xl"
     : "w-full";
-  const wrapperStyle = hideHeader && !skipSafeTop ? { paddingTop: 'var(--pad-header-top)' } : undefined;
+  // Везде (кроме поиска) делаем одинаковый верхний отступ как на странице НОМЕРА
+  const wrapperStyle = hideHeader && !skipSafeTop ? { paddingTop: 'var(--pad-header-top)' } : (!hideHeader ? { } : undefined);
   return (
     <div className={`min-h-screen pb-20 flex flex-col`} style={wrapperStyle}>
       {!hideHeader && <div className="header" style={{paddingTop: 'var(--pad-header-top)'}}>{title}</div>}
