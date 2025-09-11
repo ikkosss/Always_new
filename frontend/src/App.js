@@ -472,7 +472,16 @@ function NumbersPage() {
 
   const load = async () => {
     const { data } = await api.get(`/numbers`);
-    setItems(data);
+    let arr = data;
+    // фильтрация по операторам
+    arr = arr.filter(n => opFilter[n.operatorKey]);
+    // сортировка
+    const now = Date.now();
+    if (sortKey === 'new') arr = arr.slice().sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
+    if (sortKey === 'old') arr = arr.slice().sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
+    if (sortKey === 'usedMost') arr = arr.slice().sort((a,b)=> (b.usedCount||0) - (a.usedCount||0));
+    if (sortKey === 'usedLeast') arr = arr.slice().sort((a,b)=> (a.usedCount||0) - (b.usedCount||0));
+    setItems(arr);
   };
   useEffect(() => { load(); }, []);
 
