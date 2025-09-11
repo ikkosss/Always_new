@@ -920,7 +920,7 @@ function NumberDetails({ id }) {
       )}
 
       {editDialogOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setEditDialogOpen(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 modal-overlay" onClick={() => setEditDialogOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Редактировать номер</div>
             <div className="grid gap-3">
