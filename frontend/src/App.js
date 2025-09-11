@@ -798,7 +798,7 @@ function NumberDetails({ id }) {
       )}
 
       {/* верхние три точки (перенесены из низа) */}
-      <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px', zIndex: 20001 }}>
+      <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px', zIndex: 20001, marginTop: '-25px' }}>
         <button
           type="button"
           className="select-none place-dots dots-btn"
