@@ -643,6 +643,8 @@ function NumberDetails({ id }) {
   const [nbMenuOpen, setNbMenuOpen] = useState(false);
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
+  // нижнее меню (три точки над нижними кнопками)
+  const [nbBotOpen, setNbBotOpen] = useState(false);
 
   const openNbMenu = (e) => {
     e.preventDefault(); e.stopPropagation();
