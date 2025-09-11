@@ -982,7 +982,7 @@ function PlaceDetails({ id }) {
                 </div>
               ); })()}
 
-              {(() => { const url = promoData.url || place?.promoUrl || ""; if (url) return (
+              {(() => { const url = promoData.url || place?.promoUrl || ""; return url ? (
                 <div>
                   <div className="text-sm text-neutral-600 mb-1">Ссылка на акцию</div>
                   <div className="promo-row">
