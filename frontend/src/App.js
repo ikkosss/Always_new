@@ -792,10 +792,11 @@ function NumberDetails({ id }) {
                 type="button"
                 ref={nbDotsRef}
                 onClick={openNbMenu}
-                onTouchStart={openNbMenu}
-                onPointerDown={openNbMenu}
+                onPointerUp={openNbMenu}
+                onTouchEnd={openNbMenu}
                 className="select-none place-dots dots-btn"
                 title="Меню"
+                style={{ touchAction: 'manipulation' }}
               >
                 ⋮
               </button>
