@@ -41,6 +41,16 @@ function setSearchTop() {
   document.documentElement.style.setProperty('--search-top', computeSearchTop());
 }
 
+// Сброс позиции поиска при явном закрытии клавиатуры (потере фокуса), чтобы поле и изображение возвращались в центр
+window.addEventListener('focusout', (e)=>{
+  const activeTag = (e.target && e.target.tagName) || '';
+  // если мы уходим с инпута поиска — пересчитать центр без учёта клавиатуры
+  const isSearchInput = e.target && e.target.classList && e.target.classList.contains('search-input');
+  if (isSearchInput) {
+    setTimeout(setSearchTop, 50);
+  }
+});
+
 window.addEventListener('load', setSearchTop);
 window.addEventListener('resize', setSearchTop);
 window.addEventListener('orientationchange', setSearchTop);
