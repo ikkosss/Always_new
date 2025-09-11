@@ -669,14 +669,18 @@ function NumberDetails({ id }) {
       api.get(`/numbers/${id}/usage`),
     ]);
     setNumber(n.data);
-    setLastAt(n.data?.updatedAt || n.data?.lastActionAt || n.data?.createdAt || null);
+    // lastAt теперь берём из lastEventAt если он есть
+    setLastAt(u.data?.lastEventAt || n.data?.updatedAt || n.data?.lastActionAt || n.data?.createdAt || null);
     setUsage(u.data);
     const m = {};
     (u.data.used || []).forEach(p => { m[p.id] = true; });
     (u.data.unused || []).forEach(p => { if (!(p.id in m)) m[p.id] = false; });
     setUsedMap(m);
     initialMapRef.current = { ...m };
+    // флаг: считать, что «были сохранённые изменения», если есть хотя бы одна запись usage
+    setHasAnySavedUsage(!!u.data?.lastEventAt);
   };
+
   useEffect(() => { load(); }, [id]);
 
 
