@@ -173,4 +173,4 @@
 
 ## agent_communication:
     - agent: "main"
-    - message: "UI TWEAKS IMPLEMENTED per user request: 1) List rows on Number/Place details — horizontal paddings halved (left and right reduced 2x), 2) Row height equals search input height via --search-h, 3) Separators span full width minus 1% on each side, 4) Removed inline edit/delete emoji buttons from PlaceDetails under the list, 5) FAB now always floats above bottom nav and system bars, lifts with keyboard using visualViewport (--vv-lift). Please verify on narrow screens."
+    - message: "Requesting frontend UI automation: On NumberDetails page, tap ⋮, verify menu opens, tap 'Редактировать', verify edit dialog is visible. Menu is rendered via React Portal with very high z-index. Please run this scenario and report if any overlay or pointer-events block the tap on Honor-like mobile viewport." 
