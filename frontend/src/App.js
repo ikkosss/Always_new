@@ -551,6 +551,46 @@ function NumbersPage() {
       </div>
       <button className="fab" onClick={() => { setEditing(null); setForm({ phone: "", operatorKey: "mts" }); setShowDialog(true); }}>+</button>
 
+      {sortOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Сортировка</div>
+            <div className="grid menu-list">
+              {[
+                { key: 'new', label: 'Сначала новые' },
+                { key: 'old', label: 'Сначала старые' },
+                { key: 'usedMost', label: 'Наиболее используемые' },
+                { key: 'usedLeast', label: 'Наименее используемые' },
+              ].map(opt => (
+                <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setSortKey(opt.key); setSortOpen(false); }}>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {opsOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setOpsOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Операторы</div>
+            <div className="grid gap-2">
+              {Object.keys(OPERATORS).map(key => (
+                <label key={key} className="flex items-center px-3 py-2 cursor-pointer">
+                  <input type="checkbox" className="ops-check" checked={!!opFilter[key]} onChange={(e)=> setOpFilter(prev=> ({...prev, [key]: e.target.checked}))} />
+                  <img alt="op" src={OPERATORS[key].icon} className="w-6 h-6 rounded-[3px] mr-2" />
+                  <span>{OPERATORS[key].name}</span>
+                </label>
+              ))}
+            </div>
+            <div className="flex justify-end mt-3">
+              <button className="px-4 py-2" onClick={()=> setOpsOpen(false)}>Готово</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowDialog(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
