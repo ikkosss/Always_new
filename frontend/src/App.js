@@ -779,30 +779,6 @@ function NumberDetails({ id }) {
   };
 
   const saveEditedNumber = async () => {
-
-  // track unsaved changes
-  useEffect(() => {
-    const hasDiff = JSON.stringify(usedMap) !== JSON.stringify(initialMapRef.current);
-    window.__unsaved = hasDiff;
-    window.__saveChanges = async () => {
-      const ops = [];
-      for (const [placeId, val] of Object.entries(usedMap)) {
-        if (initialMapRef.current[placeId] !== val) {
-          ops.push({ placeId, used: val });
-        }
-      }
-      for (const op of ops) {
-        await api.post(`/usage`, { numberId: id, placeId: op.placeId, used: op.used });
-      }
-      initialMapRef.current = { ...usedMap };
-      window.__unsaved = false;
-    };
-    return () => {
-      // cleanup when leaving page component
-      window.__saveChanges = null;
-    };
-  }, [usedMap, id]);
-
     try {
       await api.put(`/numbers/${id}`, editForm);
       await load();
