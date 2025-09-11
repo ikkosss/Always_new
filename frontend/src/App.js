@@ -980,7 +980,7 @@ function PlaceDetails({ id }) {
                     <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(code)}>⧉</button>
                   </div>
                 </div>
-              ); })()}
+              ) : null; })()}
 
               {(() => { const url = promoData.url || place?.promoUrl || ""; return url ? (
                 <div>
