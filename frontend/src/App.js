@@ -823,6 +823,12 @@ function NumberDetails({ id }) {
           </div>
         )}
 
+        {debugDots && (
+          <div style={{ position: 'fixed', right: 6, bottom: 6, zIndex: 2147483647 }}>
+            <button className="btn" onClick={() => setDebugDots((v)=>!v)}>{debugDots ? 'Debug ⋮ ON' : 'Debug ⋮ OFF'}</button>
+          </div>
+        )}
+
         {nbMenuOpen && createPortal(
           <div className="fixed inset-0 bg-black/50" style={{ zIndex: 2147483647 }} onClick={() => setNbMenuOpen(false)}>
             <div className="absolute" style={{ top: nbMenuPos.top, left: nbMenuPos.left ?? 'auto', right: nbMenuPos.right ?? 'auto', zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
