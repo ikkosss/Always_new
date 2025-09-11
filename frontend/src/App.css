@@ -215,13 +215,13 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 24px; /* в 2 раза больше */
-  height: 24px;
-  background: #ef4444; /* red-500 */
+  width: 18px;
+  height: 18px;
+  background: #000;
   clip-path: circle(50% at 50% 50%);
   display: grid; place-items: center;
 }
-.promo-dot { width: 12px; height: 12px; border-radius: 50%; }
+.promo-dot { width: 10px; height: 10px; border-radius: 50%; }
 
 /* Номера — карточки с тенью и скруглением */
 .number-item { position: relative; box-sizing: border-box; margin: 8px 0; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); padding: 0 6px; background: #fff; border: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; min-height: calc(var(--search-h) * 1.05); display: flex; align-items: center; }
