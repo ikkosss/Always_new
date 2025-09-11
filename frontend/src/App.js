@@ -633,6 +633,7 @@ function NumberDetails({ id }) {
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
+  const [lastAt, setLastAt] = useState(null);
 
 
   const load = async () => {
