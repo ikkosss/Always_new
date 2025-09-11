@@ -1054,7 +1054,7 @@ function PlaceDetails({ id }) {
                 />
                 <button 
                   type="button"
-                  className="px-3 py-2 bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg h-[42px]"
+                  className="px-3 bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg h-[43px]"
                   onClick={handleEditPlusClick}
                   title="Добавить поле"
                 >
