@@ -641,23 +641,6 @@ function NumberDetails({ id }) {
   const [lastAt, setLastAt] = useState(null);
   const [nbBotOpen, setNbBotOpen] = useState(false);
 
-  const openNbMenu = (e) => {
-    e.preventDefault(); e.stopPropagation();
-    try {
-      const rect = nbDotsRef.current ? nbDotsRef.current.getBoundingClientRect() : null;
-      if (rect) {
-        const menuW = 280;
-        const pad = 8;
-        let left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
-        let top = Math.max(0, rect.bottom + pad);
-        setNbMenuPos({ top, left, right: null });
-      } else {
-        setNbMenuPos(prev => ({ ...prev, right: '1vw' }));
-      }
-    } catch { /* ignore */ }
-    setNbMenuOpen(true);
-  };
-
 
   const load = async () => {
     const [n, u] = await Promise.all([
