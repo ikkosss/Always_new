@@ -196,9 +196,8 @@ function PromoBadgeAuto({ imgSrc, onClick }){
             <div className="text-lg font-semibold mb-2">Сохранить изменения?</div>
             <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
             <div className="modal-actions">
-              <button className="btn btn-text" onClick={() => setConfirmNav(false)}>Отмена</button>
-              <button className="btn" onClick={() => proceedNav(false)}>Не сохранять</button>
               <button className="btn btn-primary" onClick={() => proceedNav(true)}>Сохранить</button>
+              <button className="btn btn-text" onClick={() => proceedNav(false)}>Отмена</button>
             </div>
           </div>
         </div>
