@@ -988,8 +988,8 @@ function PlaceDetails({ id }) {
                 <div>
                   <div className="text-sm text-neutral-600 mb-1">Ссылка на акцию</div>
                   <div className="promo-row">
-                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{url}</div>
-                    <button className="btn-copy" title="Скопировать" onClick={()=>navigator.clipboard.writeText(url)}>⧉</button>
+                    <div className="promo-text search-input" style={{ padding: '8px 10px' }}>{copied.url ? 'СКОПИРОВАНО' : url}</div>
+                    <button className="btn-copy" title="Скопировать" onClick={()=>{ navigator.clipboard.writeText(url); setCopied(prev=>({...prev, url:true})); }}>⧉</button>
                   </div>
                 </div>
               ); })()}
