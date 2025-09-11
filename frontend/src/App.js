@@ -207,15 +207,16 @@ function PromoBadgeAuto({ imgSrc, onClick }){
   );
 }
 
-function Page({ title, children, hideHeader = false, center = false, wide = false, padX = true, topPadClass = 'pt-3' }) {
+function Page({ title, children, hideHeader = false, center = false, wide = false, padX = true, topPadClass = 'pt-3', skipSafeTop = false }) {
   const outerClass = center
     ? `flex-1 flex items-center justify-center ${padX ? "px-[var(--pad-x)]" : "px-0"}`
     : (padX ? "px-[var(--pad-x)]" : "px-0");
   const innerClass = center
     ? wide ? "w-full" : "w-full max-w-xl"
     : "w-full";
+  const wrapperStyle = hideHeader && !skipSafeTop ? { paddingTop: 'var(--pad-header-top)' } : undefined;
   return (
-    <div className={`min-h-screen pb-20 flex flex-col ${hideHeader ? topPadClass : ''}`}>
+    <div className={`min-h-screen pb-20 flex flex-col`} style={wrapperStyle}>
       {!hideHeader && <div className="header" style={{paddingTop: 'var(--pad-header-top)'}}>{title}</div>}
       <div className={outerClass}>
         <div className={innerClass}>{children}</div>
