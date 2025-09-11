@@ -482,8 +482,24 @@ function SearchPage() {
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              <input className="search-input" placeholder="Промокод" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
-              <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
+              {/* Промокод + плюсик как в общих диалогах */}
+              <div className="flex items-center gap-2">
+                <input className="search-input flex-1" placeholder="Промокод" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
+                <button
+                  type="button"
+                  className="bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg w-[43px] h-[43px] flex items-center justify-center p-0 rounded-none"
+                  onClick={handlePlusClickS}
+                  title="Добавить поле"
+                >
+                  +
+                </button>
+              </div>
+              {showExtraPromoS && (
+                <input className="search-input" placeholder="Дополнительный промокод" value={placeForm.promoCode2} onChange={(e) => setPlaceForm({ ...placeForm, promoCode2: e.target.value })} />
+              )}
+              {showPromoUrlS && (
+                <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
+              )}
               <input className="search-input" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
               <div className="flex justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
