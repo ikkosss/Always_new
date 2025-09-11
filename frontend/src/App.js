@@ -312,12 +312,13 @@ function SearchPage() {
 
   const saveNumber = async () => {
     try {
-      await api.post(`/numbers`, numberForm);
+      const { data } = await api.post(`/numbers`, numberForm);
       setShowNumberDialog(false);
       setNumberForm({ phone: "", operatorKey: "mts" });
       setQRaw("");
-      // Refresh results
-      window.location.reload();
+      // сразу перейти на страницу созданного номера
+      if (data?.id) window.location.href = `/numbers/${data.id}`;
+      else window.location.reload();
     } catch (e) {
       alert(e.response?.data?.detail || "Не удалось добавить номер. Повторите позже");
     }
