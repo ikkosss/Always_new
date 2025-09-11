@@ -83,7 +83,7 @@ html, body { overflow-x: hidden; }
 
 /* Splash screen */
 #splash { position: fixed; inset: 0; background: #217FF0; display: grid; place-items: center; z-index: 999999; }
-#splash img { width: 45vw; max-width: 320px; height: auto; display: block; }
+#splash img { width: 100vw; height: auto; display: block; }
 
 /* Hide splash after 3.5s */
 .splash-hide #splash { display: none; }
