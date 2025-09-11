@@ -233,7 +233,7 @@ function SearchPage() {
   const [showNumberDialog, setShowNumberDialog] = useState(false);
   const [showPlaceDialog, setShowPlaceDialog] = useState(false);
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
-  const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoUrl: "", logo: null });
+  const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
 
   const inputRef = useRef(null);
