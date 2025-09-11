@@ -652,10 +652,8 @@ function NumberDetails({ id }) {
   const openNbMenu = (e) => {
     try {
       if (e && e.stopPropagation) e.stopPropagation();
-      // avoid preventDefault on passive events
       if (e && e.cancelable && e.preventDefault) e.preventDefault();
     } catch {}
-    // position and open on next frame to avoid same-tick bubbling issues
     requestAnimationFrame(() => {
       try {
         const rect = nbDotsRef.current ? nbDotsRef.current.getBoundingClientRect() : null;
@@ -665,11 +663,14 @@ function NumberDetails({ id }) {
           let left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
           let top = Math.max(0, rect.bottom + pad);
           setNbMenuPos({ top, left, right: null });
+          setDotRect({ x: rect.x, y: rect.y, w: rect.width, h: rect.height });
         } else {
           setNbMenuPos(prev => ({ ...prev, right: '1vw' }));
+          setDotRect(null);
         }
       } catch {}
       setNbMenuOpen(true);
+      setDbg({ clicks: dbg.clicks + 1, last: new Date().toLocaleTimeString() });
     });
   };
 
