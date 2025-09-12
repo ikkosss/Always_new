@@ -18,7 +18,8 @@ if ("serviceWorker" in navigator) {
 // Включаем иммерсивный режим только если приложение запущено как standalone (установленное PWA)
 try {
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  if (isStandalone) setupImmersiveMode();
+  // Отключаем принудительный immersive режим в PWA — навигационная панель Android должна всегда оставаться видимой
+  // if (isStandalone) setupImmersiveMode();
 } catch (e) { /* noop */ }
 
 // Динамическая вертикаль для поля поиска: центр между верхом и верхним краем нижних кнопок.
