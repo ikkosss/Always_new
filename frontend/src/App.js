@@ -962,12 +962,12 @@ function NumberDetails({ id }) {
           </div>
         )}
 
-        {/* Панель сортировки/мест — как на списковых страницах */}
+        {/* Меняем местами: сначала инструкция, затем панель */}
+        <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
         <div className="numbers-topbar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
           <button className="filter-btn" onClick={()=> setPlacesOpen(true)}>Места</button>
         </div>
-        <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])]
