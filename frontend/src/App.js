@@ -757,7 +757,7 @@ function NumberDetails({ id }) {
   const load = async () => {
     const [n, u] = await Promise.all([
       api.get(`/numbers/${id}`),
-      api.get(`/numbers/${id}/usage`),
+      api.get(`/numbers/${id}/usage?_t=${Date.now()}`),
     ]);
     setNumber(n.data);
     // lastAt теперь берём из lastEventAt если он есть
