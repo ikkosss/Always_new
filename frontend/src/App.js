@@ -258,6 +258,7 @@ function SearchPage() {
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
+  const [settingsOpen, setSettingsOpen] = useState(false);
   // Плюсик в диалоге добавления места из поиска
   const [showExtraPromoS, setShowExtraPromoS] = useState(false);
   const [showPromoUrlS, setShowPromoUrlS] = useState(false);
