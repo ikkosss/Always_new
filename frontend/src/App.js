@@ -942,7 +942,7 @@ function NumberDetails({ id }) {
                   <label key={p.id} className="flex items-center px-3 py-2 cursor-pointer">
                     <input type="checkbox" className="ops-check" checked={!!placeFilter[p.id]} onChange={(e)=> setPlaceFilter(prev=> ({...prev, [p.id]: e.target.checked}))} />
                     <div className="w-6 h-6 bg-neutral-200 overflow-hidden flex items-center justify-center sugg-box mr-2">
-                      {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover sugg-logo" src={`${API}/places/${p.id}/logo`} />}
+                      {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover sugg-logo" src={`${API}/places/${p.id}/logo?v=${Date.now()}`} />}
                     </div>
                     <span>{p.name}</span>
                   </label>
