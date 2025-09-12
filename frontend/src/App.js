@@ -1070,6 +1070,11 @@ function PlaceDetails({ id }) {
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
   const [tab, setTab] = useState('unused');
+  // Панель сортировки/операторов для страницы места
+  const [plSortOpen, setPlSortOpen] = useState(false);
+  const [plOpsOpen, setPlOpsOpen] = useState(false);
+  const [plSortKey, setPlSortKey] = useState('recentUsed');
+  const [opFilter, setOpFilter] = useState(Object.keys(OPERATORS).reduce((a,k)=> (a[k]=true,a), {}));
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
 
