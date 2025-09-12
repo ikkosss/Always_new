@@ -267,6 +267,11 @@ img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
 
 /* Инлайновая строка под инструкцией на странице номера */
 .number-inline { display: flex; align-items: center; margin-left: 5px; }
+
+/* Квадратные кнопки-маски для массового выбора (43x43), рядом с OK */
+.mass-box { width: 43px; height: 43px; border: 1px solid #d1d5db; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.mass-box.on::after { content: "✓"; font-size: 20px; line-height: 1; color: #111; }
+.mass-box.off::after { content: ""; }
 .number-inline .pre-spaces { display: inline-block; width: 2ch; }
 .number-inline .gap-spaces { display: inline-block; width: 2ch; }
 .number-inline .logo { width: var(--op-size); height: var(--op-size); object-fit: cover; border-radius: 5%; display: inline-block; }
