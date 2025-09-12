@@ -163,6 +163,8 @@ select.search-input { background-image: url("data:image/svg+xml;utf8,<svg xmlns=
 }
 .suggestions { @apply bg-white divide-y; border: 1px solid #e5e7eb; box-shadow: none; border-radius: 0; overflow: hidden; }
 .suggestion { @apply px-4 py-3 hover:bg-neutral-50 cursor-pointer; }
+.search-suggestions::-webkit-scrollbar { width: 6px; }
+.search-suggestions::-webkit-scrollbar-thumb { background: #cbd5e1; }
 .suggestion .flex-1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Скругление логотипов в подсказках 1.5% */
 .sugg-box { border-radius: 2px; }
