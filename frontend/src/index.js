@@ -74,8 +74,9 @@ function setupViewportTopBottom() {
     const apply = () => {
       const top = vv && vv.offsetTop ? vv.offsetTop : 0;
       const bottomInset = vv ? (window.innerHeight - vv.height - vv.offsetTop) : 0;
+      // В PWA (standalone) верхнего адрес-бара нет, но нижняя системная панель есть — учитываем bottom всегда
       document.documentElement.style.setProperty('--vv-top', isStandalone ? '0px' : `${top}px`);
-      document.documentElement.style.setProperty('--vv-bottom', isStandalone ? '0px' : `${bottomInset}px`);
+      document.documentElement.style.setProperty('--vv-bottom', `${bottomInset}px`);
     };
     if (vv && vv.addEventListener) vv.addEventListener('resize', apply);
     window.addEventListener('scroll', apply, { passive: true });
