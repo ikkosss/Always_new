@@ -814,7 +814,7 @@ function NumberDetails({ id }) {
   if (!number) return <Page title="Загрузка..."/>;
   return (
     <Page title={number.phone} hideHeader>
-      <div className="p-0 section" data-page="number">
+      <div className="p-4 grid gap-4 section" data-page="number">
         <div className="place-head-frame">
           {/* Слой 1: контейнер шапки */}
           <div className="flex items-start justify-between gap-3">
