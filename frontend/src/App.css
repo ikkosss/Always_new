@@ -157,6 +157,8 @@ select.search-input { background-image: url("data:image/svg+xml;utf8,<svg xmlns=
   /* Чуть ниже поля: низ инпута + 12px */
   top: calc(var(--search-top, 50vh) + var(--search-h, 48px) + 12px);
   width: 98vw;
+  max-height: calc(60vh - var(--vv-top, 0px));
+  overflow-y: auto;
   z-index: 25;
 }
 .suggestions { @apply bg-white divide-y; border: 1px solid #e5e7eb; box-shadow: none; border-radius: 0; overflow: hidden; }
