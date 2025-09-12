@@ -1063,9 +1063,13 @@ function NumberDetails({ id }) {
             <div className="text-lg font-semibold mb-2">Подтверждение</div>
             <div className="text-sm text-neutral-600">Вы уверены, что хотите изменить статус использования?</div>
             <div className="modal-actions">
-              <button className="btn btn-primary" onClick={() => {
+              <button className="btn btn-primary" onClick={async () => {
+                try {
+                  await api.post(`/usage`, { numberId: id, placeId: nbUsageConfirm.targetId, used: nbUsageConfirm.next });
+                } catch (e) {}
                 setUsedMap(prev => ({ ...prev, [nbUsageConfirm.targetId]: nbUsageConfirm.next }));
-                window.__unsaved = true;
+                initialMapRef.current = { ...initialMapRef.current, [nbUsageConfirm.targetId]: nbUsageConfirm.next };
+                window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
               <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
