@@ -524,9 +524,9 @@ function SearchPage() {
                 <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
               )}
               <label className="file-field cursor-pointer">
-                <input className="hidden" type="file" accept="image/*,image/png,image/jpeg,image/webp,application/octet-stream" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
-                <span className="file-choose-btn">Обзор</span>
-                <span className={`file-name ${placeForm.logo ? 'has-file' : ''}`}>{placeForm.logo ? placeForm.logo.name : 'выберите файл'}</span>
+                <input className="hidden" type="file" accept="image/*" capture="environment" onClick={(e)=>{ try{ e.target.removeAttribute('capture'); }catch(_){} }} onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
+                <span className="file-choose-btn">ПОИСК</span>
+                <span className={`file-name ${placeForm.logo ? 'has-file' : ''}`}>{placeForm.logo ? placeForm.logo.name : 'Файл не выбран'}</span>
               </label>
               <div className="flex justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
