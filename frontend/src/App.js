@@ -464,6 +464,61 @@ function SearchPage() {
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Настройки</div>
             <div className="grid gap-2">
+            {/* Динамический заголовок */}
+            <div className="text-lg font-semibold mb-2">
+              {settingsMode === 'root' && 'Настройки'}
+              {settingsMode === 'ops_home' && 'Управление операторами'}
+              {settingsMode === 'ops_list' && 'Выберите оператора'}
+              {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
+            </div>
+
+            {/* Содержимое в зависимости от режима */}
+            {settingsMode === 'root' && (
+              <div className="grid gap-2">
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('ops_home')}>Управление операторами</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> alert('Управление категориями — в разработке')}>Управление категориями</button>
+              </div>
+            )}
+
+            {settingsMode === 'ops_home' && (
+              <div className="grid gap-2">
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('ops_list')}>Редактировать операторов</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setOpForm({ name:'', logo:null, existingLogo:'' }); setSettingsMode('ops_form'); }}>Добавить нового оператора</button>
+              </div>
+            )}
+
+            {settingsMode === 'ops_list' && (
+              <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
+                {Object.keys(OPERATORS).map(key => (
+                  <button key={key} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setOpForm({ name: OPERATORS[key].name, logo:null, existingLogo: OPERATORS[key].icon }); setSettingsMode('ops_form'); }}>
+                    <img alt="op" src={OPERATORS[key].icon} className="w-6 h-6 rounded-[3px]" />
+                    <span>{OPERATORS[key].name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {settingsMode === 'ops_form' && (
+              <div className="grid gap-3">
+                <input className="search-input" placeholder="Название оператора" value={opForm.name} onChange={(e)=> setOpForm(prev=> ({...prev, name: e.target.value}))} />
+                {opForm.existingLogo && (
+                  <div className="flex items-center gap-2">
+                    <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px]" />
+                    <span className="text-xs text-neutral-500">Текущий логотип</span>
+                  </div>
+                )}
+                <label className="file-field cursor-pointer">
+                  <input className="hidden" type="file" accept="image/*" onChange={(e)=> setOpForm(prev=> ({...prev, logo: e.target.files?.[0] || null}))} />
+                  <span className="file-choose-btn">Обзор</span>
+                  <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
+                </label>
+                <div className="flex justify-end gap-2">
+                  <button className="px-4 py-2" onClick={()=> setSettingsMode('ops_home')}>Назад</button>
+                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> alert('Сохранение оператора — в разработке')}>Сохранить</button>
+                </div>
+              </div>
+            )}
+
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=>{ setSettingsOpen(false); /* TODO open operators manage */ }}>Управление операторами</button>
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=>{ setSettingsOpen(false); /* TODO open categories manage */ }}>Управление категориями</button>
             </div>
