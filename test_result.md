@@ -186,8 +186,9 @@
 
 ## test_plan:
   current_focus:
-    - "All high priority tasks completed successfully"
-  stuck_tasks: []
+    - "PlaceDetails: 'Сортировка' dialog does not open"
+  stuck_tasks:
+    - "PlaceDetails dialog open state or overlay z-index/pointer-events issue"
   test_all: false
   test_priority: "high_first"
 
