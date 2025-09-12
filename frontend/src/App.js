@@ -988,7 +988,6 @@ function NumberDetails({ id }) {
                   checked={!!usedMap[p.id]}
                   onChange={(e)=> {
                     const next = e.target.checked;
-                    setUsedMap(prev => ({ ...prev, [p.id]: next }));
                     setNbUsageConfirm({ open: true, targetId: p.id, next });
                   }}
                 />
