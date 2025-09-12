@@ -258,13 +258,16 @@ async def number_usage(number_id: str):
     for p in places:
       if p["id"] in used_place_ids:
         base = {k: v for k, v in p.items() if k not in ["logo", "_id"]}
+        base["hasLogo"] = bool(p.get("logo"))
         ua = usage_map.get(p["id"])  # datetime
         base["usedAt"] = ua.isoformat() if ua else None
         used.append(base)
-    unused = [
-        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
-        for p in places if p["id"] in unused_place_ids
-    ]
+    unused = []
+    for p in places:
+      if p["id"] in unused_place_ids:
+        base = {k: v for k, v in p.items() if k not in ["logo", "_id"]}
+        base["hasLogo"] = bool(p.get("logo"))
+        unused.append(base)
     # Compute last event time = latest usage.updatedAt (if any)
     last_event_dt = None
     for u in usage_list:
