@@ -1538,7 +1538,7 @@ function PlaceDetails({ id }) {
               
               <label className="file-field cursor-pointer">
                 <input className="hidden" type="file" accept="image/*" capture="environment" onClick={(e)=>{ try{ e.target.removeAttribute('capture'); }catch(_){} }} onChange={(e)=>setEditForm({...editForm, logo: e.target.files?.[0] || null})} />
-                <span className="file-choose-btn">ПОИСК</span>
+                <span className="file-choose-btn">Обзор</span>
                 <span className={`file-name ${editForm.logo ? 'has-file' : ''}`}>{editForm.logo ? (editForm.logo.name || editForm.logo) : 'Файл не выбран'}</span>
               </label>
               <div className="flex justify-end gap-2">
