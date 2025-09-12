@@ -578,7 +578,7 @@ function SearchPage() {
                 <div className="flex justify-between gap-2">
                   <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>Удалить</button>
                   <div className="flex gap-2">
-                    <button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>
+                    {(!isEditingOp) && (<button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>)}
                     <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> alert('Сохранение оператора — в разработке')}>Сохранить</button>
                   </div>
                 </div>
