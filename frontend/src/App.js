@@ -709,6 +709,11 @@ function NumberDetails({ id }) {
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
   const [hasAnySavedUsage, setHasAnySavedUsage] = useState(false);
+  // Фильтры на странице номера
+  const [sortOpen, setSortOpen] = useState(false);
+  const [placesOpen, setPlacesOpen] = useState(false);
+  const [sortKey, setSortKey] = useState('recentUsed');
+  const [placeFilter, setPlaceFilter] = useState({}); // placeId -> bool (показывать)
   // Debug overlay for ⋮ button
   const [debugDots, setDebugDots] = useState(false);
   const [dbg, setDbg] = useState({ clicks: 0, last: '-' });
