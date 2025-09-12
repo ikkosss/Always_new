@@ -1805,24 +1805,24 @@ function PlacesPage() {
       }}>+</button>
 
       {showDialog && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={() => setShowDialog(false)}>
-          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={() => setShowDialog(false)}>
+          <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
-            <div className="grid gap-3">
-              <input className="search-input" placeholder="Название" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} />
-              <select className="search-input" value={form.category} onChange={(e)=>setForm({...form, category: e.target.value})}>
+            <div className="grid gap-3 pb-4">
+              <input className="search-input" placeholder="Название" value={form.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, name: e.target.value})} />
+              <select className="search-input" value={form.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, category: e.target.value})}>
                 <option value="" disabled>{"Выберите категорию"}</option>
                 {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              
               {/* Промокод с плюсиком */}
               <div className="flex items-center gap-2">
                 <input 
                   className="search-input flex-1" 
                   placeholder="Промокод" 
                   value={form.promoCode} 
+                  onFocus={(e)=>ensureFieldVisible(e.target)}
                   onChange={(e)=>setForm({...form, promoCode: e.target.value})} 
                 />
                 <button 
@@ -1834,37 +1834,54 @@ function PlacesPage() {
                   +
                 </button>
               </div>
-              
               {/* Дополнительный промокод */}
               {showExtraPromo && (
                 <input 
                   className="search-input" 
                   placeholder="Дополнительный промокод" 
                   value={form.promoCode2} 
+                  onFocus={(e)=>ensureFieldVisible(e.target)}
                   onChange={(e)=>setForm({...form, promoCode2: e.target.value})} 
                 />
               )}
-              
               {/* Ссылка на акцию */}
               {showPromoUrl && (
                 <input 
                   className="search-input" 
                   placeholder="Ссылка на акцию" 
                   value={form.promoUrl} 
+                  onFocus={(e)=>ensureFieldVisible(e.target)}
                   onChange={(e)=>setForm({...form, promoUrl: e.target.value})} 
                 />
               )}
-              
-              {/* Комментарий */}
+              {/* Загрузка логотипа в стиле как у редактирования */}
+              <label className="file-field cursor-pointer">
+                <input className="hidden" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
+                <span className="file-choose-btn">Обзор</span>
+                <span className={`file-name ${form.logo ? 'has-file' : ''}`}>{form.logo ? (form.logo.name || form.logo) : 'Файл не выбран'}</span>
+              </label>
+              {/* Комментарий с автоувеличением как у редактирования */}
               <textarea 
                 className="search-input" 
                 placeholder="Комментарий" 
-                rows="6"
                 value={form.comment} 
-                onChange={(e)=>setForm({...form, comment: e.target.value})} 
+                onChange={(e)=>{
+                  const val = e.target.value;
+                  setForm({...form, comment: val});
+                  const base = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--search-h')) || 43;
+                  const factor = val.length > 160 ? 3 : (val.length > 60 ? 2 : 1.5);
+                  e.target.style.minHeight = (base * factor) + 'px';
+                }}
+                onFocus={(e)=>{
+                  ensureFieldVisible(e.target);
+                  const bn = document.querySelector('.bottom-nav');
+                  const h = bn ? bn.getBoundingClientRect().height : 56;
+                  document.documentElement.style.setProperty('--vv-lift', h + 'px');
+                }}
+                onBlur={() => {
+                  document.documentElement.style.setProperty('--vv-lift', '0px');
+                }}
               />
-              
-              <input className="search-input" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
