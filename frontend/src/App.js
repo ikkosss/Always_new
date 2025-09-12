@@ -1772,8 +1772,7 @@ function PlacesPage() {
             <LongPressable
               key={p.id}
               className="flex flex-col items-stretch gap-1 cursor-pointer relative w-full place-item"
-              duration={2000}
-              onLongPress={() => openContext(p)}
+              duration={0}
               onClick={() => onItemClick(p)}
             >
               <div className="card-wrap">
