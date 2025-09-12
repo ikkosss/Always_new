@@ -1058,9 +1058,9 @@ class FIRSTAPITester:
 def main():
     tester = FIRSTAPITester()
     
-    # Run promo-specific tests as requested
-    print("Running promo functionality tests as requested...")
-    success = tester.run_promo_tests()
+    # Run admin timestamp fix tests as requested in review
+    print("Running admin timestamp fix tests as requested...")
+    success = tester.run_admin_tests()
     return 0 if success else 1
 
 if __name__ == "__main__":
