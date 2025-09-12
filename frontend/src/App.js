@@ -259,9 +259,36 @@ function SearchPage() {
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settingsMode, setSettingsMode] = useState('root'); // root | ops_home | ops_list | ops_form
+  const [settingsMode, setSettingsMode] = useState('root'); // root | ops_home | ops_list | ops_form | cats_home | cats_list | cats_form
   const [opForm, setOpForm] = useState({ name: '', logo: null, existingLogo: '' });
   const resetSettings = () => { setSettingsMode('root'); setOpForm({ name:'', logo:null, existingLogo:'' }); };
+  const gotoSettingsMode = (mode) => {
+    setSettingsMode(mode);
+    try { history.pushState({ settings:true, mode }, ''); } catch {}
+  };
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onPop = (e) => {
+      // Step back within settings flow
+      const prev = (m => ({
+        ops_form: 'ops_list',
+        ops_list: 'ops_home',
+        ops_home: 'root',
+        cats_form: 'cats_home',
+        cats_list: 'cats_home',
+        cats_home: 'root',
+        root: null,
+      })[m])(settingsMode);
+      if (prev) {
+        setSettingsMode(prev);
+      } else {
+        setSettingsOpen(false);
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    try { history.pushState({ settings:true, mode: settingsMode }, ''); } catch {}
+    return () => { window.removeEventListener('popstate', onPop); };
+  }, [settingsOpen, settingsMode]);
   // Плюсик в диалоге добавления места из поиска
   const [showExtraPromoS, setShowExtraPromoS] = useState(false);
   const [showPromoUrlS, setShowPromoUrlS] = useState(false);
