@@ -462,17 +462,17 @@ function SearchPage() {
       {settingsOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>setSettingsOpen(false)}>
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
-            {/* Заголовок управляется settingsMode, отдельный жёсткий заголовок убрал */}
             <div className="grid gap-2">
-            {/* Динамический заголовок */}
+            {/* Динамический заголовок (единственный) */}
             <div className="text-lg font-semibold mb-2">
               {settingsMode === 'root' && 'Настройки'}
               {settingsMode === 'ops_home' && 'Управление операторами'}
               {settingsMode === 'ops_list' && 'Выберите оператора'}
               {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
+              {settingsMode === 'cats_home' && 'Управление категориями'}
             </div>
 
-            {/* Содержимое в зависимости от режима */}
+            {/* Содержимое в зависимости от режима (без дубликатов) */}
             {settingsMode === 'root' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('ops_home')}>Управление операторами</button>
