@@ -1525,7 +1525,8 @@ function PlaceDetails({ id }) {
                 rows="8"
                 value={editForm.comment} 
                 onChange={(e)=>setEditForm({...editForm, comment: e.target.value})}
-                onFocus={() => {
+                onFocus={(e)=>{
+                  ensureFieldVisible(e.target);
                   const bn = document.querySelector('.bottom-nav');
                   const h = bn ? bn.getBoundingClientRect().height : 56;
                   document.documentElement.style.setProperty('--vv-lift', h + 'px');
