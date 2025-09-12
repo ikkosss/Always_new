@@ -494,7 +494,7 @@ function SearchPage() {
             <div className="grid gap-2">
             {/* Динамический заголовок (единственный) */}
             <div className="text-lg font-semibold mb-2">
-              {settingsMode === 'root' && 'Настройки'}
+              {settingsMode === 'root' && 'настройки'}
               {settingsMode === 'ops_home' && 'Управление операторами'}
               {settingsMode === 'ops_list' && 'Выберите оператора'}
               {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
