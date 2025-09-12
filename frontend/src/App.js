@@ -47,6 +47,10 @@ const OPERATORS = {
 
 const api = axios.create({ baseURL: API });
 
+// Operators backend models
+// List item: { id, name, hasLogo, createdAt }
+
+
 function extractDigits(raw) {
   const d = (raw || "").replace(/\D+/g, "");
   if (!d) return "";
