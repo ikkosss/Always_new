@@ -44,7 +44,8 @@ body.is-fullscreen { }
 .bottom-nav-btn.inactive { @apply text-gray-700 hover:text-blue-600 hover:bg-blue-50; }
 
 /* Floating Action Button (now square) */
-.fab { position: fixed; bottom: calc(var(--bn-h) + 24px + env(safe-area-inset-bottom) + var(--vv-lift, 0px)); right: 20px; background: #2962FF; color: #fff; width: var(--search-h); height: var(--search-h); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.2); border-radius: 0; font-size: 28px; line-height: 1; z-index: 10000; }
+.fab { position: fixed; bottom: calc(var(--bn-h) + 24px + env(safe-area-inset-bottom) + var(--vv-lift, 0px)); right: 20px; background: #2962FF; color: #fff; width: var(--search-h); height: var(--search-h); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.2); border-radius: 0; font-size: 28px; line-height: 1; z-index: 10000; transition: opacity .15s ease; }
+html.kbd-open .fab { opacity: 0; pointer-events: none; }
 .fab .icon { width: 76%; height: 76%; display: block; object-fit: contain; }
 
 /* высота нижних кнопок = высоте поля поиска */
