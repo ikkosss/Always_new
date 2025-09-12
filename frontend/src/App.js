@@ -388,7 +388,7 @@ function SearchPage() {
   return (
     <Page title="ПОИСК" hideHeader center wide padX={false}>
       {/* FAB settings on search */}
-      <button className="fab" onClick={() => { window.location.href = '/settings'; }} title="Настройки">
+      <button className="fab" onClick={() => setSettingsOpen(true)} title="Настройки">
         <img
           className="icon"
           alt=""
