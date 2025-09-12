@@ -525,7 +525,11 @@ function SearchPage() {
               {showPromoUrlS && (
                 <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
               )}
-              <input className="search-input" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
+              <label className="search-input flex items-center gap-2 cursor-pointer">
+                <input className="hidden" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
+                <span className="flex-1 truncate">{placeForm.logo ? placeForm.logo.name : 'Загрузить логотип'}</span>
+                <span className="text-neutral-500">⧉</span>
+              </label>
               <div className="flex justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
                 <button className="btn btn-primary" onClick={savePlace}>Сохранить</button>
