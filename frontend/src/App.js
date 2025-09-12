@@ -890,6 +890,12 @@ function NumberDetails({ id }) {
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
 
+        {/* Панель сортировки/мест */}
+        <div className="filter-bar">
+          <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
+          <button className="filter-btn" onClick={()=> setPlacesOpen(true)}>Места</button>
+        </div>
+
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
             <div key={p.id} className="list-row">
