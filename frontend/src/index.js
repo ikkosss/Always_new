@@ -75,7 +75,7 @@ function setupViewportTopBottom() {
     const apply = () => {
       const top = vv && vv.offsetTop ? vv.offsetTop : 0;
       const bottomInset = vv ? (window.innerHeight - vv.height - vv.offsetTop) : 0;
-      const keyboardShown = vv ? (window.innerHeight - vv.height) > 120 : false;
+      const keyboardShown = vv ? (window.innerHeight - vv.height) > 40 : false;
       // Верхний бар только в браузере, нижний системный учитываем всегда, но не учитываем клавиатуру
       document.documentElement.style.setProperty('--vv-top', isStandalone ? '0px' : `${top}px`);
       document.documentElement.style.setProperty('--vv-bottom', `${bottomInset}px`);
