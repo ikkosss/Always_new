@@ -898,6 +898,62 @@ function NumberDetails({ id }) {
           </div>, document.body)}
 
         <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
+        {/* Диалог сортировки мест на странице номера */}
+        {sortOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
+              <div className="text-lg font-semibold mb-2">Сортировка</div>
+              <div className="grid menu-list">
+                {[ 
+                  { key:'recentUsed', label:'Последние использованные' },
+                  { key:'longUnused', label:'Давно не использовались' },
+                  { key:'new', label:'Сначала новые' },
+                  { key:'old', label:'Сначала старые' },
+                ].map(opt => (
+                  <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setSortKey(opt.key); setSortOpen(false); }}>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Диалог фильтра по местам (checkbox как у операторов) */}
+        {placesOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setPlacesOpen(false)}>
+            <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
+              <div className="text-lg font-semibold mb-2">Места</div>
+              <div className="grid menu-list max-h-[60vh] overflow-y-auto">
+                {[...(usage.used||[]), ...(usage.unused||[])]
+                  .sort((a,b)=> (a.name||'').localeCompare(b.name||''))
+                  .map(p => (
+                  <label key={p.id} className="flex items-center px-3 py-2 cursor-pointer">
+                    <input type="checkbox" className="ops-check" checked={!!placeFilter[p.id]} onChange={(e)=> setPlaceFilter(prev=> ({...prev, [p.id]: e.target.checked}))} />
+                    <span>{p.name}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="flex justify-end items-center gap-3 mt-3">
+                {/* Массовые чекбоксы */}
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="ops-check" checked={true} onChange={() => {
+                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
+                  }} />
+                  <span>Все</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="ops-check" checked={false} onChange={() => {
+                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
+                  }} />
+                  <span>Ни одного</span>
+                </label>
+                <button className="btn btn-primary" onClick={()=>setPlacesOpen(false)}>OK</button>
+              </div>
+            </div>
+          </div>
+        )}
+
 
 
         {/* Панель сортировки/мест */}
