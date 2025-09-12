@@ -123,14 +123,7 @@ setupEdgeSwipeNav();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-function showSplashFor(ms) {
-  const splash = document.getElementById('splash');
-  if (!splash) return;
-  document.body.classList.add('splash-show');
-  setTimeout(() => {
-    document.body.classList.remove('splash-show');
-  }, ms);
-}
+function showSplashFor(ms) { /* disabled */ }
 
 // Render app immediately; keep splash overlay to cover it for the desired time
 root.render(
