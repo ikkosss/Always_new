@@ -716,6 +716,8 @@ function NumberDetails({ id }) {
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, left: null, right: '1vw' });
   const [lastAt, setLastAt] = useState(null);
   const [hasAnySavedUsage, setHasAnySavedUsage] = useState(false);
+  // Локальное подтверждение изменения usage на странице номера
+  const [nbUsageConfirm, setNbUsageConfirm] = useState({ open: false, targetId: null, next: false });
   // Фильтры на странице номера
   const [sortOpen, setSortOpen] = useState(false);
   const [placesOpen, setPlacesOpen] = useState(false);
