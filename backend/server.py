@@ -65,6 +65,12 @@ class PlaceModel(BaseModel):
     comment: Optional[str] = None
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class OperatorModel(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    logo: Optional[Dict[str, Any]] = None  # { contentType, data(base64) }
+    createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 class UsageSet(BaseModel):
     numberId: str
     placeId: str
@@ -522,6 +528,147 @@ async def set_usage(payload: UsageSet):
     return {"ok": True}
 
 # ---------------------
+# Operators CRUD
+# ---------------------
+@api_router.get("/operators")
+async def list_operators():
+    items = await db.operators.find({}).sort("createdAt", -1).to_list(2000)
+    out = []
+    for it in items:
+        d = dict(it)
+        d.pop("_id", None)
+        has_logo = bool(d.get("logo"))
+        d.pop("logo", None)
+        d["hasLogo"] = has_logo
+        out.append(d)
+    # Seed defaults if empty
+    if not out:
+        defaults = [
+            "МегаФон", "Билайн", "МТС", "T2", "T-Mobile", "СБЕР-Mobile", "Альфа-Mobile", "Газпром-Mobile", "YOTA", "Мотив", "Ростелеком"
+        ]
+        now = datetime.now(timezone.utc)
+        docs = [OperatorModel(name=n, createdAt=now).model_dump() for n in defaults]
+        if docs:
+            await db.operators.insert_many(docs)
+            items = await db.operators.find({}).sort("createdAt", -1).to_list(2000)
+            out = []
+            for it in items:
+                d = dict(it)
+                d.pop("_id", None)
+                has_logo = bool(d.get("logo"))
+                d.pop("logo", None)
+                d["hasLogo"] = has_logo
+                out.append(d)
+    return out
+
+@api_router.post("/operators")
+async def create_operator(
+    name: str = Form(...),
+    logo: Optional[UploadFile] = File(None)
+):
+    name = name.strip()
+    if not name:
+        raise HTTPException(status_code=400, detail="Name required")
+    dup = await db.operators.find_one({"name": {"$regex": f"^{re.escape(name)}$", "$options": "i"}})
+    if dup:
+        raise HTTPException(status_code=409, detail="Operator already exists")
+    doc = OperatorModel(name=name).model_dump()
+    if logo is not None:
+        content = await logo.read()
+        if len(content) > 2 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="Logo too large (max 2MB)")
+        doc["logo"] = {
+            "contentType": logo.content_type or "image/png",
+            "data": base64.b64encode(content).decode('utf-8')
+        }
+    await db.operators.insert_one(doc)
+    resp = dict(doc)
+    resp.pop("logo", None)
+    resp.pop("_id", None)
+    resp["hasLogo"] = "logo" in doc
+    return resp
+
+@api_router.get("/operators/{op_id}")
+async def get_operator(op_id: str):
+    doc = await db.operators.find_one({"id": op_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Operator not found")
+    resp = dict(doc)
+    resp.pop("_id", None)
+    resp.pop("logo", None)
+    resp["hasLogo"] = "logo" in doc and bool(doc["logo"])
+    return resp
+
+@api_router.get("/operators/{op_id}/logo")
+async def get_operator_logo(op_id: str):
+    doc = await db.operators.find_one({"id": op_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Operator not found")
+    lg = doc.get("logo")
+    if not lg:
+        raise HTTPException(status_code=404, detail="Logo not set")
+    data = base64.b64decode(lg.get("data", ""))
+    return Response(content=data, media_type=lg.get("contentType", "image/png"))
+
+@api_router.put("/operators/{op_id}")
+async def update_operator(
+    op_id: str,
+    name: Optional[str] = Form(None),
+    logo: Optional[UploadFile] = File(None),
+    removeLogo: Optional[bool] = Form(False)
+):
+    cur = await db.operators.find_one({"id": op_id})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Operator not found")
+    update: Dict[str, Any] = {}
+    if name is not None:
+        n = name.strip()
+        if not n:
+            raise HTTPException(status_code=400, detail="Name required")
+        dup = await db.operators.find_one({"name": {"$regex": f"^{re.escape(n)}$", "$options": "i"}, "id": {"$ne": op_id}})
+        if dup:
+            raise HTTPException(status_code=409, detail="Operator already exists")
+        update["name"] = n
+    logo_doc = None
+    if logo is not None:
+        content = await logo.read()
+        if len(content) > 2 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="Logo too large (max 2MB)")
+        logo_doc = {
+            "contentType": logo.content_type or "image/png",
+            "data": base64.b64encode(content).decode('utf-8')
+        }
+    set_obj: Dict[str, Any] = {}
+    unset_obj: Dict[str, Any] = {}
+    if update:
+        set_obj.update(update)
+    if logo_doc is not None:
+        set_obj["logo"] = logo_doc
+    if removeLogo:
+        unset_obj["logo"] = ""
+    update_cmd: Dict[str, Any] = {}
+    if set_obj:
+        update_cmd["$set"] = set_obj
+    if unset_obj:
+        update_cmd["$unset"] = unset_obj
+    if not update_cmd:
+        return JSONResponse({"updated": False})
+    await db.operators.update_one({"id": op_id}, update_cmd)
+    doc = await db.operators.find_one({"id": op_id})
+    resp = dict(doc)
+    resp.pop("_id", None)
+    resp.pop("logo", None)
+    resp["hasLogo"] = "logo" in doc and bool(doc["logo"])
+    return resp
+
+@api_router.delete("/operators/{op_id}")
+async def delete_operator(op_id: str):
+    res = await db.operators.delete_one({"id": op_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Operator not found")
+    return {"ok": True}
+
+# ---------------------
 # Search
 # ---------------------
 @api_router.get("/search", response_model=SearchResult)
@@ -571,6 +718,23 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+@app.on_event("startup")
+async def startup_seed():
+    # ensure indexes
+    await db.numbers.create_index("id", unique=True)
+    await db.places.create_index("id", unique=True)
+    await db.operators.create_index("id", unique=True)
+    # seed operators if empty
+    cnt = await db.operators.count_documents({})
+    if cnt == 0:
+        defaults = [
+            "МегаФон", "Билайн", "МТС", "T2", "T-Mobile", "СБЕР-Mobile", "Альфа-Mobile", "Газпром-Mobile", "YOTA", "Мотив", "Ростелеком"
+        ]
+        now = datetime.now(timezone.utc)
+        docs = [OperatorModel(name=n, createdAt=now).model_dump() for n in defaults]
+        if docs:
+            await db.operators.insert_many(docs)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
