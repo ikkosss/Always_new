@@ -456,6 +456,21 @@ function SearchPage() {
         <MeasureInputHeight targetRef={inputRef} />
       </div>
 
+      {settingsOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>setSettingsOpen(false)}>
+          <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Настройки</div>
+            <div className="grid gap-2">
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=>{ setSettingsOpen(false); /* TODO open operators manage */ }}>Управление операторами</button>
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=>{ setSettingsOpen(false); /* TODO open categories manage */ }}>Управление категориями</button>
+            </div>
+            <div className="flex justify-end gap-2 mt-3">
+              <button className="btn btn-primary" onClick={()=>setSettingsOpen(false)}>OK</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {confirmAdd.open && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10020] modal-overlay" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
