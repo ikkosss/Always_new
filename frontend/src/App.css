@@ -124,7 +124,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 .search-input::placeholder { text-align: left; }
 /* Вертикальная подгонка: для всех однострочных и textarea делаем одинаковую высоту строки */
 .search-input { line-height: var(--search-h); }
-textarea.search-input { line-height: var(--search-h); }
+/* Textarea: без ручного ресайза и с адекватными отступами */
+textarea.search-input { line-height: 1.4; min-height: calc(var(--search-h) * 1.5); padding-top: 10px; padding-bottom: 10px; overflow: auto; resize: none; }
 
 /* Выравнивание select под другие поля и собственная стрелка */
 select.search-input { appearance: none; -webkit-appearance: none; background-repeat: no-repeat; background-position: right 10px center; background-size: 14px; padding-right: 34px; text-align: left; }
