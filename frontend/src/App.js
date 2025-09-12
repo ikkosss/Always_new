@@ -963,7 +963,16 @@ function NumberDetails({ id }) {
         </div>
 
         <div>
-          {[...(usage.used||[]), ...(usage.unused||[])].map((p)=> (
+          {[...(usage.used||[]), ...(usage.unused||[])]
+            .filter(p => !!placeFilter[p.id])
+            .sort((a,b)=>{
+              if (sortKey==='recentUsed') return (b.usedAtMs||0) - (a.usedAtMs||0);
+              if (sortKey==='longUnused') return (a.usedAtMs||0) - (b.usedAtMs||0);
+              if (sortKey==='new') return (b.createdAtMs||0) - (a.createdAtMs||0);
+              if (sortKey==='old') return (a.createdAtMs||0) - (b.createdAtMs||0);
+              return 0;
+            })
+            .map((p)=> (
             <div key={p.id} className="list-row">
               <div className="op"><img alt="logo" src={`${API}/places/${p.id}/logo`} onError={(e)=>{ e.currentTarget.style.display='none'; }} /></div>
               <div className="phone font-medium">{p.name}</div>
