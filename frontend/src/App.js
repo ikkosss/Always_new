@@ -650,7 +650,19 @@ function NumbersPage() {
                 </label>
               ))}
             </div>
-            <div className="flex justify-end gap-2 mt-3">
+            <div className="flex justify-end items-center gap-3 mt-3">
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="ops-check" checked={true} onChange={()=>{
+                  const all = {}; Object.keys(OPERATORS).forEach(k => all[k]=true); setOpFilter(all);
+                }} />
+                <span>Все</span>
+              </label>
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="ops-check" checked={false} onChange={()=>{
+                  const none = {}; Object.keys(OPERATORS).forEach(k => none[k]=false); setOpFilter(none);
+                }} />
+                <span>Ни одного</span>
+              </label>
               <button className="btn btn-primary" onClick={()=>setOpsOpen(false)}>OK</button>
             </div>
           </div>
