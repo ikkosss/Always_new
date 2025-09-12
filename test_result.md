@@ -120,6 +120,18 @@
         - agent: "testing"
         - comment: "TESTED: Backend promo functionality working perfectly. All tests passed (7/7 - 100% success rate). Verified: 1) GET /api/places/{id} correctly returns hasPromo flag based on promoCode/promoUrl presence, 2) НЕФТЛ place (c4c95482-5229-40bc-a5d1-9b555035235a) correctly returns hasPromo=true with promoCode='1111111', 3) Places with only promoCode return hasPromo=true, 4) Places with only promoUrl return hasPromo=true, 5) Places with both fields return hasPromo=true, 6) Places without promo fields return hasPromo=false, 7) List endpoint correctly shows hasPromo flags for all places. Promo data (promoCode, promoUrl) is correctly returned in place details endpoint."
 
+  - task: "Admin endpoint to shift legacy timestamps by +3h for Moscow"
+    implemented: true
+    working: false
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "main"
+        - comment: "Added POST /api/admin/fix_timestamps that shifts createdAt for all numbers and places by +3 hours (UTC->MSK) for legacy naive timestamps. No secret required as requested. Run and verify counts."
+
 ## frontend:
   - task: "Add promo image on Place Details page"
     implemented: true
