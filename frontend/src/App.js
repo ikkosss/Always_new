@@ -1121,7 +1121,7 @@ function PlaceDetails({ id }) {
   const load = async () => {
     const [p, u] = await Promise.all([
       api.get(`/places/${id}`),
-      api.get(`/places/${id}/usage`),
+      api.get(`/places/${id}/usage?_t=${Date.now()}`),
     ]);
     setPlace(p.data);
     const usedWith = (u.data.used || []).map(n => ({...n, usedAtMs: n.usedAt ? Date.parse(n.usedAt) || 0 : 0, createdAtMs: n.createdAt ? Date.parse(n.createdAt) || 0 : 0}));
