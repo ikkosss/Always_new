@@ -1306,6 +1306,16 @@ function PlaceDetails({ id }) {
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setCommentDialogOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Комментарий</div>
+            <div className="grid gap-3">
+              <div className="text-base whitespace-pre-wrap">{place.comment}</div>
+              <div className="flex justify-end">
+                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Диалог сортировки номеров (страница места) */}
       {plSortOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10020]" onClick={()=>setPlSortOpen(false)}>
@@ -1345,17 +1355,6 @@ function PlaceDetails({ id }) {
               <button className="mass-box on" onClick={()=>{ const all = {}; Object.keys(OPERATORS).forEach(k=> all[k]=true); setOpFilter(all); }} aria-label="Выбрать все" />
               <button className="mass-box off" onClick={()=>{ const none = {}; Object.keys(OPERATORS).forEach(k=> none[k]=false); setOpFilter(none); }} aria-label="Снять все" />
               <button className="btn btn-primary" onClick={()=>setPlOpsOpen(false)}>OK</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-            <div className="grid gap-3">
-              <div className="text-base whitespace-pre-wrap">{place.comment}</div>
-              <div className="flex justify-end">
-
-                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
-              </div>
             </div>
           </div>
         </div>
