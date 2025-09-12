@@ -573,9 +573,12 @@ function SearchPage() {
                   <span className="file-choose-btn">Обзор</span>
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
                 </label>
-                <div className="flex justify-end gap-2">
-                  <button className="px-4 py-2" onClick={()=> setSettingsMode('ops_home')}>Назад</button>
-                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> alert('Сохранение оператора — в разработке')}>Сохранить</button>
+                <div className="flex justify-between gap-2">
+                  <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>Удалить</button>
+                  <div className="flex gap-2">
+                    <button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>
+                    <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> alert('Сохранение оператора — в разработке')}>Сохранить</button>
+                  </div>
                 </div>
               </div>
             )}
