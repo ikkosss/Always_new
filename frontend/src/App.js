@@ -1620,9 +1620,9 @@ function PlacesPage() {
   };
 
   return (
-    <Page title="МЕСТА" hideHeader topPadClass="pt-3" padX={false}>
+    <Page title="МЕСТА" hideHeader padX={false}>
       <div className="p-0">
-        <div className="filter-bar top-base">
+        <div className="numbers-topbar places-topbar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>
             Сортировка
           </button>
