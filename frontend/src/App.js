@@ -754,8 +754,8 @@ function NumberDetails({ id }) {
     // lastAt теперь берём из lastEventAt если он есть
     setLastAt(u.data?.lastEventAt || n.data?.updatedAt || n.data?.lastActionAt || n.data?.createdAt || null);
     // Подготовим usage со временем использования usedAt
-    const usedWith = (u.data.used || []).map(p => ({...p, usedAtMs: p.usedAt ? Date.parse(p.usedAt) || 0 : 0}));
-    const unusedWith = (u.data.unused || []).map(p => ({...p, usedAtMs: 0}));
+    const usedWith = (u.data.used || []).map(p => ({...p, usedAtMs: p.usedAt ? Date.parse(p.usedAt) || 0 : 0, createdAtMs: p.createdAt ? Date.parse(p.createdAt) || 0 : 0}));
+    const unusedWith = (u.data.unused || []).map(p => ({...p, usedAtMs: 0, createdAtMs: p.createdAt ? Date.parse(p.createdAt) || 0 : 0}));
     setUsage({ used: usedWith, unused: unusedWith });
     const m = {};
     [...usedWith, ...unusedWith].forEach(p => { m[p.id] = !!(usedWith.find(x=>x.id===p.id)); });
