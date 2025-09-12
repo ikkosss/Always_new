@@ -1261,6 +1261,12 @@ function PlaceDetails({ id }) {
         </div>
 
         </div>
+      {/* Панель сортировки/операторов после инструкции */}
+      <div className="filter-bar" style={{ marginTop: 8 }}>
+        <button className="filter-btn" onClick={()=> setPlSortOpen(true)}>Сортировка</button>
+        <button className="filter-btn" onClick={()=> setPlOpsOpen(true)}>Операторы</button>
+      </div>
+
       </div>
 
       <div className="mt-5 px-[var(--pad-x)] text-sm text-neutral-600">Отмечайте галочкой использованные номера:</div>
