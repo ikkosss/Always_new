@@ -909,7 +909,6 @@ function NumberDetails({ id }) {
             </div>
           </div>, document.body)}
 
-        <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
         {/* Диалог сортировки мест на странице номера */}
         {sortOpen && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
@@ -963,13 +962,12 @@ function NumberDetails({ id }) {
           </div>
         )}
 
-
-
-        {/* Панель сортировки/мест */}
+        {/* Панель сортировки/мест — перенесена перед инструкцией */}
         <div className="filter-bar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
           <button className="filter-btn" onClick={()=> setPlacesOpen(true)}>Места</button>
         </div>
+        <div className="text-sm text-neutral-600 list-width"><span className="whitespace-nowrap tracking-tight">Отмечайте галочкой места, где номер использован:</span></div>
 
         <div>
           {[...(usage.used||[]), ...(usage.unused||[])]
