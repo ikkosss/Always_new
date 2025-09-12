@@ -1522,9 +1522,16 @@ function PlaceDetails({ id }) {
               <textarea 
                 className="search-input" 
                 placeholder="Комментарий" 
-                rows="8"
                 value={editForm.comment} 
-                onChange={(e)=>setEditForm({...editForm, comment: e.target.value})}
+                onChange={(e)=>{
+                  const val = e.target.value;
+                  setEditForm({...editForm, comment: val});
+                  // динамически увеличиваем высоту, если текст большой
+                  const lines = val.split('\n').length + Math.floor(val.length / 80);
+                  const base = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--search-h')) || 43;
+                  const factor = lines > 4 ? 3 : (lines > 2 ? 2 : 1.5);
+                  e.target.style.minHeight = (base * factor) + 'px';
+                }}
                 onFocus={(e)=>{
                   ensureFieldVisible(e.target);
                   const bn = document.querySelector('.bottom-nav');
