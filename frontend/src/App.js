@@ -1309,49 +1309,6 @@ function PlaceDetails({ id }) {
             <div className="grid gap-3">
               <div className="text-base whitespace-pre-wrap">{place.comment}</div>
               <div className="flex justify-end">
-      {/* Диалог сортировки номеров (страница места) */}
-      {plSortOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setPlSortOpen(false)}>
-          <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Сортировка</div>
-            <div className="grid menu-list">
-              {[
-                { key:'recentUsed', label:'Последние использованные' },
-                { key:'longUnused', label:'Давно не использовались' },
-                { key:'new', label:'Сначала новые' },
-                { key:'old', label:'Сначала старые' },
-              ].map(opt => (
-                <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setPlSortKey(opt.key); setPlSortOpen(false); }}>
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Диалог операторов (страница места) */}
-      {plOpsOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setPlOpsOpen(false)}>
-          <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Операторы</div>
-            <div className="grid menu-list">
-              {Object.keys(OPERATORS).map(key => (
-                <label key={key} className="flex items-center px-3 py-2 cursor-pointer">
-                  <input type="checkbox" className="ops-check" checked={!!opFilter[key]} onChange={(e)=> setOpFilter(prev=> ({...prev, [key]: e.target.checked}))} />
-                  <img alt="op" src={OPERATORS[key].icon} className="w-6 h-6 rounded-[3px] mr-2" />
-                  <span>{OPERATORS[key].name}</span>
-                </label>
-              ))}
-            </div>
-            <div className="flex justify-end items-center gap-3 mt-3">
-              <button className="mass-box on" onClick={()=>{ const all = {}; Object.keys(OPERATORS).forEach(k=> all[k]=true); setOpFilter(all); }} aria-label="Выбрать все" />
-              <button className="mass-box off" onClick={()=>{ const none = {}; Object.keys(OPERATORS).forEach(k=> none[k]=false); setOpFilter(none); }} aria-label="Снять все" />
-              <button className="btn btn-primary" onClick={()=>setPlOpsOpen(false)}>OK</button>
-            </div>
-          </div>
-        </div>
-      )}
 
                 <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
               </div>
