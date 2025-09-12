@@ -586,7 +586,26 @@ function SearchPage() {
                   <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>Удалить</button>
                   <div className="flex gap-2">
                     {(!isEditingOp) && (<button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>)}
-                    <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> alert('Сохранение оператора — в разработке')}>Сохранить</button>
+                    <button className="px-4 py-2 bg-blue-600 text-white" onClick={async ()=>{
+                      try{
+                        const fd = new FormData();
+                        fd.append('name', opForm.name);
+                        if (opForm.logo) fd.append('logo', opForm.logo);
+                        if (isEditingOp && opForm.id){
+                          await api.put(`/operators/${opForm.id}`, fd);
+                        } else {
+                          await api.post(`/operators`, fd);
+                        }
+                        const { data } = await api.get(`/operators`);
+                        setOps(data);
+                        // вернёмся на список
+                        setSettingsMode('ops_list');
+                        // сбросим форму
+                        setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
+                      }catch(e){
+                        alert(e.response?.data?.detail || 'Не удалось сохранить оператора');
+                      }
+                    }}>Сохранить</button>
                   </div>
                 </div>
               </div>
