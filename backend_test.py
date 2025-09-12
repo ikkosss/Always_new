@@ -900,6 +900,106 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def test_admin_fix_timestamps(self):
+        """Test POST /api/admin/fix_timestamps - shift legacy timestamps by +3h"""
+        # First, let's get some existing records to check timestamps before fix
+        print("📅 Getting existing records before timestamp fix...")
+        
+        # Get some numbers and places to check their timestamps
+        numbers_before, _ = self.run_test("Get numbers before fix", "GET", "/numbers", 200)
+        places_before, _ = self.run_test("Get places before fix", "GET", "/places", 200)
+        
+        if not numbers_before or not places_before:
+            print("❌ Could not get existing records for timestamp comparison")
+            return False
+        
+        # Call the admin fix endpoint
+        success, response = self.run_test(
+            "Admin fix timestamps (+3h shift)", 
+            "POST", 
+            "/admin/fix_timestamps", 
+            200
+        )
+        
+        if not success:
+            return False
+        
+        # Verify response structure
+        required_fields = ['ok', 'numbers', 'places']
+        for field in required_fields:
+            if field not in response:
+                print(f"❌ Missing required field '{field}' in response")
+                return False
+        
+        # Verify response values
+        if response.get('ok') is not True:
+            print(f"❌ Expected ok=true, got ok={response.get('ok')}")
+            return False
+        
+        numbers_fixed = response.get('numbers', 0)
+        places_fixed = response.get('places', 0)
+        
+        if not isinstance(numbers_fixed, int) or numbers_fixed < 0:
+            print(f"❌ Invalid numbers count: {numbers_fixed}")
+            return False
+        
+        if not isinstance(places_fixed, int) or places_fixed < 0:
+            print(f"❌ Invalid places count: {places_fixed}")
+            return False
+        
+        print(f"✅ Timestamp fix completed: {numbers_fixed} numbers, {places_fixed} places")
+        
+        # Now fetch some records to verify timestamps are timezone-aware and shifted
+        success, numbers_after = self.run_test("Get numbers after fix", "GET", "/numbers", 200)
+        if not success:
+            return False
+        
+        success, places_after = self.run_test("Get places after fix", "GET", "/places", 200)
+        if not success:
+            return False
+        
+        # Verify timestamp format and timezone awareness
+        timestamp_checks_passed = 0
+        total_timestamp_checks = 0
+        
+        # Check a few numbers
+        for i, number in enumerate(numbers_after[:3]):  # Check first 3 numbers
+            created_at = number.get('createdAt')
+            if created_at:
+                total_timestamp_checks += 1
+                # Check if it's a proper ISO string with timezone info
+                if isinstance(created_at, str) and ('T' in created_at and ('+' in created_at or 'Z' in created_at)):
+                    print(f"✅ Number {i+1} has timezone-aware timestamp: {created_at}")
+                    timestamp_checks_passed += 1
+                else:
+                    print(f"❌ Number {i+1} has invalid timestamp format: {created_at}")
+        
+        # Check a few places
+        for i, place in enumerate(places_after[:3]):  # Check first 3 places
+            created_at = place.get('createdAt')
+            if created_at:
+                total_timestamp_checks += 1
+                # Check if it's a proper ISO string with timezone info
+                if isinstance(created_at, str) and ('T' in created_at and ('+' in created_at or 'Z' in created_at)):
+                    print(f"✅ Place {i+1} has timezone-aware timestamp: {created_at}")
+                    timestamp_checks_passed += 1
+                else:
+                    print(f"❌ Place {i+1} has invalid timestamp format: {created_at}")
+        
+        if total_timestamp_checks > 0:
+            timestamp_success_rate = (timestamp_checks_passed / total_timestamp_checks) * 100
+            print(f"✅ Timestamp format verification: {timestamp_checks_passed}/{total_timestamp_checks} ({timestamp_success_rate:.1f}%)")
+            
+            if timestamp_checks_passed == total_timestamp_checks:
+                print("✅ All checked timestamps are properly timezone-aware ISO strings")
+                return True
+            else:
+                print("❌ Some timestamps are not properly formatted")
+                return False
+        else:
+            print("❌ No timestamps found to verify")
+            return False
+
     def run_promo_tests(self):
         """Run promo-specific API tests"""
         print("🎯 Starting Promo Feature Tests")
@@ -925,6 +1025,30 @@ class FIRSTAPITester:
                 print("-" * 30)
         
         print("📊 Promo Test Results:")
+        print(f"   Tests run: {self.tests_run}")
+        print(f"   Tests passed: {self.tests_passed}")
+        print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        return self.tests_passed == self.tests_run
+
+    def run_admin_tests(self):
+        """Run admin-specific API tests"""
+        print("🔧 Starting Admin Feature Tests")
+        print("=" * 50)
+        
+        admin_tests = [
+            self.test_admin_fix_timestamps,
+        ]
+        
+        for test in admin_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        print("📊 Admin Test Results:")
         print(f"   Tests run: {self.tests_run}")
         print(f"   Tests passed: {self.tests_passed}")
         print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
