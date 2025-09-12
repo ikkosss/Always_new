@@ -990,6 +990,28 @@ function NumberDetails({ id }) {
                     setNbUsageConfirm({ open: true, targetId: p.id, next });
                   }}
                 />
+
+      {nbUsageConfirm.open && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>
+          <div className="bg-white modal-panel w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Подтверждение</div>
+            <div className="text-sm text-neutral-600">Вы уверены, что хотите изменить статус использования?</div>
+            <div className="modal-actions">
+              <button className="btn btn-primary" onClick={async () => {
+                // сохранить usage немедленно
+                try {
+                  await api.post(`/usage`, { numberId: id, placeId: nbUsageConfirm.targetId, used: nbUsageConfirm.next });
+                } catch (e) {}
+                setUsedMap(prev => ({ ...prev, [nbUsageConfirm.targetId]: nbUsageConfirm.next }));
+                initialMapRef.current = { ...initialMapRef.current, [nbUsageConfirm.targetId]: nbUsageConfirm.next };
+                window.__unsaved = false;
+                setNbUsageConfirm({ open: false, targetId: null, next: false });
+              }}>Да</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
+            </div>
+          </div>
+        </div>
+      )}
               </div>
             </div>
           ))}
