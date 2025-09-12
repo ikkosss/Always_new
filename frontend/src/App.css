@@ -257,7 +257,7 @@ img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
   background: rgba(0, 0, 0, 0.4);
 }
 /* Секция сортировки/категорий — базовая линия на всех экранах */
-.filter-bar { position: relative; margin-top: var(--section-top); display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 5px; row-gap: 0; width: 100vw; padding-left: 1vw; padding-right: 1vw; box-sizing: border-box; overflow-x: hidden; margin-bottom: 15px; }
+.filter-bar { position: relative; margin-top: var(--section-top); display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 10px; row-gap: 0; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); box-sizing: border-box; margin-bottom: 10px; }
 .filter-bar-single { position: relative; margin-top: var(--section-top); width: 100vw; padding-left: 1vw; padding-right: 1vw; box-sizing: border-box; margin-bottom: 10px; }
 .filter-btn-full { border: 1px solid #d1d5db; background: #fff; display: flex; align-items: center; justify-content: center; height: calc(var(--search-h) * 0.75); width: 100%; }
 .ops-check { width: 18px; height: 18px; border: 1px solid #d1d5db; margin-right: 8px; }
