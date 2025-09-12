@@ -67,20 +67,22 @@ function setupModalLift() {
 setupModalLift();
 
 // Фиксация верхнего отступа под адресной строкой браузера (для сайта, не PWA)
-function setupViewportTop() {
+function setupViewportTopBottom() {
   try {
     const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     const vv = window.visualViewport;
     const apply = () => {
       const top = vv && vv.offsetTop ? vv.offsetTop : 0;
+      const bottomInset = vv ? (window.innerHeight - vv.height - vv.offsetTop) : 0;
       document.documentElement.style.setProperty('--vv-top', isStandalone ? '0px' : `${top}px`);
+      document.documentElement.style.setProperty('--vv-bottom', isStandalone ? '0px' : `${bottomInset}px`);
     };
     if (vv && vv.addEventListener) vv.addEventListener('resize', apply);
     window.addEventListener('scroll', apply, { passive: true });
     apply();
   } catch {}
 }
-setupViewportTop();
+setupViewportTopBottom();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
