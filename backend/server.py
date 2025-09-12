@@ -45,7 +45,7 @@ class PlaceModel(BaseModel):
     promoCode: Optional[str] = None
     promoUrl: Optional[str] = None
     comment: Optional[str] = None
-    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UsageSet(BaseModel):
     numberId: str
