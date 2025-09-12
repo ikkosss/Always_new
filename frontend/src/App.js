@@ -816,18 +816,29 @@ function NumberDetails({ id }) {
                 }}>
                   <span style={{ lineHeight: 1 }}>{formatRuPhonePartial(number.phone || '')}</span>
                 </div>
-                {/* Последнее событие — показываем только если были сохранённые usage-изменения */}
+                {/* Инфострока под номером: если были сохранённые usage-изменения — показываем "Последнее событие"; иначе — "Добавлен" с датой создания */}
                 <div className="text-xs text-neutral-600 truncate" style={{ lineHeight: 1 }}>
                   {(() => {
-                    if (!hasAnySavedUsage || !lastAt) return '';
                     const pad = (n) => String(n).padStart(2, '0');
-                    const d = new Date(lastAt);
-                    const DD = pad(d.getDate());
-                    const MM = pad(d.getMonth()+1);
-                    const YYYY = d.getFullYear();
-                    const HH = pad(d.getHours());
-                    const mm = pad(d.getMinutes());
-                    return (<><span className="font-bold">Последнее событие:</span> {`${DD}.${MM}.${YYYY} в ${HH}.${mm}`}</>);
+                    if (hasAnySavedUsage && lastAt) {
+                      const d = new Date(lastAt);
+                      const DD = pad(d.getDate());
+                      const MM = pad(d.getMonth()+1);
+                      const YYYY = d.getFullYear();
+                      const HH = pad(d.getHours());
+                      const mm = pad(d.getMinutes());
+                      return (<><span className="font-bold">Последнее событие:</span> {`${DD}.${MM}.${YYYY} в ${HH}.${mm}`}</>);
+                    }
+                    if (number?.createdAt) {
+                      const d = new Date(number.createdAt);
+                      const DD = pad(d.getDate());
+                      const MM = pad(d.getMonth()+1);
+                      const YYYY = d.getFullYear();
+                      const HH = pad(d.getHours());
+                      const mm = pad(d.getMinutes());
+                      return (<><span className="font-bold">Добавлен:</span> {`${DD}.${MM}.${YYYY} в ${HH}.${mm}`}</>);
+                    }
+                    return '';
                   })()}
                 </div>
               </div>
