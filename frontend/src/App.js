@@ -534,8 +534,8 @@ function SearchPage() {
 
             {settingsMode === 'cats_home' && (
               <div className="grid gap-2">
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('cats_list')}>Редактировать категории</button>
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('cats_form')}>Добавить новую категорию</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('cats_list')}>Редактировать категории</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('cats_form')}>Добавить новую категорию</button>
               </div>
             )}
 
