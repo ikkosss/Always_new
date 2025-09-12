@@ -721,6 +721,8 @@ function NumberDetails({ id }) {
   const [placesOpen, setPlacesOpen] = useState(false);
   const [sortKey, setSortKey] = useState('recentUsed');
   const [placeFilter, setPlaceFilter] = useState({}); // placeId -> bool (показывать)
+  // Локальное подтверждение изменения usage на странице номера
+  const [nbUsageConfirm, setNbUsageConfirm] = useState({ open: false, targetId: null, next: false });
   // Debug overlay for ⋮ button
   const [debugDots, setDebugDots] = useState(false);
   const [dbg, setDbg] = useState({ clicks: 0, last: '-' });
