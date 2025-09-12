@@ -987,10 +987,9 @@ function NumberDetails({ id }) {
                   className="checkbox"
                   checked={!!usedMap[p.id]}
                   onChange={(e)=> {
-                    if (confirm('Вы уверены, что хотите сохранить изменения?'})) {
-                      setUsedMap(prev => ({ ...prev, [p.id]: e.target.checked }));
-                      window.__unsaved = true;
-                    }
+                    const next = e.target.checked;
+                    setUsedMap(prev => ({ ...prev, [p.id]: next }));
+                    setNbUsageConfirm({ open: true, targetId: p.id, next });
                   }}
                 />
               </div>
