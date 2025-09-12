@@ -75,11 +75,12 @@ function setupViewportTopBottom() {
     const apply = () => {
       const top = vv && vv.offsetTop ? vv.offsetTop : 0;
       const bottomInset = vv ? (window.innerHeight - vv.height - vv.offsetTop) : 0;
-      // В PWA (standalone) верхнего адрес-бара нет; учитываем нижнюю системную панель полностью.
-      // В браузере делаем минимальный фиксированный отступ, чтобы не было большого разрыва.
+      const keyboardShown = vv ? (window.innerHeight - vv.height) > 120 : false;
+      // Верхний бар только в браузере, нижний системный учитываем всегда, но не учитываем клавиатуру
       document.documentElement.style.setProperty('--vv-top', isStandalone ? '0px' : `${top}px`);
       document.documentElement.style.setProperty('--vv-bottom', `${bottomInset}px`);
-      document.documentElement.style.setProperty('--bn-pad-bottom', isStandalone ? `${Math.max(0, bottomInset)}px` : `0px`);
+      const sysPad = keyboardShown ? 0 : Math.max(0, bottomInset);
+      document.documentElement.style.setProperty('--bn-pad-bottom', isStandalone ? `${sysPad}px` : `0px`);
     };
     if (vv && vv.addEventListener) vv.addEventListener('resize', apply);
     window.addEventListener('scroll', apply, { passive: true });
