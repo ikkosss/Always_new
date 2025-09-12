@@ -11,15 +11,13 @@ function ensureFieldVisible(target) {
       const availH = vv ? vv.height - vv.offsetTop : window.innerHeight;
       const panelRect = panel.getBoundingClientRect();
       const elRect = target.getBoundingClientRect();
-      // If the element bottom is below available area bottom, scroll it into view within panel
-      const bottomLimit = vv ? vv.height : window.innerHeight;
-      const needsUp = elRect.bottom > bottomLimit - 16;
-      const needsDown = elRect.top < (panelRect.top + 16);
-      if (needsUp || needsDown) {
-        // Compute desired scroll so that element roughly center of available area
+      // Desired position: bring the field slightly above center of the visible area (factor ~0.65)
+      const factor = 0.65;
+      const needsAdjust = (elRect.bottom > (vv ? vv.height : window.innerHeight) - 8) || (elRect.top < panelRect.top + 8);
+      if (needsAdjust) {
         const offsetInPanel = elRect.top - panelRect.top;
-        const centerY = Math.max(0, offsetInPanel - (availH / 2) + (elRect.height / 2));
-        panel.scrollTo({ top: centerY, behavior: 'smooth' });
+        const targetTopInPanel = Math.max(0, offsetInPanel - (availH * factor) + (elRect.height / 2));
+        panel.scrollTo({ top: targetTopInPanel, behavior: 'smooth' });
       }
     }, 60);
   } catch {}
