@@ -266,7 +266,8 @@ img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
 .filter-bar-single { position: relative; margin-top: var(--section-top); width: 100vw; padding-left: 1vw; padding-right: 1vw; box-sizing: border-box; margin-bottom: 10px; }
 .filter-btn-full { border: 1px solid #d1d5db; background: #fff; display: flex; align-items: center; justify-content: center; height: calc(var(--search-h) * 0.75); width: 100%; }
 .ops-check { width: 18px; height: 18px; border: 1px solid #d1d5db; margin-right: 8px; }
-.filter-btn { border: 1px solid #d1d5db; background: #fff; padding: 0 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; height: calc(var(--search-h) * 0.75); width: 100%; }
+.filter-btn { border: 1px solid #d1d5db; background: #fff; padding: 0 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; height: calc(var(--search-h) * 0.75); width: 100%; border-radius: 0; box-shadow: none; }
+.numbers-topbar .filter-btn, .filter-bar .filter-btn, .places-topbar .filter-btn { height: calc(var(--search-h) * 0.75); }
 
 
 
