@@ -14,7 +14,7 @@
 body.is-fullscreen { }
 
 /* Spacing variables */
-:root { --pad-x: 16px; --pad-header-top: calc(env(safe-area-inset-top, 0px) + 6px); --pad-card-y: 14px; --section-top: var(--pad-header-top); --check-size: 20px; --icon-size: 24px; --op-size: 45px; --edge-gap: 4vw; --vv-top: 0px; }
+:root { --pad-x: 16px; --pad-header-top: calc(env(safe-area-inset-top, 0px) + 6px); --pad-card-y: 14px; --section-top: var(--pad-header-top); --check-size: 20px; --icon-size: 24px; --op-size: 45px; --edge-gap: 4vw; --vv-top: 0px; --vv-bottom: 0px; }
 
 /* Базовая верхняя линия 20vh для всех верхних блоков */
 .top-base { margin-top: 20vh; }
