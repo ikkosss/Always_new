@@ -53,7 +53,7 @@ body.is-fullscreen { }
 .card { @apply bg-white border border-neutral-200 p-4; }
 .grid-3 { display: grid; --side: 1vw; --gap: 5px; width: calc(100vw - 2vw); margin-left: 1vw; margin-right: 1vw; box-sizing: border-box; grid-template-columns: repeat(3, calc((100% - (2 * var(--gap))) / 3)); column-gap: var(--gap); row-gap: 8px; overflow-x: hidden; }
 /* unify top filter bars */
-.numbers-topbar, .places-topbar { width: calc(100vw - 2vw); margin-left: 1vw; margin-right: 1vw; box-sizing: border-box; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 10px; row-gap: 0; margin-bottom: 15px; }
+.numbers-topbar, .places-topbar { width: calc(100vw - 2vw); margin-left: 1vw; margin-right: 1vw; box-sizing: border-box; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 2px; row-gap: 0; margin-bottom: 15px; }
 .numbers-topbar .filter-btn { height: calc(var(--search-h) * 0.75); }
 /* Выравнивание топ-бара на деталках по центру 98vw, чтобы совпадало с place-head-frame и списками */
 [data-page="number"] .numbers-topbar,
