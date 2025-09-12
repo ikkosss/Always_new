@@ -58,14 +58,32 @@ function setupModalLift() {
     const vv = window.visualViewport;
     if (!vv) return;
     const handler = () => {
-      const keyboardShown = Math.abs(window.innerHeight - vv.height) > 120; // эвристика
-      document.documentElement.style.setProperty('--vv-lift', keyboardShown ? `${(window.innerHeight - vv.height)}px` : '0px');
+      const lift = Math.max(0, window.innerHeight - vv.height);
+      const keyboardShown = lift > 40; // более чувствительная эвристика
+      document.documentElement.style.setProperty('--vv-lift', keyboardShown ? `${lift}px` : '0px');
+      document.documentElement.classList.toggle('kbd-open', keyboardShown);
     };
     vv.addEventListener('resize', handler);
     handler();
   } catch {}
 }
 setupModalLift();
+
+// Fallback: также прячем FAB при фокусе на инпутах, если вдруг визуальный вьюпорт не сработал
+window.addEventListener('focusin', (e) => {
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) {
+    document.documentElement.classList.add('kbd-open');
+  }
+});
+window.addEventListener('focusout', () => {
+  // небольшая задержка, чтобы дождаться пересчёта visualViewport
+  setTimeout(() => {
+    const vv = window.visualViewport;
+    const lift = vv ? Math.max(0, window.innerHeight - vv.height) : 0;
+    if (lift <= 40) document.documentElement.classList.remove('kbd-open');
+  }, 80);
+});
 
 // Фиксация верхнего отступа под адресной строкой браузера (для сайта, не PWA)
 function setupViewportTopBottom() {
