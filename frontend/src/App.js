@@ -1443,7 +1443,7 @@ function PlaceDetails({ id }) {
 
       {editDialogOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setEditDialogOpen(false)}>
-          <div className="bg-white modal-panel w-full max-w-md shadow-xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2 sticky top-0 bg-white">Редактировать место</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
