@@ -526,7 +526,7 @@ function SearchPage() {
             {settingsMode === 'ops_list' && (
               <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
                 {Object.keys(OPERATORS).map(key => (
-                  <button key={key} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setOpForm({ name: OPERATORS[key].name, logo:null, existingLogo: OPERATORS[key].icon }); gotoSettingsMode('ops_form'); }}>
+                  <button key={key} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setOpForm({ name: OPERATORS[key].name, logo:null, existingLogo: OPERATORS[key].icon }); setIsEditingOp(true); gotoSettingsMode('ops_form'); }}>
                     <img alt="op" src={OPERATORS[key].icon} className="w-6 h-6 rounded-[3px]" />
                     <span>{OPERATORS[key].name}</span>
                   </button>
