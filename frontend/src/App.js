@@ -1262,7 +1262,7 @@ function PlaceDetails({ id }) {
 
         </div>
       {/* Панель сортировки/операторов после инструкции */}
-      <div className="filter-bar" style={{ marginTop: 8 }}>
+      <div className="filter-bar" style={{ marginTop: '8px' }}>
         <button className="filter-btn" onClick={()=> setPlSortOpen(true)}>Сортировка</button>
         <button className="filter-btn" onClick={()=> setPlOpsOpen(true)}>Операторы</button>
       </div>
