@@ -13,6 +13,23 @@ from datetime import datetime, timezone, timedelta
 import base64
 import re
 
+# Helpers to ensure timezone-aware UTC datetimes
+def ensure_utc(dt):
+    if isinstance(dt, datetime):
+        if dt.tzinfo is None:
+            return dt.replace(tzinfo=timezone.utc)
+    return dt
+
+def normalize_doc_dt(d: Dict[str, Any]):
+    if not isinstance(d, dict):
+        return d
+    d2 = dict(d)
+    if 'createdAt' in d2:
+        d2['createdAt'] = ensure_utc(d2['createdAt'])
+    if 'updatedAt' in d2:
+        d2['updatedAt'] = ensure_utc(d2['updatedAt'])
+    return d2
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
