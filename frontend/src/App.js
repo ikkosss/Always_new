@@ -1285,10 +1285,7 @@ function PlaceDetails({ id }) {
                 className="checkbox"
                 checked={!!usedMap[n.id]}
                 onChange={(e)=> {
-                  if (confirm('Вы уверены, что хотите изменить?')) {
-                    setUsedMap(prev => ({ ...prev, [n.id]: e.target.checked }));
-                    window.__unsaved = true;
-                  }
+                  setNbUsageConfirm({ open: true, targetId: n.id, next: e.target.checked });
                 }}
               />
             </div>
