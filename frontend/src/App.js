@@ -501,7 +501,7 @@ function SearchPage() {
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Добавить место</div>
             <div className="grid gap-3">
-              <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
+              <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
               <select className="search-input" value={placeForm.category} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
                 {["Магазины", "Рестораны", "Заправки", "Банки", "Аптеки", "Сайты", "CashBack", "Другое"].map((c) => (
                   <option key={c} value={c}>{c}</option>
