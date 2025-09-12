@@ -263,6 +263,9 @@ function SearchPage() {
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [ops, setOps] = useState([]);
+  useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ const { data } = await api.get(`/operators`); setOps(data); } catch(e){} })(); } }, [settingsOpen]);
+
   const [settingsMode, setSettingsMode] = useState('root'); // root | ops_home | ops_list | ops_form | cats_home | cats_list | cats_form
   const [opForm, setOpForm] = useState({ name: '', logo: null, existingLogo: '' });
   const resetSettings = () => { setSettingsMode('root'); setOpForm({ name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); };
