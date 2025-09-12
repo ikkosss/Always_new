@@ -1512,6 +1512,23 @@ function PlaceDetails({ id }) {
         </div>
       )}
 
+      {nbUsageConfirm.open && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>
+          <div className="bg-white modal-panel w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Подтверждение</div>
+            <div className="text-sm text-neutral-600">Вы уверены, что хотите изменить статус использования?</div>
+            <div className="modal-actions">
+              <button className="btn btn-primary" onClick={() => {
+                setUsedMap(prev => ({ ...prev, [nbUsageConfirm.targetId]: nbUsageConfirm.next }));
+                window.__unsaved = true;
+                setNbUsageConfirm({ open: false, targetId: null, next: false });
+              }}>Да</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </Page>
   );
 }
