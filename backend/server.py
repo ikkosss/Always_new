@@ -36,7 +36,7 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection - MUST use existing envs
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ.get('DB_NAME', 'first')]
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
