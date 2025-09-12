@@ -81,11 +81,9 @@ code {
   body { @apply bg-background text-foreground; }
 html, body { overflow-x: hidden; }
 
-/* Splash screen */
-#splash { position: fixed; inset: 0; background: #227EEF; display: none; place-items: center; z-index: 999999; }
-#splash img { width: 100vw; height: auto; display: block; }
-/* Показываем заставку только когда явно включено тело .splash-show */
-.splash-show #splash { display: grid; }
+/* Splash screen disabled */
+#splash { display: none !important; }
+.splash-show #splash { display: none !important; }
 }
 
 /* Ensure consistent page background on all screens */
