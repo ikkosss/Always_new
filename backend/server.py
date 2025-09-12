@@ -35,7 +35,7 @@ class NumberModel(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     phone: str
     operatorKey: str
-    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class PlaceModel(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
