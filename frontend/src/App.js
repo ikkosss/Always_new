@@ -476,7 +476,7 @@ function SearchPage() {
             {settingsMode === 'root' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('ops_home')}>Управление операторами</button>
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> alert('Управление категориями — в разработке')}>Управление категориями</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('cats_home')}>Управление категориями</button>
               </div>
             )}
 
