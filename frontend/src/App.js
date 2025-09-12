@@ -942,24 +942,21 @@ function NumberDetails({ id }) {
                   .map(p => (
                   <label key={p.id} className="flex items-center px-3 py-2 cursor-pointer">
                     <input type="checkbox" className="ops-check" checked={!!placeFilter[p.id]} onChange={(e)=> setPlaceFilter(prev=> ({...prev, [p.id]: e.target.checked}))} />
+                    <div className="w-6 h-6 bg-neutral-200 overflow-hidden flex items-center justify-center sugg-box mr-2">
+                      {p.hasLogo && <img alt="logo" className="w-6 h-6 object-cover sugg-logo" src={`${API}/places/${p.id}/logo`} />}
+                    </div>
                     <span>{p.name}</span>
                   </label>
                 ))}
               </div>
               <div className="flex justify-end items-center gap-3 mt-3">
-                {/* Массовые чекбоксы */}
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="ops-check" checked={true} onChange={() => {
-                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
-                  }} />
-                  <span>Все</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="ops-check" checked={false} onChange={() => {
-                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
-                  }} />
-                  <span>Ни одного</span>
-                </label>
+                {/* Массовые чекбоксы — без текста, размер по высоте как OK */}
+                <input type="checkbox" className="ops-check h-[43px] w-[43px]" checked={true} onChange={() => {
+                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
+                }} />
+                <input type="checkbox" className="ops-check h-[43px] w-[43px]" checked={false} onChange={() => {
+                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
+                }} />
                 <button className="btn btn-primary" onClick={()=>setPlacesOpen(false)}>OK</button>
               </div>
             </div>
