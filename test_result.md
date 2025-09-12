@@ -186,9 +186,8 @@
 
 ## test_plan:
   current_focus:
-    - "PlaceDetails: 'Сортировка' dialog does not open"
-  stuck_tasks:
-    - "PlaceDetails dialog open state or overlay z-index/pointer-events issue"
+    - "PlaceDetails: 'Сортировка' dialog does not open - RESOLVED"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
@@ -205,3 +204,5 @@
     - message: "ADMIN TIMESTAMP FIX TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of POST /api/admin/fix_timestamps endpoint completed with 100% success rate (5/5 tests passed). Key findings: 1) Endpoint correctly returns response structure with ok=true, numbers=11, places=7, 2) Timestamps are accurately shifted by exactly +3 hours for Moscow timezone conversion, 3) All timestamps maintain proper ISO format, 4) Verified with real data - sample number timestamp shifted from 10:34:56 to 13:34:56, sample place timestamp shifted from 20:53:52 to 23:53:52. The admin functionality is working perfectly for legacy timestamp migration. All backend API tests passed successfully."
     - agent: "testing"
     - message: "UI POSITIONING TESTS COMPLETED: Comprehensive testing of NumberDetails and PlaceDetails page positioning revealed critical layout issues. NUMBERDETAILS: ✅ Filter bar correctly positioned BEFORE instruction text, ✅ 'Места' dialog shows 24x24 logos correctly (not gray), ✅ Mass select/deselect buttons are exactly 43x43 pixels and functional, ❌ CRITICAL: Filter bar extends beyond 98vw causing horizontal right clipping. PLACEDETAILS: ❌ CRITICAL: Instruction text positioned AFTER filter bar (should be before), ✅ Filter bar clickable and not overlaying header. DIALOG ISSUES: PlaceDetails sorting and operators dialogs not opening properly - buttons click but modal panels don't appear, suggesting JavaScript/React state management issues on PlaceDetails page. Screenshots captured for all key steps. REQUIRES MAIN AGENT TO FIX: 1) NumberDetails filter bar width clipping issue, 2) PlaceDetails instruction/filter bar order, 3) PlaceDetails dialog functionality."
+    - agent: "testing"
+    - message: "PLACEDETAILS СОРТИРОВКА DIALOG ISSUE RESOLVED: Root cause identified and fixed! The 'Сортировка' and 'Операторы' dialogs were not opening because they were incorrectly nested inside the commentDialogOpen conditional block in the JSX structure (lines 1305-1362). This meant the dialogs would only render when the comment dialog was open. SOLUTION IMPLEMENTED: Moved both plSortOpen and plOpsOpen dialog JSX blocks outside of the commentDialogOpen conditional, making them independent components. COMPREHENSIVE TESTING COMPLETED: 1) ✅ Successfully navigated to PlaceDetails page (Нефтьмагистраль), 2) ✅ Found instruction text 'Отмечайте галочкой использованные номера:', 3) ✅ Сортировка button visible, enabled, and clickable, 4) ✅ Сортировка modal now opens correctly with all 4 sorting options (Последние использованные, Давно не использовались, Сначала новые, Сначала старые), 5) ✅ Modal closes properly when option is selected, 6) ✅ Операторы button also works correctly, showing all operator checkboxes with logos, 7) ✅ Both dialogs have proper z-index (10020/10021) and render correctly. The JSX structure fix has completely resolved the dialog functionality issue. Both sorting and operators dialogs are now fully functional on PlaceDetails pages."
