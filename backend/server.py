@@ -224,7 +224,7 @@ async def list_places(q: Optional[str] = None, category: Optional[str] = None, s
     items = await db.places.find(query).to_list(5000)
 
     if sort == "old" or sort == "asc":
-        items.sort(key=lambda p: p.get("createdAt", datetime.utcnow()))
+        items.sort(key=lambda p: p.get("createdAt", datetime.now(timezone.utc)))
     elif sort == "popular":
         agg = db.usages.aggregate([
             {"$match": {"used": True}},
