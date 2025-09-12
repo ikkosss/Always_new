@@ -1108,25 +1108,7 @@ function PlaceDetails({ id }) {
   };
   useEffect(() => { load(); }, [id]);
 
-  // track unsaved changes for this place page
-  useEffect(() => {
-    const hasDiff = JSON.stringify(usedMap) !== JSON.stringify(initialMapRef.current);
-    window.__unsaved = hasDiff;
-    window.__saveChanges = async () => {
-      const ops = [];
-      for (const [numberId, val] of Object.entries(usedMap)) {
-        if (initialMapRef.current[numberId] !== val) {
-          ops.push({ numberId, used: val });
-        }
-      }
-      for (const op of ops) {
-        await api.post(`/usage`, { numberId: op.numberId, placeId: id, used: op.used });
-      }
-      initialMapRef.current = { ...usedMap };
-      window.__unsaved = false;
-    };
-    return () => { window.__saveChanges = null; };
-  }, [usedMap, id]);
+  // Убрали глобальные несохранённые изменения на странице места — сохраняем сразу после подтверждения
 
   const openPromoDialog = async () => {
     try {
