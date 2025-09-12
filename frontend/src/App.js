@@ -949,17 +949,13 @@ function NumberDetails({ id }) {
                 ))}
               </div>
               <div className="flex justify-end items-center gap-3 mt-3">
-                {/* Массовые чекбоксы — без текста, ровно как OK по высоте */}
-                <label className="h-[43px] w-[43px] border border-gray-300 flex items-center justify-center cursor-pointer">
-                  <input type="checkbox" className="appearance-none w-full h-full" checked={true} onChange={() => {
-                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
-                  }} />
-                </label>
-                <label className="h-[43px] w-[43px] border border-gray-300 flex items-center justify-center cursor-pointer">
-                  <input type="checkbox" className="appearance-none w-full h-full" checked={false} onChange={() => {
-                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
-                  }} />
-                </label>
+                {/* Массовые чекбоксы — квадратные 43x43 без текста */}
+                <button className="mass-box on" onClick={()=>{
+                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
+                }} aria-label="Выбрать все" />
+                <button className="mass-box off" onClick={()=>{
+                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
+                }} aria-label="Снять все" />
                 <button className="btn btn-primary" onClick={()=>setPlacesOpen(false)}>OK</button>
               </div>
             </div>
