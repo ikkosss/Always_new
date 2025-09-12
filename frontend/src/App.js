@@ -753,14 +753,19 @@ function NumberDetails({ id }) {
     setNumber(n.data);
     // lastAt теперь берём из lastEventAt если он есть
     setLastAt(u.data?.lastEventAt || n.data?.updatedAt || n.data?.lastActionAt || n.data?.createdAt || null);
-    setUsage(u.data);
+    // Подготовим usage со временем использования usedAt
+    const usedWith = (u.data.used || []).map(p => ({...p, usedAtMs: p.usedAt ? Date.parse(p.usedAt) || 0 : 0}));
+    const unusedWith = (u.data.unused || []).map(p => ({...p, usedAtMs: 0}));
+    setUsage({ used: usedWith, unused: unusedWith });
     const m = {};
-    (u.data.used || []).forEach(p => { m[p.id] = true; });
-    (u.data.unused || []).forEach(p => { if (!(p.id in m)) m[p.id] = false; });
+    [...usedWith, ...unusedWith].forEach(p => { m[p.id] = !!(usedWith.find(x=>x.id===p.id)); });
     setUsedMap(m);
     initialMapRef.current = { ...m };
-    // флаг: считать, что «были сохранённые изменения», если есть хотя бы одна запись usage
     setHasAnySavedUsage(!!u.data?.lastEventAt);
+    // инициализация фильтра мест: по умолчанию все видимы
+    const allPlaces = [...usedWith, ...unusedWith];
+    const pf = {}; allPlaces.forEach(p => { pf[p.id] = true; });
+    setPlaceFilter(pf);
   };
 
   useEffect(() => { load(); }, [id]);
