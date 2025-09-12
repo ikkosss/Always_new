@@ -962,8 +962,8 @@ function NumberDetails({ id }) {
           </div>
         )}
 
-        {/* Панель сортировки/мест — перенесена перед инструкцией */}
-        <div className="filter-bar">
+        {/* Панель сортировки/мест — как на списковых страницах */}
+        <div className="numbers-topbar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>Сортировка</button>
           <button className="filter-btn" onClick={()=> setPlacesOpen(true)}>Места</button>
         </div>
