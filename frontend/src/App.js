@@ -267,7 +267,7 @@ function SearchPage() {
   useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ const { data } = await api.get(`/operators`); setOps(data); } catch(e){} })(); } }, [settingsOpen]);
 
   const [settingsMode, setSettingsMode] = useState('root'); // root | ops_home | ops_list | ops_form | cats_home | cats_list | cats_form
-  const [opForm, setOpForm] = useState({ name: '', logo: null, existingLogo: '' });
+  const [opForm, setOpForm] = useState({ id: '', name: '', logo: null, existingLogo: '' });
   const resetSettings = () => { setSettingsMode('root'); setOpForm({ name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); };
   const [isEditingOp, setIsEditingOp] = useState(false);
 
