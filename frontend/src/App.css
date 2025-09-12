@@ -120,10 +120,17 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   pointer-events: none; /* чтобы оверлеи модалок всегда были поверх */
 }
 .search-wrap * { pointer-events: auto; } /* внутри элементы по-прежнему интерактивны */
-.search-input { @apply w-full outline-none; height: 43px; padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; display: flex; align-items: center; }
-.search-input::placeholder { text-align: center; }
-/* Вертикальная подгонка для всех однострочных полей: плейсхолдер и текст ровно по центру по высоте */
-.search-input:not(textarea) { line-height: var(--search-h); }
+.search-input { @apply w-full outline-none; height: var(--search-h); padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; display: block; }
+.search-input::placeholder { text-align: left; }
+/* Вертикальная подгонка: для всех однострочных и textarea делаем одинаковую высоту строки */
+.search-input { line-height: var(--search-h); }
+textarea.search-input { line-height: var(--search-h); }
+
+/* Выравнивание select под другие поля и собственная стрелка */
+select.search-input { appearance: none; -webkit-appearance: none; background-repeat: no-repeat; background-position: right 10px center; background-size: 14px; padding-right: 34px; text-align: left; }
+select.search-input::-ms-expand { display: none; }
+/* Минималистичная стрелка (SVG) */
+select.search-input { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); }
 
 /* Контейнер для поля поиска на всю ширину экрана без отступов */
 .search-input-container { width: 100%; max-width: none; padding: 0; }
