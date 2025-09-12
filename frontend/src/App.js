@@ -480,7 +480,7 @@ function SearchPage() {
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Добавить номер</div>
             <div className="grid gap-3">
-              <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={numberForm.phone} onChange={(e) => setNumberForm({ ...numberForm, phone: formatRuPhonePartial(e.target.value) })} />
+              <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={numberForm.phone} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setNumberForm({ ...numberForm, phone: formatRuPhonePartial(e.target.value) })} />
               <select className="search-input" value={numberForm.operatorKey} onChange={(e) => setNumberForm({ ...numberForm, operatorKey: e.target.value })}>
                 {Object.entries(OPERATORS).map(([key, op]) => (
                   <option key={key} value={key}>{op.name}</option>
