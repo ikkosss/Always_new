@@ -1265,8 +1265,8 @@ function PlaceDetails({ id }) {
 
       <div className="mt-5 px-[var(--pad-x)] text-sm text-neutral-600">Отмечайте галочкой использованные номера:</div>
 
-      {/* Панель сортировки/операторов после инструкции */}
-      <div className="filter-bar" style={{ marginTop: '8px' }}>
+      {/* Панель сортировки/операторов — как на списковых страницах */}
+      <div className="numbers-topbar places-topbar" style={{ marginTop: '8px' }}>
         <button className="filter-btn" onClick={()=> setPlSortOpen(true)}>Сортировка</button>
         <button className="filter-btn" onClick={()=> setPlOpsOpen(true)}>Операторы</button>
       </div>
