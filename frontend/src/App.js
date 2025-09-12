@@ -1245,11 +1245,6 @@ function PlaceDetails({ id }) {
                   return (<><span className="font-medium">Последнее действие:</span> {`${DD}.${MM}.${YYYY} в ${HH}:${mm}`}</>);
                 })()}
               </div>
-      {/* Панель сортировки/операторов под шапкой */}
-      <div className="filter-bar" style={{ marginTop: 8 }}>
-        <button className="filter-btn" onClick={()=> setPlSortOpen(true)}>Сортировка</button>
-        <button className="filter-btn" onClick={()=> setPlOpsOpen(true)}>Операторы</button>
-      </div>
 
             </div>
 
