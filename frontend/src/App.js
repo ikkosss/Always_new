@@ -1246,6 +1246,12 @@ function PlaceDetails({ id }) {
                 })()}
               </div>
             </div>
+      {/* Панель сортировки/операторов перед инструкцией */}
+      <div className="filter-bar">
+        <button className="filter-btn" onClick={()=> setPlSortOpen(true)}>Сортировка</button>
+        <button className="filter-btn" onClick={()=> setPlOpsOpen(true)}>Операторы</button>
+      </div>
+
           </div>
           <div className="relative" style={{ alignSelf: 'flex-start', marginRight: '-5px' }}>
             <button
