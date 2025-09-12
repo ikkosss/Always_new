@@ -84,6 +84,38 @@ function setupViewportTopBottom() {
 }
 setupViewportTopBottom();
 
+// Edge swipe navigation: right->left opens /places, left->right opens /numbers
+function setupEdgeSwipeNav() {
+  try {
+    let startX = null, startY = null, tracking = false;
+    const onStart = (e) => {
+      const t = e.touches ? e.touches[0] : e;
+      startX = t.clientX; startY = t.clientY; tracking = true;
+    };
+    const onMove = (e) => {};
+    const onEnd = (e) => {
+      if (!tracking) return; tracking = false;
+      const t = (e.changedTouches && e.changedTouches[0]) || (e.touches && e.touches[0]) || e;
+      if (!t || startX == null) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+        // horizontal swipe
+        if (dx < 0) {
+          // right -> left
+          window.location.href = '/places';
+        } else {
+          // left -> right
+          window.location.href = '/numbers';
+        }
+      }
+    };
+    document.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchend', onEnd, { passive: true });
+  } catch {}
+}
+setupEdgeSwipeNav();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 function showSplashFor(ms) {
