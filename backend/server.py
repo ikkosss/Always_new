@@ -280,6 +280,37 @@ async def number_usage(number_id: str):
 # ---------------------
 # Places
 # ---------------------
+@api_router.get("/places/{place_id}/usage")
+async def place_usage(place_id: str):
+    place = await db.places.find_one({"id": place_id})
+    if not place:
+        raise HTTPException(status_code=404, detail="Place not found")
+    numbers = await db.numbers.find({}).to_list(5000)
+    usage_list = await db.usages.find({"placeId": place_id}).to_list(5000)
+    # Map numberId -> updatedAt for used entries
+    usage_map = {u["numberId"]: ensure_utc(u.get("updatedAt")) for u in usage_list if u.get("used")}
+    used_num_ids = set(usage_map.keys())
+    unused_num_ids = set(n["id"] for n in numbers) - used_num_ids
+
+    def strip_num(n: Dict[str, Any]):
+        out = {k: v for k, v in n.items() if k not in ["_id"]}
+        return out
+
+    used = []
+    for n in numbers:
+        if n["id"] in used_num_ids:
+            base = strip_num(n)
+            ua = usage_map.get(n["id"])  # datetime
+            base["usedAt"] = ua.isoformat() if ua else None
+            used.append(base)
+    unused = []
+    for n in numbers:
+        if n["id"] in unused_num_ids:
+            unused.append(strip_num(n))
+
+    # Compute last event time (for parity) if needed later
+    return {"used": used, "unused": unused}
+
 @api_router.get("/places")
 async def list_places(q: Optional[str] = None, category: Optional[str] = None, sort: Optional[str] = None):
     query: Dict[str, Any] = {}
