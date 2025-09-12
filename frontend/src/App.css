@@ -120,7 +120,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
   pointer-events: none; /* чтобы оверлеи модалок всегда были поверх */
 }
 .search-wrap * { pointer-events: auto; } /* внутри элементы по-прежнему интерактивны */
-.search-input { @apply w-full outline-none; height: 43px; padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; }
+.search-input { @apply w-full outline-none; height: 43px; padding: 0 12px; border: 1.5px solid #cbd5e1; background: #ffffff; box-shadow: none; border-radius: 0; display: flex; align-items: center; }
+.search-input::placeholder { text-align: center; }
 
 /* Контейнер для поля поиска на всю ширину экрана без отступов */
 .search-input-container { width: 100%; max-width: none; padding: 0; }
