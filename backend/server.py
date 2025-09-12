@@ -250,12 +250,17 @@ async def number_usage(number_id: str):
         raise HTTPException(status_code=404, detail="Number not found")
     places = await db.places.find({}).to_list(5000)
     usage_list = await db.usages.find({"numberId": number_id}).to_list(5000)
-    used_place_ids = {u["placeId"] for u in usage_list if u.get("used")}
+    # Map placeId -> updatedAt for used entries
+    usage_map = {u["placeId"]: ensure_utc(u.get("updatedAt")) for u in usage_list if u.get("used")}
+    used_place_ids = set(usage_map.keys())
     unused_place_ids = set(p["id"] for p in places) - used_place_ids
-    used = [
-        {k: v for k, v in p.items() if k not in ["logo", "_id"]}
-        for p in places if p["id"] in used_place_ids
-    ]
+    used = []
+    for p in places:
+      if p["id"] in used_place_ids:
+        base = {k: v for k, v in p.items() if k not in ["logo", "_id"]}
+        ua = usage_map.get(p["id"])  # datetime
+        base["usedAt"] = ua.isoformat() if ua else None
+        used.append(base)
     unused = [
         {k: v for k, v in p.items() if k not in ["logo", "_id"]}
         for p in places if p["id"] in unused_place_ids
@@ -263,7 +268,7 @@ async def number_usage(number_id: str):
     # Compute last event time = latest usage.updatedAt (if any)
     last_event_dt = None
     for u in usage_list:
-        dt = u.get("updatedAt")
+        dt = ensure_utc(u.get("updatedAt"))
         if dt and (last_event_dt is None or dt > last_event_dt):
             last_event_dt = dt
     last_event = last_event_dt.isoformat() if last_event_dt else None
