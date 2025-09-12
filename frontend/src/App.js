@@ -667,7 +667,9 @@ function NumbersPage() {
           ))}
         </div>
       </div>
-      <button className="fab" onClick={() => { setEditing(null); setForm({ phone: "", operatorKey: "mts" }); setShowDialog(true); }}>+</button>
+      <button className="fab" onClick={() => { window.location.href = '/settings'; }} title="Настройки">
+        <span className="material-icons">settings</span>
+      </button>
 
       {sortOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
