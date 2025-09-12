@@ -498,17 +498,23 @@ function SearchPage() {
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={() => setShowPlaceDialog(false)}>
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Добавить место</div>
-            <div className="grid gap-3">
-              <input className="search-input" placeholder="НАЗВАНИЕ МЕСТА" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
+            <div className="grid gap-3 pb-4">
+              <input className="search-input" placeholder="Название" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
               <select className="search-input" value={placeForm.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
-                {["Магазины", "Рестораны", "Заправки", "Банки", "Аптеки", "Сайты", "CashBack", "Другое"].map((c) => (
+                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              {/* Промокод + плюсик как в общих диалогах */}
+              {/* Промокод с плюсиком */}
               <div className="flex items-center gap-2">
-                <input className="search-input flex-1" placeholder="Промокод" value={placeForm.promoCode} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
-                <button
+                <input 
+                  className="search-input flex-1" 
+                  placeholder="Промокод" 
+                  value={placeForm.promoCode} 
+                  onFocus={(e)=>ensureFieldVisible(e.target)} 
+                  onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} 
+                />
+                <button 
                   type="button"
                   className="bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg w-[43px] h-[43px] flex items-center justify-center p-0 rounded-none"
                   onClick={handlePlusClickS}
@@ -518,19 +524,40 @@ function SearchPage() {
                 </button>
               </div>
               {showExtraPromoS && (
-                <input className="search-input" placeholder="Дополнительный промокод" value={placeForm.promoCode2} onChange={(e) => setPlaceForm({ ...placeForm, promoCode2: e.target.value })} />
+                <input className="search-input" placeholder="Дополнительный промокод" value={placeForm.promoCode2} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, promoCode2: e.target.value })} />
               )}
               {showPromoUrlS && (
-                <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
+                <input className="search-input" placeholder="Ссылка на акцию" value={placeForm.promoUrl} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, promoUrl: e.target.value })} />
               )}
               <label className="file-field cursor-pointer">
                 <input className="hidden" type="file" accept="image/*" onChange={(e) => setPlaceForm({ ...placeForm, logo: e.target.files?.[0] || null })} />
                 <span className="file-choose-btn">Обзор</span>
                 <span className={`file-name ${placeForm.logo ? 'has-file' : ''}`}>{placeForm.logo ? placeForm.logo.name : 'Файл не выбран'}</span>
               </label>
+              <textarea 
+                className="search-input" 
+                placeholder="Комментарий" 
+                value={placeForm.comment} 
+                onChange={(e)=>{
+                  const val = e.target.value;
+                  setPlaceForm({...placeForm, comment: val});
+                  const base = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--search-h')) || 43;
+                  const factor = val.length > 160 ? 3 : (val.length > 60 ? 2 : 1.5);
+                  e.target.style.minHeight = (base * factor) + 'px';
+                }}
+                onFocus={(e)=>{
+                  ensureFieldVisible(e.target);
+                  const bn = document.querySelector('.bottom-nav');
+                  const h = bn ? bn.getBoundingClientRect().height : 56;
+                  document.documentElement.style.setProperty('--vv-lift', h + 'px');
+                }}
+                onBlur={() => {
+                  document.documentElement.style.setProperty('--vv-lift', '0px');
+                }}
+              />
               <div className="flex justify-end gap-2">
-                <button className="btn btn-text" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
-                <button className="btn btn-primary" onClick={savePlace}>Сохранить</button>
+                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
               </div>
             </div>
           </div>
