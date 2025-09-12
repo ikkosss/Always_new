@@ -186,8 +186,8 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 .modal-panel.keyboard-aware { max-height: calc(100vh - var(--vv-lift, 0px) - 32px); overflow-y: auto; scroll-padding-bottom: calc(var(--bn-h, 56px) + 24px); }
 
 /* Поле выбора файла: как кнопка ПОИСК + имя файла справа */
-.file-field { display: flex; align-items: center; border: 1px solid #d1d5db; height: var(--search-h); box-sizing: border-box; background: #fff; }
-.file-field .file-choose-btn { background: #2962FF; color: #fff; height: 100%; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; border: none; outline: none; border-radius: 0; font-weight: 600; }
+.file-field { display: flex; align-items: center; border: 1px solid #d1d5db; height: var(--search-h); box-sizing: border-box; background: #fff; padding: 6px; }
+.file-field .file-choose-btn { background: #2962FF; color: #fff; height: calc(var(--search-h) - 12px); padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; border: none; outline: none; border-radius: 0; font-weight: 600; }
 .file-field .file-name { flex: 1; padding: 0 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b7280; }
 .file-field.has-file .file-name { color: #111827; }
 /* Центрирование модалок с учётом клавиатуры: больше нижний паддинг на величину лифта */
