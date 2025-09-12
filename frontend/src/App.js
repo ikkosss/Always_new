@@ -949,13 +949,17 @@ function NumberDetails({ id }) {
                 ))}
               </div>
               <div className="flex justify-end items-center gap-3 mt-3">
-                {/* Массовые чекбоксы — без текста, размер по высоте как OK */}
-                <input type="checkbox" className="ops-check h-[43px] w-[43px]" checked={true} onChange={() => {
-                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
-                }} />
-                <input type="checkbox" className="ops-check h-[43px] w-[43px]" checked={false} onChange={() => {
-                  const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
-                }} />
+                {/* Массовые чекбоксы — без текста, ровно как OK по высоте */}
+                <label className="h-[43px] w-[43px] border border-gray-300 flex items-center justify-center cursor-pointer">
+                  <input type="checkbox" className="appearance-none w-full h-full" checked={true} onChange={() => {
+                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = true); setPlaceFilter(pf);
+                  }} />
+                </label>
+                <label className="h-[43px] w-[43px] border border-gray-300 flex items-center justify-center cursor-pointer">
+                  <input type="checkbox" className="appearance-none w-full h-full" checked={false} onChange={() => {
+                    const pf = {}; [...(usage.used||[]), ...(usage.unused||[])].forEach(p => pf[p.id] = false); setPlaceFilter(pf);
+                  }} />
+                </label>
                 <button className="btn btn-primary" onClick={()=>setPlacesOpen(false)}>OK</button>
               </div>
             </div>
