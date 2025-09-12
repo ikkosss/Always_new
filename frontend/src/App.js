@@ -161,12 +161,11 @@ function PromoBadgeAuto({ imgSrc, onClick }){
     };
   }, []);
 
-  const tryNav = (to) => {
+  const tryNav = async (to) => {
     const hasUnsaved = !!window.__unsaved;
-    if (hasUnsaved) {
-      pendingRouteRef.current = to;
-      setConfirmNav(true);
-      return;
+    if (hasUnsaved && typeof window.__saveChanges === 'function') {
+      try { await window.__saveChanges(); } catch (e) { /* ignore */ }
+      window.__unsaved = false;
     }
     nav(to);
   };
