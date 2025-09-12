@@ -1,4 +1,29 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+
+// Ensure focused field inside a keyboard-aware modal stays visible above keyboard
+function ensureFieldVisible(target) {
+  try {
+    const panel = target.closest('.modal-panel');
+    if (!panel) return;
+    // Defer to allow visualViewport to update
+    setTimeout(() => {
+      const vv = window.visualViewport;
+      const availH = vv ? vv.height - vv.offsetTop : window.innerHeight;
+      const panelRect = panel.getBoundingClientRect();
+      const elRect = target.getBoundingClientRect();
+      // If the element bottom is below available area bottom, scroll it into view within panel
+      const bottomLimit = vv ? vv.height : window.innerHeight;
+      const needsUp = elRect.bottom > bottomLimit - 16;
+      const needsDown = elRect.top < (panelRect.top + 16);
+      if (needsUp || needsDown) {
+        // Compute desired scroll so that element roughly center of available area
+        const offsetInPanel = elRect.top - panelRect.top;
+        const centerY = Math.max(0, offsetInPanel - (availH / 2) + (elRect.height / 2));
+        panel.scrollTo({ top: centerY, behavior: 'smooth' });
+      }
+    }, 60);
+  } catch {}
+}
 import { createPortal } from "react-dom";
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
