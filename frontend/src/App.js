@@ -656,8 +656,7 @@ function NumbersPage() {
             <LongPressable
               key={n.id}
               className="flex items-center gap-3 number-item"
-              duration={2000}
-              onLongPress={() => openContext(n)}
+              duration={0}
               onClick={() => onItemClick(n)}
             >
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden rounded-[3px]">
