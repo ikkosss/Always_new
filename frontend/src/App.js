@@ -1091,6 +1091,8 @@ function PlaceDetails({ id }) {
   const [opFilter, setOpFilter] = useState(Object.keys(OPERATORS).reduce((a,k)=> (a[k]=true,a), {}));
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
+  // Локальное подтверждение изменения usage на странице места
+  const [nbUsageConfirm, setNbUsageConfirm] = useState({ open: false, targetId: null, next: false });
 
   const load = async () => {
     const [p, u] = await Promise.all([
