@@ -414,7 +414,7 @@ async def set_usage(payload: UsageSet):
     plc = await db.places.find_one({"id": payload.placeId})
     if not num or not plc:
         raise HTTPException(status_code=404, detail="Pair not found")
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     await db.usages.update_one(
         {"numberId": payload.numberId, "placeId": payload.placeId},
         {"$set": {"used": payload.used, "updatedAt": now}, "$setOnInsert": {"id": str(uuid.uuid4())}},
