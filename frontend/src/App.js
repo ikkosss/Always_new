@@ -651,18 +651,13 @@ function NumbersPage() {
               ))}
             </div>
             <div className="flex justify-end items-center gap-3 mt-3">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" className="ops-check" checked={true} onChange={()=>{
-                  const all = {}; Object.keys(OPERATORS).forEach(k => all[k]=true); setOpFilter(all);
-                }} />
-                <span>Все</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" className="ops-check" checked={false} onChange={()=>{
-                  const none = {}; Object.keys(OPERATORS).forEach(k => none[k]=false); setOpFilter(none);
-                }} />
-                <span>Ни одного</span>
-              </label>
+              {/* Заменено на квадратные кнопки 43x43 как на странице места */}
+              <button className="mass-box on" onClick={()=>{
+                const all = {}; Object.keys(OPERATORS).forEach(k => all[k]=true); setOpFilter(all);
+              }} aria-label="Выбрать все" />
+              <button className="mass-box off" onClick={()=>{
+                const none = {}; Object.keys(OPERATORS).forEach(k => none[k]=false); setOpFilter(none);
+              }} aria-label="Снять все" />
               <button className="btn btn-primary" onClick={()=>setOpsOpen(false)}>OK</button>
             </div>
           </div>
