@@ -233,7 +233,7 @@ async def list_places(q: Optional[str] = None, category: Optional[str] = None, s
         counts = {doc["_id"]: doc["count"] async for doc in agg}
         items.sort(key=lambda p: (counts.get(p["id"], 0), p.get("createdAt", datetime.now(timezone.utc))), reverse=True)
     else:
-        items.sort(key=lambda p: p.get("createdAt", datetime.utcnow()), reverse=True)
+        items.sort(key=lambda p: p.get("createdAt", datetime.now(timezone.utc)), reverse=True)
 
     def strip_logo(p: Dict[str, Any]):
         p2 = dict(p)
