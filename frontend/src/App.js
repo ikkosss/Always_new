@@ -509,7 +509,7 @@ function SearchPage() {
               </select>
               {/* Промокод + плюсик как в общих диалогах */}
               <div className="flex items-center gap-2">
-                <input className="search-input flex-1" placeholder="Промокод" value={placeForm.promoCode} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
+                <input className="search-input flex-1" placeholder="Промокод" value={placeForm.promoCode} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, promoCode: e.target.value })} />
                 <button
                   type="button"
                   className="bg-green-100 text-green-700 hover:bg-green-200 font-bold text-lg w-[43px] h-[43px] flex items-center justify-center p-0 rounded-none"
