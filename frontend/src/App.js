@@ -512,6 +512,26 @@ function SearchPage() {
               </div>
             )}
 
+            {settingsMode === 'cats_list' && (
+              <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
+                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map(cat => (
+                  <button key={cat} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('cats_form')}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {settingsMode === 'cats_form' && (
+              <div className="grid gap-3">
+                <input className="search-input" placeholder="Название категории" />
+                <div className="flex justify-end gap-2">
+                  <button className="px-4 py-2" onClick={()=> setSettingsMode('cats_home')}>Назад</button>
+                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> setSettingsMode('cats_home')}>Сохранить</button>
+                </div>
+              </div>
+            )}
+
             {settingsMode === 'ops_form' && (
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название оператора" value={opForm.name} onChange={(e)=> setOpForm(prev=> ({...prev, name: e.target.value}))} />
