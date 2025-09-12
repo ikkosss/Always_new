@@ -122,15 +122,18 @@
 
   - task: "Admin endpoint to shift legacy timestamps by +3h for Moscow"
     implemented: true
-    working: false
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
         - agent: "main"
         - comment: "Added POST /api/admin/fix_timestamps that shifts createdAt for all numbers and places by +3 hours (UTC->MSK) for legacy naive timestamps. No secret required as requested. Run and verify counts."
+        - working: true
+        - agent: "testing"
+        - comment: "TESTED SUCCESSFULLY: Admin timestamp fix endpoint working perfectly. Comprehensive testing completed: 1) POST /api/admin/fix_timestamps returns correct response structure with ok=true, numbers=11, places=7, 2) Timestamps are correctly shifted by exactly +3 hours (verified by comparing before/after timestamps), 3) All timestamps maintain proper ISO format (YYYY-MM-DDTHH:MM:SS.ffffff), 4) Verified with sample records: Number timestamp shifted from 2025-09-12T10:34:56.117000 to 2025-09-12T13:34:56.117000, Place timestamp shifted from 2025-09-10T20:53:52.413000 to 2025-09-10T23:53:52.413000. The endpoint successfully processes all legacy timestamps and shifts them by +3h for Moscow timezone conversion. All API tests passed (5/5 - 100% success rate)."
 
 ## frontend:
   - task: "Add promo image on Place Details page"
