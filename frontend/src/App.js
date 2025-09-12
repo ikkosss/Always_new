@@ -1084,10 +1084,11 @@ function PlaceDetails({ id }) {
       api.get(`/places/${id}/usage`),
     ]);
     setPlace(p.data);
-    setUsage(u.data);
+    const usedWith = (u.data.used || []).map(n => ({...n, usedAtMs: n.usedAt ? Date.parse(n.usedAt) || 0 : 0, createdAtMs: n.createdAt ? Date.parse(n.createdAt) || 0 : 0}));
+    const unusedWith = (u.data.unused || []).map(n => ({...n, usedAtMs: 0, createdAtMs: n.createdAt ? Date.parse(n.createdAt) || 0 : 0}));
+    setUsage({ used: usedWith, unused: unusedWith });
     const m = {};
-    (u.data.used || []).forEach(n => { m[n.id] = true; });
-    (u.data.unused || []).forEach(n => { if (!(n.id in m)) m[n.id] = false; });
+    [...usedWith, ...unusedWith].forEach(n => { m[n.id] = !!(usedWith.find(x=>x.id===n.id)); });
     setUsedMap(m);
     initialMapRef.current = { ...m };
   };
