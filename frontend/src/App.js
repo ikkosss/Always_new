@@ -1270,7 +1270,16 @@ function PlaceDetails({ id }) {
       <div className="mt-5 px-[var(--pad-x)] text-sm text-neutral-600">Отмечайте галочкой использованные номера:</div>
 
       <div>
-        {[...(usage.used||[]), ...(usage.unused||[])].map((n)=> (
+        {[...(usage.used||[]), ...(usage.unused||[])]
+          .filter(n => !!opFilter[n.operatorKey])
+          .sort((a,b)=>{
+            if (plSortKey==='recentUsed') return (b.usedAtMs||0) - (a.usedAtMs||0);
+            if (plSortKey==='longUnused') return (a.usedAtMs||0) - (b.usedAtMs||0);
+            if (plSortKey==='new') return (b.createdAtMs||0) - (a.createdAtMs||0);
+            if (plSortKey==='old') return (a.createdAtMs||0) - (b.createdAtMs||0);
+            return 0;
+          })
+          .map((n)=> (
           <div key={n.id} className="list-row">
             <div className="op"><img alt="logo" src={OPERATORS[n.operatorKey]?.icon} /></div>
             <div className="phone font-medium">{n.phone}</div>
