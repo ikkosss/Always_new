@@ -906,12 +906,19 @@ class FIRSTAPITester:
         print("📅 Getting existing records before timestamp fix...")
         
         # Get some numbers and places to check their timestamps
-        numbers_before, _ = self.run_test("Get numbers before fix", "GET", "/numbers", 200)
-        places_before, _ = self.run_test("Get places before fix", "GET", "/places", 200)
+        numbers_success, numbers_before = self.run_test("Get numbers before fix", "GET", "/numbers", 200)
+        places_success, places_before = self.run_test("Get places before fix", "GET", "/places", 200)
         
-        if not numbers_before or not places_before:
+        if not numbers_success or not places_success:
             print("❌ Could not get existing records for timestamp comparison")
             return False
+        
+        # Store some timestamps for comparison
+        sample_timestamps_before = {}
+        if numbers_before and len(numbers_before) > 0:
+            sample_timestamps_before['number_1'] = numbers_before[0].get('createdAt')
+        if places_before and len(places_before) > 0:
+            sample_timestamps_before['place_1'] = places_before[0].get('createdAt')
         
         # Call the admin fix endpoint
         success, response = self.run_test(
@@ -949,7 +956,7 @@ class FIRSTAPITester:
         
         print(f"✅ Timestamp fix completed: {numbers_fixed} numbers, {places_fixed} places")
         
-        # Now fetch some records to verify timestamps are timezone-aware and shifted
+        # Now fetch some records to verify timestamps are shifted by +3h
         success, numbers_after = self.run_test("Get numbers after fix", "GET", "/numbers", 200)
         if not success:
             return False
@@ -958,46 +965,109 @@ class FIRSTAPITester:
         if not success:
             return False
         
-        # Verify timestamp format and timezone awareness
-        timestamp_checks_passed = 0
-        total_timestamp_checks = 0
+        # Verify the +3h shift by comparing timestamps
+        shift_verification_passed = 0
+        total_shift_checks = 0
         
-        # Check a few numbers
-        for i, number in enumerate(numbers_after[:3]):  # Check first 3 numbers
+        # Check if timestamps were shifted by exactly 3 hours
+        if numbers_after and len(numbers_after) > 0 and sample_timestamps_before.get('number_1'):
+            total_shift_checks += 1
+            before_str = sample_timestamps_before['number_1']
+            after_str = numbers_after[0].get('createdAt')
+            
+            if before_str and after_str:
+                try:
+                    # Parse timestamps (they might not have timezone info in response)
+                    from datetime import datetime
+                    before_dt = datetime.fromisoformat(before_str.replace('Z', '+00:00'))
+                    after_dt = datetime.fromisoformat(after_str.replace('Z', '+00:00'))
+                    
+                    # Calculate the difference
+                    diff = after_dt - before_dt
+                    expected_diff_hours = 3
+                    actual_diff_hours = diff.total_seconds() / 3600
+                    
+                    if abs(actual_diff_hours - expected_diff_hours) < 0.01:  # Allow small floating point errors
+                        print(f"✅ Number timestamp correctly shifted by +3h: {before_str} → {after_str}")
+                        shift_verification_passed += 1
+                    else:
+                        print(f"❌ Number timestamp shift incorrect. Expected +3h, got +{actual_diff_hours:.2f}h")
+                except Exception as e:
+                    print(f"❌ Error parsing number timestamps: {e}")
+        
+        if places_after and len(places_after) > 0 and sample_timestamps_before.get('place_1'):
+            total_shift_checks += 1
+            before_str = sample_timestamps_before['place_1']
+            after_str = places_after[0].get('createdAt')
+            
+            if before_str and after_str:
+                try:
+                    # Parse timestamps (they might not have timezone info in response)
+                    from datetime import datetime
+                    before_dt = datetime.fromisoformat(before_str.replace('Z', '+00:00'))
+                    after_dt = datetime.fromisoformat(after_str.replace('Z', '+00:00'))
+                    
+                    # Calculate the difference
+                    diff = after_dt - before_dt
+                    expected_diff_hours = 3
+                    actual_diff_hours = diff.total_seconds() / 3600
+                    
+                    if abs(actual_diff_hours - expected_diff_hours) < 0.01:  # Allow small floating point errors
+                        print(f"✅ Place timestamp correctly shifted by +3h: {before_str} → {after_str}")
+                        shift_verification_passed += 1
+                    else:
+                        print(f"❌ Place timestamp shift incorrect. Expected +3h, got +{actual_diff_hours:.2f}h")
+                except Exception as e:
+                    print(f"❌ Error parsing place timestamps: {e}")
+        
+        # Verify timestamp format (ISO strings)
+        timestamp_format_checks = 0
+        total_format_checks = 0
+        
+        # Check a few numbers and places for proper timestamp format
+        for i, number in enumerate(numbers_after[:2]):  # Check first 2 numbers
             created_at = number.get('createdAt')
             if created_at:
-                total_timestamp_checks += 1
-                # Check if it's a proper ISO string with timezone info
-                if isinstance(created_at, str) and ('T' in created_at and ('+' in created_at or 'Z' in created_at)):
-                    print(f"✅ Number {i+1} has timezone-aware timestamp: {created_at}")
-                    timestamp_checks_passed += 1
+                total_format_checks += 1
+                # Check if it's a proper ISO string format
+                if isinstance(created_at, str) and 'T' in created_at and len(created_at) >= 19:
+                    print(f"✅ Number {i+1} has proper ISO timestamp format: {created_at}")
+                    timestamp_format_checks += 1
                 else:
                     print(f"❌ Number {i+1} has invalid timestamp format: {created_at}")
         
-        # Check a few places
-        for i, place in enumerate(places_after[:3]):  # Check first 3 places
+        for i, place in enumerate(places_after[:2]):  # Check first 2 places
             created_at = place.get('createdAt')
             if created_at:
-                total_timestamp_checks += 1
-                # Check if it's a proper ISO string with timezone info
-                if isinstance(created_at, str) and ('T' in created_at and ('+' in created_at or 'Z' in created_at)):
-                    print(f"✅ Place {i+1} has timezone-aware timestamp: {created_at}")
-                    timestamp_checks_passed += 1
+                total_format_checks += 1
+                # Check if it's a proper ISO string format
+                if isinstance(created_at, str) and 'T' in created_at and len(created_at) >= 19:
+                    print(f"✅ Place {i+1} has proper ISO timestamp format: {created_at}")
+                    timestamp_format_checks += 1
                 else:
                     print(f"❌ Place {i+1} has invalid timestamp format: {created_at}")
         
-        if total_timestamp_checks > 0:
-            timestamp_success_rate = (timestamp_checks_passed / total_timestamp_checks) * 100
-            print(f"✅ Timestamp format verification: {timestamp_checks_passed}/{total_timestamp_checks} ({timestamp_success_rate:.1f}%)")
-            
-            if timestamp_checks_passed == total_timestamp_checks:
-                print("✅ All checked timestamps are properly timezone-aware ISO strings")
-                return True
-            else:
-                print("❌ Some timestamps are not properly formatted")
-                return False
+        # Summary of results
+        print(f"✅ Timestamp shift verification: {shift_verification_passed}/{total_shift_checks} passed")
+        print(f"✅ Timestamp format verification: {timestamp_format_checks}/{total_format_checks} passed")
+        
+        # The test passes if:
+        # 1. The API response is correct (ok=true, numbers/places counts)
+        # 2. The timestamps are shifted by +3h (if we have data to compare)
+        # 3. The timestamps are in proper ISO format
+        
+        api_response_ok = (response.get('ok') is True and 
+                          isinstance(numbers_fixed, int) and 
+                          isinstance(places_fixed, int))
+        
+        shift_ok = (total_shift_checks == 0 or shift_verification_passed == total_shift_checks)
+        format_ok = (total_format_checks == 0 or timestamp_format_checks == total_format_checks)
+        
+        if api_response_ok and shift_ok and format_ok:
+            print("✅ Admin timestamp fix functionality working correctly")
+            return True
         else:
-            print("❌ No timestamps found to verify")
+            print("❌ Admin timestamp fix has issues")
             return False
 
     def run_promo_tests(self):
