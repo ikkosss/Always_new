@@ -512,7 +512,7 @@ function SearchPage() {
             {settingsMode === 'ops_home' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setIsEditingOp(false); setSettingsMode('ops_list')}>Редактировать операторов</button>
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setOpForm({ name:'', logo:null, existingLogo:'' }); setSettingsMode('ops_form'); }}>Добавить нового оператора</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setOpForm({ name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); setSettingsMode('ops_form'); }}>Добавить нового оператора</button>
               </div>
             )}
 
