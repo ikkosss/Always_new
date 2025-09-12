@@ -135,6 +135,48 @@ async def find_number_by_digits(digits: str) -> Optional[Dict[str, Any]]:
 async def root():
     return {"message": "FIRST API ready"}
 
+@api_router.post("/admin/fix_timestamps")
+async def admin_fix_timestamps(secret: Optional[str] = None):
+    expected = os.environ.get("ADMIN_FIX_SECRET")
+    if expected and secret != expected:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    shift = timedelta(hours=3)
+    fixed_numbers = 0
+    fixed_places = 0
+    async for doc in db.numbers.find({}):
+        dt = doc.get("createdAt")
+        if isinstance(dt, str):
+            try:
+                d = datetime.fromisoformat(dt.replace("Z", "+00:00"))
+            except Exception:
+                continue
+        elif isinstance(dt, datetime):
+            d = dt
+        else:
+            continue
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=timezone.utc)
+        new_dt = d + shift
+        await db.numbers.update_one({"id": doc["id"]}, {"$set": {"createdAt": new_dt}})
+        fixed_numbers += 1
+    async for doc in db.places.find({}):
+        dt = doc.get("createdAt")
+        if isinstance(dt, str):
+            try:
+                d = datetime.fromisoformat(dt.replace("Z", "+00:00"))
+            except Exception:
+                continue
+        elif isinstance(dt, datetime):
+            d = dt
+        else:
+            continue
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=timezone.utc)
+        new_dt = d + shift
+        await db.places.update_one({"id": doc["id"]}, {"$set": {"createdAt": new_dt}})
+        fixed_places += 1
+    return {"ok": True, "numbers": fixed_numbers, "places": fixed_places}
+
 # ---------------------
 # Numbers
 # ---------------------
