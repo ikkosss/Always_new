@@ -185,6 +185,7 @@ input[type="file"].search-input::file-selector-button { height: 43px; line-heigh
 
 /* Строгие ряды списков */
 .list-row { position: relative; display: flex; align-items: center; padding: 0 20px; box-sizing: border-box; width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); height: var(--search-h); overflow: hidden; }
+[data-page="place"] .list-row, [data-page="number"] .list-row { width: 98vw; margin-left: calc(50% - 49vw); margin-right: calc(50% - 49vw); }
 .list-row::after { content: ""; position: absolute; left: 1%; right: 1%; bottom: 0; height: 1px; background: #e5e7eb; }
 .list-row .op { flex: 0 0 var(--check-size); height: var(--check-size); display: flex; align-items: center; justify-content: center; }
 .list-row .op img { width: var(--check-size); height: var(--check-size); object-fit: cover; display: block; border-radius: 2%; }
