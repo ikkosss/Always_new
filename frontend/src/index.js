@@ -79,7 +79,7 @@ function setupViewportTopBottom() {
       // В браузере делаем минимальный фиксированный отступ, чтобы не было большого разрыва.
       document.documentElement.style.setProperty('--vv-top', isStandalone ? '0px' : `${top}px`);
       document.documentElement.style.setProperty('--vv-bottom', `${bottomInset}px`);
-      document.documentElement.style.setProperty('--bn-pad-bottom', isStandalone ? `${Math.max(0, bottomInset) + 12}px` : `6px`);
+      document.documentElement.style.setProperty('--bn-pad-bottom', isStandalone ? `${Math.max(0, bottomInset)}px` : `0px`);
     };
     if (vv && vv.addEventListener) vv.addEventListener('resize', apply);
     window.addEventListener('scroll', apply, { passive: true });
