@@ -1851,7 +1851,7 @@ function PlacesPage() {
     { key: 'popular', label: 'Наиболее используемые' },
     { key: 'least', label: 'Наименее используемые' },
   ];
-  const CAT_OPTIONS = ['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'];
+  // Список категорий берём из бэкенда, локальные константы не используем
   const [editing, setEditing] = useState(null);
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
