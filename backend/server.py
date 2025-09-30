@@ -71,6 +71,12 @@ class OperatorModel(BaseModel):
     logo: Optional[Dict[str, Any]] = None  # { contentType, data(base64) }
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class CategoryModel(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 class UsageSet(BaseModel):
     numberId: str
     placeId: str
