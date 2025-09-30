@@ -2032,7 +2032,7 @@ function PlacesPage() {
               <input className="search-input" placeholder="Название" value={form.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, name: e.target.value})} />
               <select className="search-input" value={form.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, category: e.target.value})}>
                 <option value="" disabled>{"Выберите категорию"}</option>
-                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
+                {cats.map((c)=> (
                   <option key={c.id} value={c.name}>{c.name}</option>
                 ))}
               </select>
