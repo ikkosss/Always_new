@@ -831,6 +831,10 @@ function NumbersPage() {
     if (sortKey === 'usedMost') arr = arr.slice().sort((a,b)=> (b.usedCount||0) - (a.usedCount||0));
     if (sortKey === 'usedLeast') arr = arr.slice().sort((a,b)=> (a.usedCount||0) - (b.usedCount||0));
     setItems(arr);
+    // attach last usages if available
+    // TODO: fetch usage summary; placeholder empty array for now
+    arr = arr.map(n => ({ ...n, usedPlaces: Array.isArray(n.usedPlaces) ? n.usedPlaces : [] }));
+
   };
   useEffect(() => { load(); }, [sortKey, opFilter]);
 
