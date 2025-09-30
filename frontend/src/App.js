@@ -271,6 +271,8 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
         <div className={innerClass}>{children}</div>
       </div>
       <BottomNav />
+  const [saveToast, setSaveToast] = useState(false);
+
     </div>
   );
 }
