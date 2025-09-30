@@ -224,7 +224,7 @@ function PromoBadgeAuto({ imgSrc, onClick }){
             <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
             <div className="modal-actions">
               <button className="btn btn-primary" onClick={() => proceedNav(true)}>💾</button>
-              <button className="btn btn-text" onClick={() => proceedNav(false)}>❌</button>
+              <button className="btn btn-text" onClick={() => proceedNav(false)}>Закрыть</button>
             </div>
           </div>
         </div>
@@ -550,7 +550,7 @@ function SearchPage() {
             {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
               <div className="flex justify-end gap-2 mt-3">
                 <button className="btn btn-primary" onClick={()=> setSettingsMode('root')}>🔙</button>
-                <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>❌</button>
+                <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
               </div>
             )}
 
@@ -587,7 +587,7 @@ function SearchPage() {
                     )}
                   </div>
                   <div className="flex justify-end gap-2">
-                    <button className="btn btn-text" onClick={()=> setSettingsMode('cats_home')}>❌</button>
+                    <button className="btn btn-text" onClick={()=> setSettingsMode('cats_home')}>Закрыть</button>
                     <button className="btn btn-primary" onClick={async ()=>{
                       const n = (catForm.name||'').trim();
                       if (!n) { alert('Введите название'); return; }
@@ -701,7 +701,7 @@ function SearchPage() {
                 ))}
               </select>
               <div className="flex justify-end gap-2">
-                <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>❌</button>
+                <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
                 <button className="btn btn-primary" onClick={saveNumber}>💾</button>
               </div>
             </div>
@@ -772,7 +772,7 @@ function SearchPage() {
                 }}
               />
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>❌</button>
+                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>💾</button>
               </div>
             </div>
@@ -945,7 +945,7 @@ function NumbersPage() {
                 ))}
               </select>
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>❌</button>
+                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
               </div>
             </div>
@@ -958,7 +958,7 @@ function NumbersPage() {
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>🗑️</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>❌</button>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
           </div>
         </div>
       )}
@@ -1277,7 +1277,7 @@ function NumberDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>❌</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
             </div>
           </div>
         </div>
@@ -1298,7 +1298,7 @@ function NumberDetails({ id }) {
               Вы уверены, что хотите удалить номер "{number?.phone}"? Это действие нельзя отменить.
             </div>
             <div className="flex justify-end gap-2">
-              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>❌</button>
+              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deleteNumber}>🗑️</button>
             </div>
           </div>
@@ -1319,7 +1319,7 @@ function NumberDetails({ id }) {
                 ))}
               </select>
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>❌</button>
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>💾</button>
               </div>
             </div>
@@ -1342,7 +1342,7 @@ function NumberDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>❌</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
             </div>
           </div>
         </div>
@@ -1597,7 +1597,7 @@ function PlaceDetails({ id }) {
             <div className="grid gap-3">
               <div className="text-base whitespace-pre-wrap">{place.comment}</div>
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>❌</button>
+                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
               </div>
             </div>
           </div>
@@ -1674,7 +1674,7 @@ function PlaceDetails({ id }) {
               ); })()}
 
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>❌</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
               </div>
             </div>
           </div>
@@ -1690,7 +1690,7 @@ function PlaceDetails({ id }) {
             )}
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setCtxOpen(false); }}>Редактировать</button>
               <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>🗑️</button>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>❌</button>
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
             </div>
           </div>
         </div>
@@ -1704,7 +1704,7 @@ function PlaceDetails({ id }) {
               Вы уверены, что хотите удалить место "{place?.name}"? Это действие нельзя отменить.
             </div>
             <div className="flex justify-end gap-2">
-              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>❌</button>
+              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>🗑️</button>
             </div>
           </div>
@@ -1792,7 +1792,7 @@ function PlaceDetails({ id }) {
                 <span className={`file-name ${editForm.logo ? 'has-file' : ''}`}>{editForm.logo ? (editForm.logo.name || editForm.logo) : 'Файл не выбран'}</span>
               </label>
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>❌</button>
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>💾</button>
               </div>
             </div>
@@ -1815,7 +1815,7 @@ function PlaceDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>❌</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
             </div>
           </div>
         </div>
@@ -2098,7 +2098,7 @@ function PlacesPage() {
                 }}
               />
               <div className="flex justify-end gap-2">
-                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>❌</button>
+                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
               </div>
             </div>
@@ -2128,7 +2128,7 @@ function PlacesPage() {
                 <div className="text-sm text-neutral-500">Ссылка не указана</div>
               )}
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>❌</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
               </div>
             </div>
           </div>
@@ -2140,7 +2140,7 @@ function PlacesPage() {
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>🗑️</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>❌</button>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
           </div>
         </div>
       )}
