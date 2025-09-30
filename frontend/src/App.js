@@ -280,6 +280,8 @@ function SearchPage() {
   const [results, setResults] = useState({ numbers: [], places: [] });
   const [noFound, setNoFound] = useState(false);
   const [showNumberDialog, setShowNumberDialog] = useState(false);
+  const [saveToast, setSaveToast] = useState(false);
+
   const [showPlaceDialog, setShowPlaceDialog] = useState(false);
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
