@@ -600,8 +600,7 @@ function SearchPage() {
                         if (!confirm('Точно удалить категорию?')) return;
                         try{
                           await api.delete(`/categories/${catForm.id}`);
-                          const { data } = await api.get(`/categories`);
-                          setCats(data);
+                          await refreshCats();
                           setCatForm({ id:'', name:'' });
                           setSettingsMode('cats_list');
                         } catch(e){ alert(e.response?.data?.detail || 'Не удалось удалить'); }
