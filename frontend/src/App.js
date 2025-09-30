@@ -583,6 +583,8 @@ function SearchPage() {
                     {cat.name}
                   </button>
                 ))}
+                {saveToast && <div className="text-green-600 text-sm">Сохранено</div>}
+
               </div>
             )}
 
