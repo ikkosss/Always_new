@@ -584,7 +584,7 @@ function SearchPage() {
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
                 </label>
                 <div className="flex justify-between gap-2">
-                  <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>Удалить</button>
+                  <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>🗑️</button>
                   <div className="flex gap-2">
                     {(!isEditingOp) && (<button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>🔙</button>)}
                     <button className="px-4 py-2 bg-blue-600 text-white" onClick={async ()=>{
@@ -917,7 +917,7 @@ function NumbersPage() {
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
-            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
+            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>🗑️</button>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
           </div>
         </div>
@@ -1131,7 +1131,7 @@ function NumberDetails({ id }) {
             <div className="absolute" style={{ top: nbMenuPos.top, left: nbMenuPos.left ?? 'auto', right: nbMenuPos.right ?? 'auto', zIndex: 2147483646 }} onClick={(e)=>e.stopPropagation()}>
               <div className="bg-white modal-panel shadow-xl w-[280px] p-2 menu-list" style={{ pointerEvents: 'auto' }}>
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setNbMenuOpen(false); }}>Редактировать</button>
-                <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbMenuOpen(false); }}>Удалить</button>
+                <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setNbMenuOpen(false); }}>🗑️</button>
               </div>
             </div>
           </div>, document.body)}
@@ -1259,7 +1259,7 @@ function NumberDetails({ id }) {
             </div>
             <div className="flex justify-end gap-2">
               <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Отмена</button>
-              <button className="px-4 py-2 bg-red-600 text-white" onClick={deleteNumber}>Удалить</button>
+              <button className="px-4 py-2 bg-red-600 text-white" onClick={deleteNumber}>🗑️</button>
             </div>
           </div>
         </div>
@@ -1649,7 +1649,7 @@ function PlaceDetails({ id }) {
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openPromoDialog(); setCtxOpen(false); }}>Промо‑материалы</button>
             )}
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setCtxOpen(false); }}>Редактировать</button>
-              <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>Удалить</button>
+              <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>🗑️</button>
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
             </div>
           </div>
@@ -1665,7 +1665,7 @@ function PlaceDetails({ id }) {
             </div>
             <div className="flex justify-end gap-2">
               <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Отмена</button>
-              <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>Удалить</button>
+              <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>🗑️</button>
             </div>
           </div>
         </div>
@@ -2099,7 +2099,7 @@ function PlacesPage() {
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
-            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
+            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>🗑️</button>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
           </div>
         </div>
