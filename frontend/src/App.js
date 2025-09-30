@@ -624,7 +624,7 @@ function SearchPage() {
                         }
                         await refreshCats();
                         setCatForm({ id:'', name:'' });
-                        setSettingsMode('cats_list');
+                        setSettingsMode('cats_list'); setSaveToast(true); setTimeout(()=> setSaveToast(false), 1500);
                       } catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить'); }
                     }}>Сохранить</button>
                   </div>
