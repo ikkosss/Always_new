@@ -603,7 +603,7 @@ function SearchPage() {
                       }}>Удалить</button>
                     )}
                   </div>
-                  <div className="flex justify-end gap-2 modal-actions">
+                  <div className="flex items-center justify-end gap-2">
                     <button className="btn btn-primary" onClick={async ()=>{
                       const n = (catForm.name||'').trim();
                       if (!n) { alert('Введите название'); return; }
@@ -682,7 +682,7 @@ function SearchPage() {
                 <>Добавить место <b>{confirmAdd.label}</b>?</>
               )}
             </div>
-            <div className="flex justify-end gap-2 modal-actions">
+            <div className="flex items-center justify-end gap-2">
               <button className="btn btn-text" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>Нет</button>
               <button className="btn btn-primary" onClick={()=>{
                 try { inputRef.current && inputRef.current.blur(); } catch {}
@@ -714,7 +714,7 @@ function SearchPage() {
                   <option key={key} value={key}>{op.name}</option>
                 ))}
               </select>
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
                 <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
               </div>
@@ -785,7 +785,7 @@ function SearchPage() {
                   document.documentElement.style.setProperty('--vv-lift', '0px');
                 }}
               />
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
               </div>
@@ -958,7 +958,7 @@ function NumbersPage() {
                   <option key={k} value={k}>{v.name}</option>
                 ))}
               </select>
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
@@ -1311,7 +1311,7 @@ function NumberDetails({ id }) {
             <div className="text-sm text-neutral-600 mb-4">
               Вы уверены, что хотите удалить номер "{number?.phone}"? Это действие нельзя отменить.
             </div>
-            <div className="flex justify-end gap-2 modal-actions">
+            <div className="flex items-center justify-end gap-2">
               <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deleteNumber}>Удалить</button>
             </div>
@@ -1332,7 +1332,7 @@ function NumberDetails({ id }) {
                   <option key={key} value={key}>{op.name}</option>
                 ))}
               </select>
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
               </div>
@@ -1717,7 +1717,7 @@ function PlaceDetails({ id }) {
             <div className="text-sm text-neutral-600 mb-4">
               Вы уверены, что хотите удалить место "{place?.name}"? Это действие нельзя отменить.
             </div>
-            <div className="flex justify-end gap-2 modal-actions">
+            <div className="flex items-center justify-end gap-2">
               <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>Удалить</button>
             </div>
@@ -1805,7 +1805,7 @@ function PlaceDetails({ id }) {
                 <span className="file-choose-btn">Обзор</span>
                 <span className={`file-name ${editForm.logo ? 'has-file' : ''}`}>{editForm.logo ? (editForm.logo.name || editForm.logo) : 'Файл не выбран'}</span>
               </label>
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>Сохранить</button>
               </div>
@@ -2112,7 +2112,7 @@ function PlacesPage() {
                   document.documentElement.style.setProperty('--vv-lift', '0px');
                 }}
               />
-              <div className="flex justify-end gap-2 modal-actions">
+              <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
