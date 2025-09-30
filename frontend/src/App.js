@@ -1979,7 +1979,7 @@ function PlacesPage() {
               <div className="grid menu-list">
                 {cats.map(c => (
                   <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c.name })); setCatOpen(false); }}>
-                    {c}
+                    {c.name}
                   </button>
                 ))}
                 <button className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: '' })); setCatOpen(false); }}>Все категории</button>
