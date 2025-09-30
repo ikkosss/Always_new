@@ -619,8 +619,7 @@ function SearchPage() {
                         } else {
                           const fd = new FormData(); fd.append('name', n); await api.post(`/categories`, fd);
                         }
-                        const { data } = await api.get(`/categories`);
-                        setCats(data);
+                        await refreshCats();
                         setCatForm({ id:'', name:'' });
                         setSettingsMode('cats_list');
                       } catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить'); }
