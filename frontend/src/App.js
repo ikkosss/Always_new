@@ -559,6 +559,9 @@ function SearchPage() {
               </div>
             )}
 
+                {/* Заголовок меняем в зависимости от режима */}
+                {/* cats_form: Добавление или Редактирование */}
+
             {settingsMode === 'cats_form' && (
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название категории" />
