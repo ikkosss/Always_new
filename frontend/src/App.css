@@ -371,6 +371,8 @@ img.w-6.h-6.rounded-\[3px\] { border-radius: 1px !important; }
   margin-bottom: calc(0.95 * 2.625rem / 2);
 /* Overlapping used places avatars for numbers list */
 .used-avatars { position: relative; width: calc(var(--check-size) * 5); height: var(--check-size); }
+.save-toast { color: #2ecc71; /* более зелёный, но яркий */ font-weight: 700; font-size: 14px; letter-spacing: 0.4px; }
+
 .used-avatars .av { position: absolute; top: 0; width: var(--check-size); height: var(--check-size); border-radius: 50%; border: 1px solid #fff; overflow: hidden; background: #eee; }
 .used-avatars .av img { width: 100%; height: 100%; object-fit: cover; }
 /* three vertical dots at left edge same height as operator icon */
