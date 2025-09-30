@@ -668,6 +668,58 @@ async def update_operator(
     return resp
 
 @api_router.delete("/operators/{op_id}")
+
+# ---------------------
+# Categories CRUD
+# ---------------------
+@api_router.get("/categories")
+async def list_categories():
+    items = await db.categories.find({}).sort("createdAt", -1).to_list(2000)
+    out = []
+    for it in items:
+        d = dict(it)
+        d.pop("_id", None)
+        out.append(d)
+    return out
+
+@api_router.post("/categories")
+async def create_category(name: str = Form(...)):
+    n = (name or '').strip()
+    if not n:
+        raise HTTPException(status_code=400, detail="Name required")
+    dup = await db.categories.find_one({"name": {"$regex": f"^{re.escape(n)}$", "$options": "i"}})
+    if dup:
+        raise HTTPException(status_code=409, detail="Category already exists")
+    doc = CategoryModel(name=n).model_dump()
+    await db.categories.insert_one(doc)
+    resp = dict(doc)
+    resp.pop("_id", None)
+    return resp
+
+@api_router.put("/categories/{cat_id}")
+async def update_category(cat_id: str, name: str = Form(...)):
+    n = (name or '').strip()
+    if not n:
+        raise HTTPException(status_code=400, detail="Name required")
+    cur = await db.categories.find_one({"id": cat_id})
+    if not cur:
+        raise HTTPException(status_code=404, detail="Category not found")
+    dup = await db.categories.find_one({"name": {"$regex": f"^{re.escape(n)}$", "$options": "i"}, "id": {"$ne": cat_id}})
+    if dup:
+        raise HTTPException(status_code=409, detail="Category already exists")
+    await db.categories.update_one({"id": cat_id}, {"$set": {"name": n}})
+    doc = await db.categories.find_one({"id": cat_id})
+    resp = dict(doc)
+    resp.pop("_id", None)
+    return resp
+
+@api_router.delete("/categories/{cat_id}")
+async def delete_category(cat_id: str):
+    res = await db.categories.delete_one({"id": cat_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Category not found")
+    return {"ok": True}
+
 async def delete_operator(op_id: str):
     res = await db.operators.delete_one({"id": op_id})
     if res.deleted_count == 0:
