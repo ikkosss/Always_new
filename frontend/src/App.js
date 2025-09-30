@@ -223,7 +223,7 @@ function PromoBadgeAuto({ imgSrc, onClick }){
             <div className="text-lg font-semibold mb-2">Сохранить изменения?</div>
             <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
             <div className="modal-actions">
-              <button className="btn btn-primary" onClick={() => proceedNav(true)}>💾</button>
+              <button className="btn btn-primary" onClick={() => proceedNav(true)}>Сохранить</button>
               <button className="btn btn-text" onClick={() => proceedNav(false)}>Закрыть</button>
             </div>
           </div>
@@ -603,7 +603,7 @@ function SearchPage() {
                         setCatForm({ id:'', name:'' });
                         setSettingsMode('cats_list');
                       } catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить'); }
-                    }}>💾</button>
+                    }}>Сохранить</button>
                   </div>
                 </div>
               </div>
@@ -646,7 +646,7 @@ function SearchPage() {
                       }catch(e){
                         alert(e.response?.data?.detail || 'Не удалось сохранить оператора');
                       }
-                    }}>💾</button>
+                    }}>Сохранить</button>
                   </div>
                 </div>
               </div>
@@ -702,7 +702,7 @@ function SearchPage() {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
-                <button className="btn btn-primary" onClick={saveNumber}>💾</button>
+                <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -773,7 +773,7 @@ function SearchPage() {
               />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>💾</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -946,7 +946,7 @@ function NumbersPage() {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -1320,7 +1320,7 @@ function NumberDetails({ id }) {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>💾</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -1793,7 +1793,7 @@ function PlaceDetails({ id }) {
               </label>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>💾</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>Сохранить</button>
               </div>
             </div>
           </div>
@@ -2099,7 +2099,7 @@ function PlacesPage() {
               />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
           </div>
