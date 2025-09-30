@@ -554,9 +554,9 @@ function SearchPage() {
 
             {settingsMode === 'cats_list' && (
               <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
-                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map(cat => (
-                  <button key={cat} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> setSettingsMode('cats_form')}>
-                    {cat}
+                {cats.map(cat => (
+                  <button key={cat.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setCatForm({ id: cat.id, name: cat.name }); setSettingsMode('cats_form'); }}>
+                    {cat.name}
                   </button>
                 ))}
               </div>
