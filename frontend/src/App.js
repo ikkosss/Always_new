@@ -541,6 +541,14 @@ function SearchPage() {
               </div>
             )}
 
+            {/* Кнопки навигации для категорий */}
+            {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
+              <div className="flex justify-between gap-2 mt-2">
+                <button className="px-4 py-2" onClick={()=> setSettingsMode('root')}>Назад</button>
+                <button className="px-4 py-2" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
+              </div>
+            )}
+
             {settingsMode === 'cats_home' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('cats_list')}>Редактировать категории</button>
