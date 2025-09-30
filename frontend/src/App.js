@@ -595,7 +595,6 @@ function SearchPage() {
 
             {settingsMode === 'cats_form' && (
               <div className="grid gap-3">
-                <div className="text-lg font-semibold mb-1">{catForm.id ? 'Редактирование категории' : 'Добавление категории'}</div>
                 <input className="search-input" placeholder="Название категории" value={catForm.name} onChange={(e)=> setCatForm(prev=>({...prev, name: e.target.value}))} />
                 <div className="flex items-center justify-between gap-2 modal-actions">
                   <div>
