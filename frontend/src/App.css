@@ -215,6 +215,8 @@ select.search-input { background-image: url("data:image/svg+xml;utf8,<svg xmlns=
 .modal-actions .btn-text { order: 2; }
 .btn { border-radius: 0; border: 1px solid #d1d5db; background: #fff; color: #111; padding: 8px 12px; }
 .btn-primary { background: #2962FF; color: #fff; border-color: #2962FF; }
+.btn-secondary { background: #2962FF; color: #fff; border-color: #2962FF; }
+
 .btn-danger { background: #e53935; color: #fff; border-color: #e53935; }
 .btn-text { background: transparent; color: #666; border: none; }
 
