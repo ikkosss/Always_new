@@ -290,7 +290,7 @@ function SearchPage() {
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [ops, setOps] = useState([]);
-  const { cats, refreshCats: doRefreshCats } = useCats();
+  const { cats, refreshCats } = useCats();
 
   useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ const { data } = await api.get(`/operators`); setOps(data); } catch(e){} })(); } }, [settingsOpen]);
   useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ await refreshCats(); } catch(e){} })(); } }, [settingsOpen]);
