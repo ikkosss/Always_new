@@ -725,6 +725,8 @@ async def delete_operator(op_id: str):
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Operator not found")
     return {"ok": True}
+    await db.categories.create_index("id", unique=True)
+
 
 # ---------------------
 # Search
