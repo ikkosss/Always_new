@@ -717,7 +717,7 @@ function SearchPage() {
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
               <select className="search-input" value={placeForm.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
-                {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
+                {cats.map((c)=> (
                   <option key={c.id} value={c.name}>{c.name}</option>
                 ))}
               </select>
