@@ -548,7 +548,7 @@ function SearchPage() {
 
             {/* Кнопки навигации для категорий (всегда внизу, одинаковый стиль с "Сохранить") */}
             {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
-              <div className="flex justify-end gap-2 mt-3">
+              <div className="flex justify-end gap-2 mt-3 modal-actions">
                 <button className="btn btn-primary" onClick={()=> setSettingsMode('root')}>Назад</button>
                 <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
               </div>
