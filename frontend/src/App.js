@@ -268,8 +268,6 @@ function Page({ title, children, hideHeader = false, center = false, wide = fals
     <div className={`min-h-screen pb-20 flex flex-col`} style={wrapperStyle}>
       {!hideHeader && <div className="header" style={{paddingTop: 'var(--pad-header-top)'}}>{title}</div>}
       <div className={outerClass}>
-  const [saveToast, setSaveToast] = useState(false);
-
         <div className={innerClass}>{children}</div>
       </div>
       <BottomNav />
