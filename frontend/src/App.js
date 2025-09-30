@@ -541,11 +541,11 @@ function SearchPage() {
               </div>
             )}
 
-            {/* Кнопки навигации для категорий */}
+            {/* Кнопки навигации для категорий (всегда внизу, одинаковый стиль с "Сохранить") */}
             {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
-              <div className="flex justify-between gap-2 mt-2">
-                <button className="px-4 py-2" onClick={()=> setSettingsMode('root')}>Назад</button>
-                <button className="px-4 py-2" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
+              <div className="flex justify-end gap-2 mt-3">
+                <button className="btn btn-primary" onClick={()=> setSettingsMode('root')}>Назад</button>
+                <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
               </div>
             )}
 
