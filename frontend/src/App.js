@@ -614,8 +614,7 @@ function SearchPage() {
                       if (!n) { alert('Введите название'); return; }
                       try{
                         if (catForm.id){
-                          await api.put(`/categories/${catForm.id}`, new FormData(Object.assign(document.createElement('form'), {name: n}))); // fallback
-                          await api.put(`/categories/${catForm.id}`, (()=>{ const fd = new FormData(); fd.append('name', n); return fd; })());
+                                                    const fd = new FormData(); fd.append('name', n); await api.put(`/categories/${catForm.id}`, fd);
                         } else {
                           const fd = new FormData(); fd.append('name', n); await api.post(`/categories`, fd);
                         }
