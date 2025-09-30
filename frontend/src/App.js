@@ -293,7 +293,7 @@ function SearchPage() {
   const { cats, refreshCats: doRefreshCats } = useCats();
 
   useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ const { data } = await api.get(`/operators`); setOps(data); } catch(e){} })(); } }, [settingsOpen]);
-  useEffect(()=>{ if (settingsOpen) { doRefreshCats(); } }, [settingsOpen, doRefreshCats]);
+  useEffect(()=>{ if (settingsOpen) { (async()=>{ try{ await refreshCats(); } catch(e){} })(); } }, [settingsOpen]);
 
   const [settingsMode, setSettingsMode] = useState('root'); // root | ops_home | ops_list | ops_form | cats_home | cats_list | cats_form
   const [opForm, setOpForm] = useState({ id: '', name: '', logo: null, existingLogo: '' });
