@@ -223,7 +223,7 @@ function PromoBadgeAuto({ imgSrc, onClick }){
             <div className="text-lg font-semibold mb-2">Сохранить изменения?</div>
             <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
             <div className="modal-actions">
-              <button className="btn btn-primary" onClick={() => proceedNav(true)}>Сохранить</button>
+              <button className="btn btn-primary" onClick={() => proceedNav(true)}>💾</button>
               <button className="btn btn-text" onClick={() => proceedNav(false)}>Отмена</button>
             </div>
           </div>
@@ -564,7 +564,7 @@ function SearchPage() {
                 <input className="search-input" placeholder="Название категории" />
                 <div className="flex justify-end gap-2">
                   <button className="px-4 py-2" onClick={()=> setSettingsMode('cats_home')}>🔙</button>
-                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> setSettingsMode('cats_home')}>Сохранить</button>
+                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> setSettingsMode('cats_home')}>💾</button>
                 </div>
               </div>
             )}
@@ -606,7 +606,7 @@ function SearchPage() {
                       }catch(e){
                         alert(e.response?.data?.detail || 'Не удалось сохранить оператора');
                       }
-                    }}>Сохранить</button>
+                    }}>💾</button>
                   </div>
                 </div>
               </div>
@@ -662,7 +662,7 @@ function SearchPage() {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Отмена</button>
-                <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
+                <button className="btn btn-primary" onClick={saveNumber}>💾</button>
               </div>
             </div>
           </div>
@@ -733,7 +733,7 @@ function SearchPage() {
               />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>💾</button>
               </div>
             </div>
           </div>
@@ -906,7 +906,7 @@ function NumbersPage() {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
               </div>
             </div>
           </div>
@@ -1280,7 +1280,7 @@ function NumberDetails({ id }) {
               </select>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>💾</button>
               </div>
             </div>
           </div>
@@ -1753,7 +1753,7 @@ function PlaceDetails({ id }) {
               </label>
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>💾</button>
               </div>
             </div>
           </div>
@@ -2059,7 +2059,7 @@ function PlacesPage() {
               />
               <div className="flex justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>💾</button>
               </div>
             </div>
           </div>
