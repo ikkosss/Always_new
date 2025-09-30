@@ -718,7 +718,7 @@ function SearchPage() {
               <input className="search-input" placeholder="Название" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
               <select className="search-input" value={placeForm.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
                 {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c.id} value={c}>{c}</option>
                 ))}
               </select>
               {/* Промокод с плюсиком */}
@@ -1719,7 +1719,7 @@ function PlaceDetails({ id }) {
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
               <select className="search-input" value={editForm.category} onChange={(e)=>setEditForm({...editForm, category: e.target.value})}>
                 {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c.id} value={c}>{c}</option>
                 ))}
               </select>
               
@@ -1978,7 +1978,7 @@ function PlacesPage() {
               <div className="text-lg font-semibold mb-2">Категории</div>
               <div className="grid menu-list">
                 {cats.map(c => (
-                  <button key={c} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c })); setCatOpen(false); }}>
+                  <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c })); setCatOpen(false); }}>
                     {c}
                   </button>
                 ))}
@@ -2031,7 +2031,7 @@ function PlacesPage() {
               <select className="search-input" value={form.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, category: e.target.value})}>
                 <option value="" disabled>{"Выберите категорию"}</option>
                 {['Магазины','Аптеки','Заправки','Соц. сети','CashBack','Прочее'].map((c)=> (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c.id} value={c}>{c}</option>
                 ))}
               </select>
               {/* Промокод с плюсиком */}
