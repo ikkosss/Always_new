@@ -569,10 +569,42 @@ function SearchPage() {
 
             {settingsMode === 'cats_form' && (
               <div className="grid gap-3">
-                <input className="search-input" placeholder="Название категории" />
-                <div className="flex justify-end gap-2">
-                  <button className="px-4 py-2" onClick={()=> setSettingsMode('cats_home')}>🔙</button>
-                  <button className="px-4 py-2 bg-blue-600 text-white" onClick={()=> setSettingsMode('cats_home')}>💾</button>
+                <div className="text-lg font-semibold mb-1">{catForm.id ? 'Редактирование категории' : 'Добавление категории'}</div>
+                <input className="search-input" placeholder="Название категории" value={catForm.name} onChange={(e)=> setCatForm(prev=>({...prev, name: e.target.value}))} />
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    {catForm.id && (
+                      <button className="btn btn-danger" onClick={async ()=>{
+                        if (!confirm('Точно удалить категорию?')) return;
+                        try{
+                          await api.delete(`/categories/${catForm.id}`);
+                          const { data } = await api.get(`/categories`);
+                          setCats(data);
+                          setCatForm({ id:'', name:'' });
+                          setSettingsMode('cats_list');
+                        } catch(e){ alert(e.response?.data?.detail || 'Не удалось удалить'); }
+                      }}>🗑️</button>
+                    )}
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <button className="btn btn-text" onClick={()=> setSettingsMode('cats_home')}>❌</button>
+                    <button className="btn btn-primary" onClick={async ()=>{
+                      const n = (catForm.name||'').trim();
+                      if (!n) { alert('Введите название'); return; }
+                      try{
+                        if (catForm.id){
+                          await api.put(`/categories/${catForm.id}`, new FormData(Object.assign(document.createElement('form'), {name: n}))); // fallback
+                          await api.put(`/categories/${catForm.id}`, (()=>{ const fd = new FormData(); fd.append('name', n); return fd; })());
+                        } else {
+                          const fd = new FormData(); fd.append('name', n); await api.post(`/categories`, fd);
+                        }
+                        const { data } = await api.get(`/categories`);
+                        setCats(data);
+                        setCatForm({ id:'', name:'' });
+                        setSettingsMode('cats_list');
+                      } catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить'); }
+                    }}>💾</button>
+                  </div>
                 </div>
               </div>
             )}
