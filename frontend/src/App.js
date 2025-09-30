@@ -50,6 +50,28 @@ const api = axios.create({ baseURL: API });
 // Operators backend models
 // List item: { id, name, hasLogo, createdAt }
 
+// Simple shared categories store + hook
+const CatsStore = { list: [], loaded: false, listeners: new Set() };
+async function refreshCats() {
+  try {
+    const { data } = await api.get(`/categories`);
+    CatsStore.list = Array.isArray(data) ? data : [];
+    CatsStore.loaded = true;
+    CatsStore.listeners.forEach(fn => { try { fn(CatsStore.list); } catch(_){} });
+    try { window.dispatchEvent(new CustomEvent('cats-updated')); } catch {}
+  } catch (e) { /* ignore */ }
+}
+function useCats() {
+  const [cats, setCats] = useState(CatsStore.list);
+  useEffect(()=>{
+    const onChange = (list) => setCats([...list]);
+    CatsStore.listeners.add(onChange);
+    if (!CatsStore.loaded) { refreshCats(); }
+    return ()=> CatsStore.listeners.delete(onChange);
+  }, []);
+  return { cats, refreshCats };
+}
+
 
 function extractDigits(raw) {
   const d = (raw || "").replace(/\D+/g, "");
