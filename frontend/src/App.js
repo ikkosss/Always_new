@@ -460,7 +460,7 @@ function SearchPage() {
         <img
           className="icon"
           alt=""
-          src="https://customer-assets.emergentagent.com/job_d56daeba-fb7b-4f87-a6a2-33aeb212a38b/artifacts/okjcsd4p_settings.svg"
+          src="/settings.png"
           onError={(e)=>{
             try {
               e.currentTarget.onerror = null;
