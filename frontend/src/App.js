@@ -509,6 +509,8 @@ function SearchPage() {
               {settingsMode === 'ops_list' && 'Выберите оператора'}
               {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
               {settingsMode === 'cats_home' && 'Категории'}
+              {settingsMode === 'cats_list' && 'Выберите категорию'}
+              {settingsMode === 'cats_form' && (catForm.id ? 'Редактирование категории' : 'Добавление категории')}
             </div>
 
             {/* Содержимое в зависимости от режима (без дубликатов) */}
