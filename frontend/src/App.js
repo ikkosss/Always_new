@@ -825,16 +825,22 @@ function NumbersPage() {
     }));
     // фильтрация по операторам
     arr = arr.filter(n => opFilter[n.operatorKey]);
+    // подгрузка последних использованных мест по каждому номеру
+    const withUsage = await Promise.all(arr.map(async (n) => {
+      try {
+        const u = await api.get(`/numbers/${n.id}/usage`);
+        const used = Array.isArray(u.data?.used) ? u.data.used : [];
+        used.sort((a,b)=> new Date(b.usedAt||0) - new Date(a.usedAt||0));
+        return { ...n, usedPlaces: used.slice(0,5) };
+      } catch { return { ...n, usedPlaces: [] }; }
+    }));
     // сортировка
-    if (sortKey === 'new') arr = arr.slice().sort((a,b)=> (b.createdAtMs||0) - (a.createdAtMs||0));
-    if (sortKey === 'old') arr = arr.slice().sort((a,b)=> (a.createdAtMs||0) - (b.createdAtMs||0));
-    if (sortKey === 'usedMost') arr = arr.slice().sort((a,b)=> (b.usedCount||0) - (a.usedCount||0));
-    if (sortKey === 'usedLeast') arr = arr.slice().sort((a,b)=> (a.usedCount||0) - (b.usedCount||0));
-    setItems(arr);
-    // attach last usages if available
-    // TODO: fetch usage summary; placeholder empty array for now
-    arr = arr.map(n => ({ ...n, usedPlaces: Array.isArray(n.usedPlaces) ? n.usedPlaces : [] }));
-
+    let sorted = withUsage.slice();
+    if (sortKey === 'new') sorted.sort((a,b)=> (b.createdAtMs||0) - (a.createdAtMs||0));
+    if (sortKey === 'old') sorted.sort((a,b)=> (a.createdAtMs||0) - (b.createdAtMs||0));
+    if (sortKey === 'usedMost') sorted.sort((a,b)=> (b.usedPlaces?.length||0) - (a.usedPlaces?.length||0));
+    if (sortKey === 'usedLeast') sorted.sort((a,b)=> (a.usedPlaces?.length||0) - (b.usedPlaces?.length||0));
+    setItems(sorted);
   };
   useEffect(() => { load(); }, [sortKey, opFilter]);
 
