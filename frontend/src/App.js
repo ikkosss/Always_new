@@ -604,7 +604,6 @@ function SearchPage() {
                     )}
                   </div>
                   <div className="flex justify-end gap-2 modal-actions">
-                    <button className="btn btn-text" onClick={()=> setSettingsMode('cats_home')}>Закрыть</button>
                     <button className="btn btn-primary" onClick={async ()=>{
                       const n = (catForm.name||'').trim();
                       if (!n) { alert('Введите название'); return; }
