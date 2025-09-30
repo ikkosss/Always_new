@@ -1990,11 +1990,6 @@ function PlacesPage() {
         )}
 
         {/* Селектор категорий */}
-        // категории использовать из состояния cats (единый источник)
-
-        {/* Загружаем категории для списка из бэкенда (единый источник) */}
-        const [catsPlaces, setCatsPlaces] = [cats, setCats];
-
         {catOpen && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setCatOpen(false)}>
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
