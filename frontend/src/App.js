@@ -1978,6 +1978,7 @@ function PlacesPage() {
               <div className="text-lg font-semibold mb-2">Категории</div>
               <div className="grid menu-list">
                 {cats.map(c => (
+                  /* ensure list is consistent everywhere */
                   <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c })); setCatOpen(false); }}>
                     {c}
                   </button>
