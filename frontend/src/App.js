@@ -524,7 +524,7 @@ function SearchPage() {
       </div>
 
       {settingsOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>setSettingsOpen(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>{ setSettingsMode('root'); setCatForm({ id:'', name:'' }); setOpForm({ id:'', name:'', logo:null, existingLogo:'' }); setSettingsOpen(false); }}>
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="grid gap-2">
             {/* Динамический заголовок (единственный) */}
