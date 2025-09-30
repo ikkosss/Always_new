@@ -505,7 +505,7 @@ function SearchPage() {
               {settingsMode === 'ops_home' && 'Управление операторами'}
               {settingsMode === 'ops_list' && 'Выберите оператора'}
               {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
-              {settingsMode === 'cats_home' && 'Управление категориями'}
+              {settingsMode === 'cats_home' && 'Категории'}
             </div>
 
             {/* Содержимое в зависимости от режима (без дубликатов) */}
