@@ -571,13 +571,6 @@ function SearchPage() {
               </div>
             )}
 
-            {/* Кнопки навигации для категорий (всегда внизу, одинаковый стиль с "Сохранить") */}
-            {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
-              <div className="flex justify-end gap-2 mt-3 modal-actions">
-                <button className="btn btn-text" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
-              </div>
-            )}
-
             {settingsMode === 'cats_list' && (
               <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
                 {cats.map(cat => (
