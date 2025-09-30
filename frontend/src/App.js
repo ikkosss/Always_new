@@ -586,6 +586,10 @@ function SearchPage() {
                 {/* Заголовок меняем в зависимости от режима */}
                 {/* cats_form: Добавление или Редактирование */}
 
+                <div className="flex justify-end gap-2 mt-3 modal-actions">
+                  <button className="btn btn-text" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
+                </div>
+
             {settingsMode === 'cats_form' && (
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название категории" value={catForm.name} onChange={(e)=> setCatForm(prev=>({...prev, name: e.target.value}))} />
