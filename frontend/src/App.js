@@ -545,7 +545,7 @@ function SearchPage() {
             {(settingsMode === 'cats_home' || settingsMode === 'cats_list' || settingsMode === 'cats_form') && (
               <div className="flex justify-end gap-2 mt-3">
                 <button className="btn btn-primary" onClick={()=> setSettingsMode('root')}>🔙</button>
-                <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>Закрыть</button>
+                <button className="btn btn-primary" onClick={()=> setSettingsOpen(false)}>❌</button>
               </div>
             )}
 
@@ -1557,7 +1557,7 @@ function PlaceDetails({ id }) {
             <div className="grid gap-3">
               <div className="text-base whitespace-pre-wrap">{place.comment}</div>
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>❌</button>
               </div>
             </div>
           </div>
@@ -1634,7 +1634,7 @@ function PlaceDetails({ id }) {
               ); })()}
 
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>❌</button>
               </div>
             </div>
           </div>
@@ -2088,7 +2088,7 @@ function PlacesPage() {
                 <div className="text-sm text-neutral-500">Ссылка не указана</div>
               )}
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>❌</button>
               </div>
             </div>
           </div>
