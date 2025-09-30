@@ -889,10 +889,18 @@ function NumbersPage() {
               duration={0}
               onClick={() => onItemClick(n)}
             >
+              <button className="dots-btn place-dots" onClick={(e)=>{ e.stopPropagation(); openContext(n); }} aria-label="Меню">⋮</button>
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden rounded-[3px]">
                 <img alt="logo" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain rounded-[3px]"/>
               </div>
               <div className="flex-1">{n.phone}</div>
+              <div className="used-avatars" aria-label="Использованные места">
+                {(n.usedPlaces || []).slice(0,5).map((p,idx)=> (
+                  <div key={p.id||idx} className="av" style={{ left: `${idx* (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--check-size'))||20 * 0.6)}px`, zIndex: 10-idx }}>
+                    <img alt="place" src={`${API}/places/${p.id}/logo`} onError={(e)=>{ e.currentTarget.style.visibility='hidden'; }} />
+                  </div>
+                ))}
+              </div>
             </LongPressable>
           ))}
         </div>
