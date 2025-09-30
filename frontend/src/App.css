@@ -34,7 +34,7 @@ body.is-fullscreen { }
 /* CSS-переменная для высоты нижней навигации (динамическая оценка по умолчанию) */
 :root { --bn-h: 64px; }
 /* Кнопка внутри поля — равные отступы сверху/снизу/справа */
-.search-action { position: absolute; right: 1px; top: 50%; transform: translateY(-50%); height: calc(var(--search-h) - 2px); padding: 0 10px; display: flex; align-items: center; justify-content: center; background: #2962FF; color: #fff; }
+.search-action { position: absolute; right: 3px; top: 50%; transform: translateY(-50%); height: calc(var(--search-h) - 6px); padding: 0 10px; display: flex; align-items: center; justify-content: center; background: #2962FF; color: #fff; }
 
 @media (max-width: 420px) { :root { --bn-h: 56px; } }
 
