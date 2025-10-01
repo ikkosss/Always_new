@@ -898,6 +898,12 @@ function SearchPage() {
 
     </Page>
   );
+
+  // Operator picker for NumbersPage add/edit dialog (state must be outside JSX)
+  const [nbOpPickOpen, setNbOpPickOpen] = useState(false);
+  const [nbOpPickList, setNbOpPickList] = useState([]);
+  const [nbOpPickKey, setNbOpPickKey] = useState('mts');
+
 }
 
 function NumbersPage() {
