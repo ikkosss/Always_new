@@ -673,8 +673,6 @@ async def delete_operator_endpoint(op_id: str):
         raise HTTPException(status_code=404, detail="Operator not found")
     return {"ok": True}
 
-@api_router.delete("/operators/{op_id}")
-
 # ---------------------
 # Categories CRUD
 # ---------------------
