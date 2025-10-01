@@ -766,7 +766,7 @@ function SearchPage() {
                   <img alt="op" src={OPERATORS[numberForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
                   <span>{OPERATORS[numberForm.operatorKey]?.name || 'Оператор'}</span>
                 </span>
-                <span>▼</span>
+                
               </button>
 
                   setCatDeleteConfirmOpen(false);
@@ -818,7 +818,7 @@ function SearchPage() {
                   <img alt="op" src={OPERATORS[numberForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
                   <span>{OPERATORS[numberForm.operatorKey]?.name || 'Оператор'}</span>
                 </span>
-                <span>▼</span>
+                
               </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
@@ -1119,7 +1119,7 @@ function NumbersPage() {
                   <img alt="op" src={OPERATORS[form.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
                   <span>{OPERATORS[form.operatorKey]?.name || 'Оператор'}</span>
                 </span>
-                <span>▼</span>
+                
               </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
@@ -1559,7 +1559,7 @@ function NumberDetails({ id }) {
                   <img alt="op" src={OPERATORS[editForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
                   <span>{OPERATORS[editForm.operatorKey]?.name || 'Оператор'}</span>
                 </span>
-                <span>▼</span>
+                
               </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
