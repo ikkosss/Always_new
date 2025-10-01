@@ -7,7 +7,7 @@ from pathlib import Path
 import time
 
 class FIRSTAPITester:
-    def __init__(self, base_url="https://first-pwa-app.preview.emergentagent.com"):
+    def __init__(self, base_url="https://promofon-dash.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
