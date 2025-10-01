@@ -1625,6 +1625,11 @@ function PlaceDetails({ id }) {
   const [plSortOpen, setPlSortOpen] = useState(false);
   const [plOpsOpen, setPlOpsOpen] = useState(false);
   const [plSortKey, setPlSortKey] = useState('recentUsed');
+  // синхронизируем список операторов с NumbersPage
+  const [opsList, setOpsList] = useState([]);
+  const [opFilterNames, setOpFilterNames] = useState({});
+  useEffect(()=>{ if (plOpsOpen){ (async()=>{ try{ const { data } = await api.get(`/operators`); setOpsList(data||[]); if (Object.keys(opFilterNames).length===0){ const init = {}; (data||[]).forEach(o=> init[o.name]=true); setOpFilterNames(init);} } catch(e){} })(); } }, [plOpsOpen]);
+
   const [opFilter, setOpFilter] = useState(Object.keys(OPERATORS).reduce((a,k)=> (a[k]=true,a), {}));
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
