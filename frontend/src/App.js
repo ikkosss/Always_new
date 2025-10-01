@@ -1038,11 +1038,12 @@ function NumbersPage() {
       )}
 
       {ctxOpen && ctxTarget && (
-        <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center p-4" onClick={() => setCtxOpen(false)}>
-          <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
-            <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
+        <div className="fixed inset-0 bg-black/30" onClick={() => setCtxOpen(false)}>
+          <div className="absolute z-[10050]" style={{ top: ctxPos.top, left: ctxPos.left ?? 'auto', right: ctxPos.right ?? 'auto' }} onClick={(e)=>e.stopPropagation()}>
+            <div className="bg-white modal-panel shadow-xl w-[260px] p-2 menu-list">
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { startEdit(ctxTarget); setCtxOpen(false); }}>Редактировать</button>
+              <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
+            </div>
           </div>
         </div>
       )}
