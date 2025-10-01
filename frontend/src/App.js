@@ -987,6 +987,16 @@ function NumbersPage() {
               ))}
             </div>
             <div className="flex justify-end items-center gap-3 mt-3">
+              {/* Кнопки массового выбора: обновляют именно опFilterNames (по именам), затем синхронизируем opFilter по ключам */}
+              <button className="mass-box on" onClick={()=>{
+                const allByName = {}; (opsList||[]).forEach(o => allByName[o.name] = true); setOpFilterNames(allByName);
+                const allByKey = {}; Object.keys(OPERATORS).forEach(k => allByKey[k] = true); setOpFilter(allByKey);
+              }} aria-label="Выбрать все" />
+              <button className="mass-box off" onClick={()=>{
+                const noneByName = {}; (opsList||[]).forEach(o => noneByName[o.name] = false); setOpFilterNames(noneByName);
+                const noneByKey = {}; Object.keys(OPERATORS).forEach(k => noneByKey[k] = false); setOpFilter(noneByKey);
+              }} aria-label="Снять все" />
+
               {/* Заменено на квадратные кнопки 43x43 как на странице места */}
               <button className="mass-box on" onClick={()=>{
                 const all = {}; Object.keys(OPERATORS).forEach(k => all[k]=true); setOpFilter(all);
