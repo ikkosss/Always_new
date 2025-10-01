@@ -214,7 +214,7 @@
 
 ## test_plan:
   current_focus:
-    - "PlaceDetails: 'Сортировка' dialog does not open - RESOLVED"
+    - "Sync Operators list between Numbers->Operators modal and Settings->Edit Operators list - BACKEND READY"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
