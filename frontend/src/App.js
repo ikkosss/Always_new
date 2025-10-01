@@ -1107,9 +1107,9 @@ function NumbersPage() {
             <div className="grid gap-3">
               <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>onPhoneChange(e.target.value)} />
               <button className="search-input flex items-center gap-2 justify-between" onClick={()=>{
-                setOpPickKey(form.operatorKey||'mts');
-                (async()=>{ try{ const { data } = await api.get(`/operators`); setOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
-                setOpPickOpen(true);
+                setNbOpPickKey(form.operatorKey||'mts');
+                (async()=>{ try{ const { data } = await api.get(`/operators`); setNbOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
+                setNbOpPickOpen(true);
               }}>
                 <span className="flex items-center gap-2">
                   <img alt="op" src={OPERATORS[form.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
