@@ -588,9 +588,9 @@ async def create_operator(
         }
     await db.operators.insert_one(doc)
     resp = dict(doc)
-    resp.pop("logo", None)
     resp.pop("_id", None)
-    resp["hasLogo"] = "logo" in doc
+    resp["hasLogo"] = "logo" in doc and bool(doc.get("logo"))
+    resp.pop("logo", None)
     return resp
 
 @api_router.get("/operators/{op_id}")
