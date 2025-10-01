@@ -955,7 +955,7 @@ function NumbersPage() {
                   </div>
                 ))}
               </div>
-              <button className="dots-btn place-dots" onClick={(e)=>{ e.stopPropagation(); openContext(n); }} aria-label="Меню">⋮</button>
+              <button className="dots-btn place-dots" onClick={(e)=>{ e.stopPropagation(); openContext(n, e); }} aria-label="Меню">⋮</button>
             </LongPressable>
           ))}
         </div>
