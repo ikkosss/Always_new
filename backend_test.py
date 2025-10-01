@@ -1293,6 +1293,260 @@ class FIRSTAPITester:
         
         return True
 
+    def test_create_operator_without_logo(self):
+        """Test POST /api/operators without logo"""
+        data = {
+            "name": f"ТестОператор-{self.timestamp}"
+        }
+        
+        success, response = self.run_test(
+            "Create operator without logo", 
+            "POST", 
+            "/operators", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Store the created operator ID for later tests
+            if 'id' in response:
+                self.created_operator_id = response['id']
+                print(f"✅ Created operator ID: {self.created_operator_id}")
+            
+            # Verify response structure
+            required_fields = ['id', 'name', 'hasLogo', 'createdAt']
+            for field in required_fields:
+                if field not in response:
+                    print(f"❌ Missing required field '{field}' in create response")
+                    return False
+            
+            # Verify hasLogo is false
+            if response.get('hasLogo') is not False:
+                print(f"❌ Expected hasLogo=false, got {response.get('hasLogo')}")
+                return False
+            
+            print(f"✅ Operator created without logo: {response['name']}")
+        
+        return success
+
+    def test_create_operator_with_logo(self):
+        """Test POST /api/operators with logo"""
+        # Use a small test image (create a minimal PNG)
+        import base64
+        # Minimal 1x1 PNG image in base64
+        minimal_png = base64.b64decode(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77yQAAAABJRU5ErkJggg=='
+        )
+        
+        data = {
+            "name": f"ТестЛого-{self.timestamp}"
+        }
+        
+        files = {
+            'logo': ('test.png', minimal_png, 'image/png')
+        }
+        
+        success, response = self.run_test(
+            "Create operator with logo", 
+            "POST", 
+            "/operators", 
+            200, 
+            data=data, 
+            files=files, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Store the created operator ID for later tests
+            if 'id' in response:
+                self.created_operator_with_logo_id = response['id']
+                print(f"✅ Created operator with logo ID: {self.created_operator_with_logo_id}")
+            
+            # Verify hasLogo is true
+            if response.get('hasLogo') is not True:
+                print(f"❌ Expected hasLogo=true, got {response.get('hasLogo')}")
+                return False
+            
+            print(f"✅ Operator created with logo: {response['name']}")
+        
+        return success
+
+    def test_get_operator_logo(self):
+        """Test GET /api/operators/{id}/logo when hasLogo is true"""
+        if not hasattr(self, 'created_operator_with_logo_id') or not self.created_operator_with_logo_id:
+            print(f"❌ No operator with logo available for logo test")
+            return False
+            
+        url = f"{self.api_url}/operators/{self.created_operator_with_logo_id}/logo"
+        self.log(f"Testing Get operator logo...")
+        self.log(f"URL: {url}")
+        
+        try:
+            response = requests.get(url)
+            self.tests_run += 1
+            
+            if response.status_code == 200:
+                content_type = response.headers.get('content-type', '')
+                if 'image' in content_type:
+                    self.tests_passed += 1
+                    print(f"✅ PASSED - Logo retrieved, Content-Type: {content_type}")
+                    return True
+                else:
+                    print(f"❌ FAILED - Wrong content type: {content_type}")
+                    return False
+            else:
+                print(f"❌ FAILED - Status: {response.status_code}")
+                return False
+        except Exception as e:
+            print(f"❌ FAILED - Error: {str(e)}")
+            return False
+
+    def test_update_operator_name(self):
+        """Test PUT /api/operators/{id} to update name"""
+        if not hasattr(self, 'created_operator_id') or not self.created_operator_id:
+            print(f"❌ No operator available for update test")
+            return False
+        
+        new_name = f"ОбновленныйОператор-{self.timestamp}"
+        data = {
+            "name": new_name
+        }
+        
+        success, response = self.run_test(
+            "Update operator name", 
+            "PUT", 
+            f"/operators/{self.created_operator_id}", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify the name was updated
+            if response.get('name') != new_name:
+                print(f"❌ Name not updated. Expected: {new_name}, Got: {response.get('name')}")
+                return False
+            
+            print(f"✅ Operator name updated to: {new_name}")
+        
+        return success
+
+    def test_delete_operator_main_flow(self):
+        """Test DELETE /api/operators/{id} - main deletion flow as requested"""
+        print("🗑️ Testing DELETE operator main flow...")
+        
+        # Step 1: List operators to get initial count
+        success, initial_list = self.run_test("List operators (before create)", "GET", "/operators", 200)
+        if not success:
+            return False
+        
+        initial_count = len(initial_list)
+        print(f"✅ Initial operators count: {initial_count}")
+        
+        # Step 2: Create a temp operator with specific name "ТестУдаление123"
+        temp_name = "ТестУдаление123"
+        data = {
+            "name": temp_name
+        }
+        
+        success, create_response = self.run_test(
+            "Create temp operator for deletion", 
+            "POST", 
+            "/operators", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if not success or 'id' not in create_response:
+            print(f"❌ Failed to create temp operator")
+            return False
+        
+        temp_operator_id = create_response['id']
+        print(f"✅ Created temp operator '{temp_name}' with ID: {temp_operator_id}")
+        
+        # Step 3: Ensure it appears in GET list
+        success, after_create_list = self.run_test("List operators (after create)", "GET", "/operators", 200)
+        if not success:
+            return False
+        
+        # Check if our temp operator is in the list
+        found_in_list = any(op.get('id') == temp_operator_id and op.get('name') == temp_name for op in after_create_list)
+        if not found_in_list:
+            print(f"❌ Temp operator not found in list after creation")
+            return False
+        
+        print(f"✅ Temp operator found in list after creation")
+        after_create_count = len(after_create_list)
+        print(f"✅ Operators count after create: {after_create_count}")
+        
+        # Step 4: Delete it via DELETE /api/operators/{id}
+        success, delete_response = self.run_test(
+            f"Delete temp operator ({temp_name})", 
+            "DELETE", 
+            f"/operators/{temp_operator_id}", 
+            200
+        )
+        
+        if not success:
+            return False
+        
+        # Verify delete response
+        if delete_response.get('ok') is not True:
+            print(f"❌ Delete response should have ok=true, got: {delete_response}")
+            return False
+        
+        print(f"✅ Temp operator deleted successfully")
+        
+        # Step 5: Ensure it no longer appears in GET list
+        success, after_delete_list = self.run_test("List operators (after delete)", "GET", "/operators", 200)
+        if not success:
+            return False
+        
+        # Check that our temp operator is NOT in the list
+        still_found = any(op.get('id') == temp_operator_id for op in after_delete_list)
+        if still_found:
+            print(f"❌ Temp operator still found in list after deletion")
+            return False
+        
+        print(f"✅ Temp operator no longer appears in list after deletion")
+        after_delete_count = len(after_delete_list)
+        print(f"✅ Operators count after delete: {after_delete_count}")
+        
+        # Verify count decreased by 1
+        if after_delete_count != initial_count:
+            print(f"❌ Operators count mismatch. Expected: {initial_count}, Got: {after_delete_count}")
+            return False
+        
+        print(f"✅ DELETE operator main flow completed successfully")
+        return True
+
+    def test_delete_nonexistent_operator(self):
+        """Test DELETE /api/operators/{id} with non-existing ID - should return 404"""
+        # Use a fake UUID that doesn't exist
+        fake_id = "00000000-0000-0000-0000-000000000000"
+        
+        success, response = self.run_test(
+            "Delete non-existent operator (should fail)", 
+            "DELETE", 
+            f"/operators/{fake_id}", 
+            404
+        )
+        
+        if success:
+            # Verify the error response structure
+            if 'detail' in response and response['detail'] == "Operator not found":
+                print(f"✅ Correct error response: {response}")
+            else:
+                print(f"❌ Incorrect error response. Expected 'Operator not found', got: {response}")
+                return False
+        
+        return success
+
     def run_operators_tests(self):
         """Run operators-specific API tests for sync functionality"""
         print("📱 Starting Operators Sync Tests")
@@ -1319,6 +1573,50 @@ class FIRSTAPITester:
         print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
         
         return self.tests_passed == self.tests_run
+
+    def run_operators_delete_tests(self):
+        """Run comprehensive DELETE operators tests as requested in review"""
+        print("🗑️ Starting Operators DELETE Tests")
+        print("=" * 50)
+        
+        # Reset counters for this test suite
+        initial_tests_run = self.tests_run
+        initial_tests_passed = self.tests_passed
+        
+        delete_tests = [
+            # Main DELETE flow as requested
+            self.test_delete_operator_main_flow,
+            
+            # Regression tests
+            self.test_list_operators,
+            self.test_create_operator_without_logo,
+            self.test_create_operator_with_logo,
+            self.test_get_operator_details,
+            self.test_get_operator_logo,
+            self.test_update_operator_name,
+            
+            # Negative test
+            self.test_delete_nonexistent_operator,
+        ]
+        
+        for test in delete_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        # Calculate results for this test suite only
+        suite_tests_run = self.tests_run - initial_tests_run
+        suite_tests_passed = self.tests_passed - initial_tests_passed
+        
+        print("📊 Operators DELETE Test Results:")
+        print(f"   Tests run: {suite_tests_run}")
+        print(f"   Tests passed: {suite_tests_passed}")
+        print(f"   Success rate: {(suite_tests_passed/suite_tests_run*100):.1f}%")
+        
+        return suite_tests_passed == suite_tests_run
 
     def run_admin_tests(self):
         """Run admin-specific API tests"""
