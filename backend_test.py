@@ -1652,6 +1652,301 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def test_create_category_temp(self):
+        """Test POST /api/categories - create temporary category for deletion test"""
+        data = {
+            "name": "ТестКатегория_UD1"
+        }
+        
+        success, response = self.run_test(
+            "Create temporary category (ТестКатегория_UD1)", 
+            "POST", 
+            "/categories", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Store the created category ID for later tests
+            if 'id' in response:
+                self.created_category_id = response['id']
+                print(f"✅ Created category ID: {self.created_category_id}")
+            
+            # Verify response structure
+            required_fields = ['id', 'name', 'createdAt']
+            for field in required_fields:
+                if field not in response:
+                    print(f"❌ Missing required field '{field}' in create response")
+                    return False
+            
+            # Verify name matches
+            if response.get('name') != "ТестКатегория_UD1":
+                print(f"❌ Expected name='ТестКатегория_UD1', got {response.get('name')}")
+                return False
+            
+            print(f"✅ Category created: {response['name']}")
+        
+        return success
+
+    def test_list_categories_contains_temp(self):
+        """Test GET /api/categories - should include created temporary category"""
+        success, response = self.run_test("List categories (should contain temp)", "GET", "/categories", 200)
+        
+        if not success:
+            return False
+        
+        # Verify response is a list
+        if not isinstance(response, list):
+            print(f"❌ Expected list, got {type(response)}")
+            return False
+        
+        # Check if our created category is in the list
+        if hasattr(self, 'created_category_id') and self.created_category_id:
+            found = any(cat.get('id') == self.created_category_id and cat.get('name') == "ТестКатегория_UD1" for cat in response)
+            if found:
+                print(f"✅ Created category found in list")
+            else:
+                print(f"❌ Created category NOT found in list")
+                return False
+        
+        print(f"✅ Categories list contains {len(response)} categories")
+        return success
+
+    def test_delete_category_main_flow(self):
+        """Test DELETE /api/categories/{id} - main deletion flow as requested"""
+        if not hasattr(self, 'created_category_id') or not self.created_category_id:
+            print(f"❌ No category available for delete test")
+            return False
+        
+        success, response = self.run_test(
+            f"Delete category (ТестКатегория_UD1)", 
+            "DELETE", 
+            f"/categories/{self.created_category_id}", 
+            200
+        )
+        
+        if not success:
+            return False
+        
+        # Verify delete response
+        if response.get('ok') is not True:
+            print(f"❌ Delete response should have ok=true, got: {response}")
+            return False
+        
+        print(f"✅ Category deleted successfully")
+        return True
+
+    def test_list_categories_after_delete(self):
+        """Test GET /api/categories - should NOT include deleted category"""
+        success, response = self.run_test("List categories (after delete)", "GET", "/categories", 200)
+        
+        if not success:
+            return False
+        
+        # Check that our deleted category is NOT in the list
+        if hasattr(self, 'created_category_id') and self.created_category_id:
+            still_found = any(cat.get('id') == self.created_category_id for cat in response)
+            if still_found:
+                print(f"❌ Deleted category still found in list")
+                return False
+            
+            print(f"✅ Deleted category no longer appears in list")
+        
+        return success
+
+    def test_delete_category_again_404(self):
+        """Test DELETE /api/categories/{id} again - should return 404"""
+        if not hasattr(self, 'created_category_id') or not self.created_category_id:
+            print(f"❌ No category ID available for 404 test")
+            return False
+        
+        success, response = self.run_test(
+            "Delete same category again (should fail with 404)", 
+            "DELETE", 
+            f"/categories/{self.created_category_id}", 
+            404
+        )
+        
+        if success:
+            # Verify the error response structure
+            if 'detail' in response and response['detail'] == "Category not found":
+                print(f"✅ Correct 404 error response: {response}")
+            else:
+                print(f"❌ Incorrect error response. Expected 'Category not found', got: {response}")
+                return False
+        
+        return success
+
+    def test_create_duplicate_category_409(self):
+        """Test POST /api/categories with duplicate name - should return 409"""
+        # Create first category
+        data = {
+            "name": f"ДубликатТест-{self.timestamp}"
+        }
+        
+        success, response = self.run_test(
+            "Create category for duplicate test", 
+            "POST", 
+            "/categories", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if not success:
+            return False
+        
+        # Try to create the same category again - should fail with 409
+        success, response = self.run_test(
+            "Create duplicate category (should fail with 409)", 
+            "POST", 
+            "/categories", 
+            409, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify the error response structure
+            if 'detail' in response and response['detail'] == "Category already exists":
+                print(f"✅ Correct 409 error response: {response}")
+            else:
+                print(f"❌ Incorrect error response. Expected 'Category already exists', got: {response}")
+                return False
+        
+        return success
+
+    def test_update_category_success(self):
+        """Test PUT /api/categories/{id} with new name - should work"""
+        # First create a category to update
+        data = {
+            "name": f"ОбновитьТест-{self.timestamp}"
+        }
+        
+        success, create_response = self.run_test(
+            "Create category for update test", 
+            "POST", 
+            "/categories", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if not success or 'id' not in create_response:
+            return False
+        
+        category_id = create_response['id']
+        new_name = f"Обновлено-{self.timestamp}"
+        
+        # Update the category name
+        update_data = {
+            "name": new_name
+        }
+        
+        success, response = self.run_test(
+            f"Update category name to '{new_name}'", 
+            "PUT", 
+            f"/categories/{category_id}", 
+            200, 
+            data=update_data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify the name was updated
+            if response.get('name') != new_name:
+                print(f"❌ Name not updated. Expected: {new_name}, Got: {response.get('name')}")
+                return False
+            
+            print(f"✅ Category name updated to: {new_name}")
+        
+        return success
+
+    def test_update_nonexistent_category_404(self):
+        """Test PUT /api/categories/{id} with non-existent ID - should return 404"""
+        # Use a fake UUID that doesn't exist
+        fake_id = "00000000-0000-0000-0000-000000000000"
+        
+        data = {
+            "name": "НесуществующаяКатегория"
+        }
+        
+        success, response = self.run_test(
+            "Update non-existent category (should fail with 404)", 
+            "PUT", 
+            f"/categories/{fake_id}", 
+            404, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify the error response structure
+            if 'detail' in response and response['detail'] == "Category not found":
+                print(f"✅ Correct 404 error response: {response}")
+            else:
+                print(f"❌ Incorrect error response. Expected 'Category not found', got: {response}")
+                return False
+        
+        return success
+
+    def run_categories_delete_tests(self):
+        """Run comprehensive Categories DELETE tests as requested in review"""
+        print("🗂️ Starting Categories DELETE Tests")
+        print("=" * 50)
+        
+        # Reset counters for this test suite
+        initial_tests_run = self.tests_run
+        initial_tests_passed = self.tests_passed
+        
+        # Main DELETE flow as requested in review
+        delete_tests = [
+            # Step 1: Create temporary category
+            self.test_create_category_temp,
+            
+            # Step 2: Verify it appears in GET list
+            self.test_list_categories_contains_temp,
+            
+            # Step 3: DELETE and expect { ok: true }
+            self.test_delete_category_main_flow,
+            
+            # Step 4: Verify no longer appears in GET list
+            self.test_list_categories_after_delete,
+            
+            # Step 5: Attempt DELETE again and expect 404
+            self.test_delete_category_again_404,
+            
+            # Regression tests as requested
+            self.test_create_duplicate_category_409,
+            self.test_update_category_success,
+            self.test_update_nonexistent_category_404,
+        ]
+        
+        for test in delete_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        # Calculate results for this test suite only
+        suite_tests_run = self.tests_run - initial_tests_run
+        suite_tests_passed = self.tests_passed - initial_tests_passed
+        
+        print("📊 Categories DELETE Test Results:")
+        print(f"   Tests run: {suite_tests_run}")
+        print(f"   Tests passed: {suite_tests_passed}")
+        print(f"   Success rate: {(suite_tests_passed/suite_tests_run*100):.1f}%")
+        
+        return suite_tests_passed == suite_tests_run
 def main():
     tester = FIRSTAPITester()
     
