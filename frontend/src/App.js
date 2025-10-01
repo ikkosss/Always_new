@@ -1177,6 +1177,10 @@ function NumberDetails({ id }) {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState({ phone: "", operatorKey: "mts" });
+  // Operator picker for NumberDetails edit dialog
+  const [ndOpPickOpen, setNdOpPickOpen] = useState(false);
+  const [ndOpPickList, setNdOpPickList] = useState([]);
+  const [ndOpPickKey, setNdOpPickKey] = useState('mts');
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
   // контекстное меню (локально для страницы номера)
