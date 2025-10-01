@@ -811,11 +811,17 @@ function SearchPage() {
             <div className="text-lg font-semibold mb-2">Добавить номер</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={numberForm.phone} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setNumberForm({ ...numberForm, phone: formatRuPhonePartial(e.target.value) })} />
-              <select className="search-input" value={numberForm.operatorKey} onChange={(e) => setNumberForm({ ...numberForm, operatorKey: e.target.value })}>
-                {Object.entries(OPERATORS).map(([key, op]) => (
-                  <option key={key} value={key}>{op.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center gap-2 justify-between" onClick={()=>{
+                setOpPickKey(numberForm.operatorKey||'mts');
+                (async()=>{ try{ const { data } = await api.get(`/operators`); setOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
+                setOpPickOpen(true);
+              }}>
+                <span className="flex items-center gap-2">
+                  <img alt="op" src={OPERATORS[numberForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
+                  <span>{OPERATORS[numberForm.operatorKey]?.name || 'Оператор'}</span>
+                </span>
+                <span>▼</span>
+              </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
                 <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
