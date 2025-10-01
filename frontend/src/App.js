@@ -870,6 +870,11 @@ function SearchPage() {
                 className="search-input" 
                 placeholder="Комментарий" 
                 value={placeForm.comment} 
+  // Operator picker for NumbersPage add/edit dialog
+  const [nbOpPickOpen, setNbOpPickOpen] = useState(false);
+  const [nbOpPickList, setNbOpPickList] = useState([]);
+  const [nbOpPickKey, setNbOpPickKey] = useState('mts');
+
                 onChange={(e)=>{
                   const val = e.target.value;
                   setPlaceForm({...placeForm, comment: val});
