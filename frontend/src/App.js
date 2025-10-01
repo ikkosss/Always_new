@@ -633,17 +633,16 @@ function SearchPage() {
             {settingsMode === 'ops_form' && (
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название оператора" value={opForm.name} onChange={(e)=> setOpForm(prev=> ({...prev, name: e.target.value}))} />
-                {opForm.existingLogo && (
-                  <div className="file-field cursor-default">
-                    <span className="file-choose-btn" style={{visibility:'hidden'}}>Обзор</span>
-                    <span className="file-name has-file">Текущий логотип</span>
-                    <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px]" style={{marginLeft:8}} />
-                  </div>
-                )}
                 <label className="file-field cursor-pointer">
                   <input className="hidden" type="file" accept="image/*" onChange={(e)=> setOpForm(prev=> ({...prev, logo: e.target.files?.[0] || null}))} />
                   <span className="file-choose-btn">Обзор</span>
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
+                  {/* превью внутри поля загрузки */}
+                  {opForm.logo ? (
+                    <img alt="preview" src={URL.createObjectURL(opForm.logo)} className="w-8 h-8 rounded-[3px] ml-2" />
+                  ) : (
+                    opForm.existingLogo ? <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px] ml-2" /> : null
+                  )}
                 </label>
                 <div className="flex items-center justify-end gap-2">
                   <button className="btn btn-text" onClick={()=> gotoSettingsMode(isEditingOp ? 'ops_list' : 'ops_home')}>Закрыть</button>
