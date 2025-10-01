@@ -659,41 +659,9 @@ function SearchPage() {
                 </div>
 
                 <div className="flex justify-between gap-2">
-                  <button className="btn btn-danger" onClick={async ()=>{
-                    if (!opForm.id) return;
-                    if (!confirm('Точно удалить оператора?')) return;
-                    try{
-                      await api.delete(`/operators/${opForm.id}`);
-                      const { data } = await api.get(`/operators`);
-                      setOps(data);
-                      setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
-                      setIsEditingOp(false);
-                      setSettingsMode('ops_list');
-                    }catch(e){ alert(e.response?.data?.detail || 'Не удалось удалить оператора'); }
-                  }}>Удалить</button>
-                  <div className="flex gap-2">
-                    {(!isEditingOp) && (<button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>)}
-                    <button className="px-4 py-2 bg-blue-600 text-white" onClick={async ()=>{
-                      try{
-                        const fd = new FormData();
-                        fd.append('name', opForm.name);
-                        if (opForm.logo) fd.append('logo', opForm.logo);
-                        if (isEditingOp && opForm.id){
-                          await api.put(`/operators/${opForm.id}`, fd);
-                        } else {
-                          await api.post(`/operators`, fd);
-                        }
-                        const { data } = await api.get(`/operators`);
-                        setOps(data);
-                        // вернёмся на список
-                        setSettingsMode('ops_list');
-                        // сбросим форму
-                        setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
-                      }catch(e){
-                        alert(e.response?.data?.detail || 'Не удалось сохранить оператора');
-                      }
-                    }}>Сохранить</button>
-                  </div>
+                  {isEditingOp && (
+                    <button className="btn btn-danger" onClick={()=> setOpDeleteConfirmOpen(true)}>Удалить</button>
+                  )}
                 </div>
               </div>
             )}
