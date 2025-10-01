@@ -644,30 +644,29 @@ function SearchPage() {
                     opForm.existingLogo ? <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px] ml-2" /> : null
                   )}
                 </label>
-                <div className="flex items-center justify-end gap-2">
+                <div className="modal-footer-sticky flex items-center justify-between gap-2">
                   <button className="btn btn-text" onClick={()=> gotoSettingsMode(isEditingOp ? 'ops_list' : 'ops_home')}>Закрыть</button>
-                  <button className="btn btn-primary" onClick={async ()=>{
-                    try{
-                      const fd = new FormData();
-                      fd.append('name', opForm.name);
-                      if (opForm.logo) fd.append('logo', opForm.logo);
-                      if (isEditingOp && opForm.id){
-                        await api.put(`/operators/${opForm.id}`, fd);
-                      } else {
-                        await api.post(`/operators`, fd);
-                      }
-                      const { data } = await api.get(`/operators`);
-                      setOps(data);
-                      setSettingsMode('ops_list');
-                      setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
-                    }catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить оператора'); }
-                  }}>Сохранить</button>
-                </div>
-
-                <div className="flex justify-between gap-2">
-                  {isEditingOp && (
-                    <button className="btn btn-danger" onClick={()=> setOpDeleteConfirmOpen(true)}>Удалить</button>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {isEditingOp && (
+                      <button className="btn btn-danger" onClick={()=> setOpDeleteConfirmOpen(true)}>Удалить</button>
+                    )}
+                    <button className="btn btn-primary" onClick={async ()=>{
+                      try{
+                        const fd = new FormData();
+                        fd.append('name', opForm.name);
+                        if (opForm.logo) fd.append('logo', opForm.logo);
+                        if (isEditingOp && opForm.id){
+                          await api.put(`/operators/${opForm.id}`, fd);
+                        } else {
+                          await api.post(`/operators`, fd);
+                        }
+                        const { data } = await api.get(`/operators`);
+                        setOps(data);
+                        setSettingsMode('ops_list');
+                        setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
+                      }catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить оператора'); }
+                    }}>Сохранить</button>
+                  </div>
                 </div>
               </div>
             )}
