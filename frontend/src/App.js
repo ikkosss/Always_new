@@ -1530,8 +1530,8 @@ function NumberDetails({ id }) {
       {ndOpPickOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setNdOpPickOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Выбор оператора</div>
-            <div className="grid menu-list max-h-[70vh] overflow-y-auto">
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор оператора</div>
+            <div className="grid menu-list">
               {ndOpPickList.map(op => {
                 const key = nameToKey(op.name);
                 const active = key === ndOpPickKey;
@@ -1543,9 +1543,14 @@ function NumberDetails({ id }) {
                 );
               })}
             </div>
-            <div className="flex items-center justify-end gap-2 mt-3">
-              <button className="btn btn-text" onClick={()=> setNdOpPickOpen(false)}>Отмена</button>
-              <button className="btn btn-primary" onClick={()=>{ setEditForm(f=>({...f, operatorKey: ndOpPickKey || 'mts'})); setNdOpPickOpen(false); }}>Сохранить</button>
+            <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-3">
+              <div>
+                <button className="btn" onClick={()=> { setNdOpPickOpen(false); /* Назад ведёт к форме, просто закрываем */ }}>Назад</button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="btn btn-text" onClick={()=> setNdOpPickOpen(false)}>Отмена</button>
+                <button className="btn btn-primary" onClick={()=>{ setEditForm(f=>({...f, operatorKey: ndOpPickKey || 'mts'})); setNdOpPickOpen(false); }}>Сохранить</button>
+              </div>
             </div>
           </div>
         </div>
