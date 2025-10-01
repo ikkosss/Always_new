@@ -980,7 +980,12 @@ function NumbersPage() {
             <div className="grid menu-list max-h-[60vh] overflow-y-auto">
               {opsList.map(op => (
                 <label key={op.id} className="flex items-center px-3 py-2 cursor-pointer">
-                  <input type="checkbox" className="ops-check" checked={!!opFilterNames[op.name]} onChange={(e)=> setOpFilterNames(prev=> ({...prev, [op.name]: e.target.checked}))} />
+                  <input type="checkbox" className="ops-check" checked={!!opFilterNames[op.name]} onChange={(e)=> { 
+                    const checked = e.target.checked; 
+                    setOpFilterNames(prev=> ({...prev, [op.name]: checked})); 
+                    const key = Object.keys(OPERATORS).find(k => (OPERATORS[k]?.name||'').toLowerCase() === (op.name||'').toLowerCase());
+                    if (key) setOpFilter(prev => ({ ...prev, [key]: checked }));
+                  }} />
                   <img alt="op" src={op.hasLogo ? `${API}/operators/${op.id}/logo` : '/operators/mts.png'} className="w-6 h-6 rounded-[3px] mr-2" onError={(e)=>{ e.currentTarget.src='/operators/mts.png'; }} />
                   <span>{op.name}</span>
                 </label>
