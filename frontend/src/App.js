@@ -724,6 +724,34 @@ function SearchPage() {
             </div>
           </div>
         </div>
+
+      {/* Category Delete Confirmation Dialog (standalone) */}
+      {catDeleteConfirmOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={() => setCatDeleteConfirmOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Удалить категорию</div>
+            <div className="text-sm text-neutral-600 mb-4">
+              Вы уверены, что хотите удалить категорию "{catForm.name}"? Это действие нельзя отменить.
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <button className="btn btn-text" onClick={() => setCatDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="btn btn-danger" onClick={async () => {
+                try {
+                  await api.delete(`/categories/${catForm.id}`);
+                  await refreshCats();
+                  setCatForm({ id:'', name:'' });
+                  setSettingsMode('cats_list');
+                  setCatDeleteConfirmOpen(false);
+                } catch(e) {
+                  alert(e.response?.data?.detail || 'Не удалось удалить');
+                  setCatDeleteConfirmOpen(false);
+                }
+              }}>Удалить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       )}
 
       {/* Number Dialog */}
