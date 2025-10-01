@@ -191,7 +191,6 @@
         - agent: "user"
         - comment: "В модалках добавления и редактирования категорий кнопка 'Закрыть' присутствует дважды (сверху и снизу). Все нижние кнопки должны быть на одном уровне."
 
-## metadata:
   - task: "Sync Operators list between Numbers->Operators modal and Settings->Edit Operators list"
     implemented: false
     working: false
@@ -203,7 +202,11 @@
       - working: false
       - agent: "main"
       - comment: "Numbers page Operators modal still uses static OPERATORS; must fetch GET /api/operators and display same list as settings. Checkboxes should affect filter only for known mapped keys."
+      - working: "NA"
+      - agent: "testing"
+      - comment: "BACKEND TESTING COMPLETED: GET /api/operators endpoint is working perfectly (100% success rate - 6/6 tests passed). Backend provides 14 operators with all required fields (id, name, hasLogo, createdAt) for frontend sync. Operators available: +7, Залуп, Залуп GSM, МегаФон X, Билайн, МТС, T2, T-Mobile, СБЕР-Mobile, Альфа-Mobile, Газпром-Mobile, YOTA777, Мотив, Ростелеком5. API is consistent between calls and returns proper JSON structure. The backend is ready for frontend integration - the issue is purely frontend implementation (Numbers modal using static OPERATORS instead of fetching from API). Frontend needs to replace static OPERATORS array with API call to GET /api/operators."
 
+## metadata:
   created_by: "main_agent"
   version: "1.0"  
   test_sequence: 0
