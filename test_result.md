@@ -192,6 +192,18 @@
         - comment: "В модалках добавления и редактирования категорий кнопка 'Закрыть' присутствует дважды (сверху и снизу). Все нижние кнопки должны быть на одном уровне."
 
 ## metadata:
+  - task: "Sync Operators list between Numbers->Operators modal and Settings->Edit Operators list"
+    implemented: false
+    working: false
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "urgent"
+    needs_retesting: true
+    status_history:
+      - working: false
+      - agent: "main"
+      - comment: "Numbers page Operators modal still uses static OPERATORS; must fetch GET /api/operators and display same list as settings. Checkboxes should affect filter only for known mapped keys."
+
   created_by: "main_agent"
   version: "1.0"  
   test_sequence: 0
