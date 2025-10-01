@@ -1560,14 +1560,7 @@ function NumberDetails({ id }) {
               </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
-                <button className="px-4 py-2 bg-blue-600 text-white" onClick={async ()=>{
-                  // apply operator chosen in pick modal if open
-                  if (nbOpPickOpen) {
-                    setEditForm(f=>({...f, operatorKey: nbOpPickKey || 'mts'}));
-                    setNbOpPickOpen(false);
-                  }
-                  await saveEditedNumber();
-                }}>Сохранить</button>
+                <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
               </div>
             </div>
           </div>
