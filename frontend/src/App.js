@@ -1511,13 +1511,17 @@ function NumberDetails({ id }) {
             <div className="text-lg font-semibold mb-2">Редактировать номер</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="НОМЕР ТЕЛЕФОНА" value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: formatRuPhonePartial(e.target.value) })} />
-              <select className="search-input" value={editForm.operatorKey} onChange={(e) => setEditForm({ ...editForm, operatorKey: e.target.value })}>
-
-
-                {Object.entries(OPERATORS).map(([key, op]) => (
-                  <option key={key} value={key}>{op.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center gap-2 justify-between" onClick={()=>{
+                setNbOpPickKey(editForm.operatorKey||'mts');
+                (async()=>{ try{ const { data } = await api.get(`/operators`); setNbOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
+                setNbOpPickOpen(true);
+              }}>
+                <span className="flex items-center gap-2">
+                  <img alt="op" src={OPERATORS[editForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
+                  <span>{OPERATORS[editForm.operatorKey]?.name || 'Оператор'}</span>
+                </span>
+                <span>▼</span>
+              </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
