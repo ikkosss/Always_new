@@ -724,6 +724,8 @@ function SearchPage() {
             </div>
           </div>
         </div>
+      )}
+
 
       {/* Category Delete Confirmation Dialog (standalone) */}
       {catDeleteConfirmOpen && (
