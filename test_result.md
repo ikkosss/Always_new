@@ -275,3 +275,64 @@
   - message: "Please run backend tests for DELETE /api/operators/{id} and frontend UI flow: Settings → Операторы → выбрать → Удалить → подтверждение. Check that operator disappears from list and modal closes."
   - agent: "testing"
   - message: "OPERATOR DELETE TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of DELETE /api/operators/{id} endpoint completed with 100% success rate (13/13 tests passed). CRITICAL FINDINGS: 1) Main DELETE flow working perfectly - created 'ТестУдаление123', verified in list, deleted successfully, confirmed removal from list, 2) All regression tests passed - GET/POST/PUT/DELETE operations working correctly, 3) Proper error handling - DELETE non-existing operator returns 404 with correct error message, 4) Backend fixes applied during testing - removed duplicate route declaration, fixed hasLogo logic, corrected multipart form handling. BACKEND READY FOR PRODUCTION: All operator CRUD operations are fully functional. The DELETE endpoint is working as expected and ready for frontend integration. Main agent can now focus on frontend UI testing or mark this task as complete."
+
+
+## backend:
+  - task: "DELETE /api/categories/{id} works"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "urgent"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "user"
+        - comment: "Пользователь сообщил: удаление категории из настроек не работает (кнопка не делает ничего)."
+        - working: "NA"
+        - agent: "main"
+        - comment: "Проверить и протестировать эндпоинт DELETE /api/categories/{id}: создать тестовую категорию, удалить, убедиться в 404 при повторном удалении."
+
+## frontend:
+  - task: "Fix category deletion flow in Settings (modal + API + state refresh)"
+    implemented: true
+    working: false
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "urgent"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "user"
+        - comment: "При нажатии 'Удалить' в редактировании категории ничего не происходит."
+        - working: "NA"
+        - agent: "main"
+        - comment: "Исправлено: вынесено модальное подтверждение удаления категории из блока confirmAdd, теперь модалка рендерится всегда при catDeleteConfirmOpen. После подтверждения: DELETE /api/categories/{id}, refreshCats(), возврат к списку."
+
+  - task: "Numbers list ⋮ context menu anchored near click (not bottom sheet)"
+    implemented: true
+    working: false
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "user"
+        - comment: "Меню при нажатии на три точки возле номера появляется внизу экрана — нужно рядом с местом нажатия."
+        - working: "NA"
+        - agent: "main"
+        - comment: "Изменено: добавлены ctxPos (top/left), вычисление позиции по getBoundingClientRect(), меню рендерится как абсолютный dropdown возле кнопки."
+
+## test_plan:
+  current_focus:
+    - "Backend: Categories DELETE endpoint end-to-end (create → delete → verify)"
+    - "Frontend: Settings → Категории → Редактировать → Удалить — модалка и удаление"
+    - "Frontend: На странице Номера (список) ⋮ меню появляется рядом с точками"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+## agent_communication:
+  - agent: "main"
+  - message: "Пожалуйста, сначала прогоните backend-тесты для DELETE /api/categories/{id}: создать временную категорию, удалить её, убедиться, что она пропала из списка, и что повторное удаление даёт 404. Затем, по подтверждению пользователя, можем запустить авто‑тесты UI: 1) Открыть Настройки → Категории → Редактировать → выбрать категорию → Удалить → подтвердить; проверить, что категория исчезла из списка, 2) На странице со списком номеров нажать ⋮ возле конкретного номера и убедиться, что меню появляется возле точки нажатия, а не снизу."
