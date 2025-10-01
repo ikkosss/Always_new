@@ -284,6 +284,10 @@ function SearchPage() {
 
   const [showPlaceDialog, setShowPlaceDialog] = useState(false);
   const [numberForm, setNumberForm] = useState({ phone: "", operatorKey: "mts" });
+  // Operator picker (global Add Number dialog)
+  const [opPickOpen, setOpPickOpen] = useState(false);
+  const [opPickList, setOpPickList] = useState([]);
+  const [opPickKey, setOpPickKey] = useState("mts");
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
   const [settingsOpen, setSettingsOpen] = useState(false);
