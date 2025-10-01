@@ -668,6 +668,13 @@ async def update_operator(
     return resp
 
 @api_router.delete("/operators/{op_id}")
+async def delete_operator_endpoint(op_id: str):
+    res = await db.operators.delete_one({"id": op_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Operator not found")
+    return {"ok": True}
+
+@api_router.delete("/operators/{op_id}")
 
 # ---------------------
 # Categories CRUD
