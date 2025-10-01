@@ -250,7 +250,7 @@
   file: "backend/server.py & frontend/src/App.js"
   stuck_count: 0
   priority: "urgent"
-  needs_retesting: true
+  needs_retesting: false
   status_history:
     - working: false
     - agent: "user"
@@ -258,6 +258,9 @@
     - working: true
     - agent: "main"
     - comment: "Добавлен endpoint DELETE /api/operators/{id} на бэкенде. На фронтенде заменён window.confirm на стилизованное модальное подтверждение. После подтверждения оператор удаляется, список обновляется, модалки закрываются, состояние сбрасывается."
+    - working: true
+    - agent: "testing"
+    - comment: "COMPREHENSIVE DELETE TESTING COMPLETED: All operator deletion functionality working perfectly (100% success rate - 13/13 tests passed). MAIN DELETE FLOW VERIFIED: 1) ✅ Created temp operator 'ТестУдаление123' successfully, 2) ✅ Operator appeared in GET /api/operators list, 3) ✅ DELETE /api/operators/{id} returned {ok: true}, 4) ✅ Operator no longer appears in list after deletion, 5) ✅ Operator count correctly decreased by 1. REGRESSION TESTS PASSED: ✅ GET /api/operators (proper structure, hasLogo flags), ✅ POST /api/operators without logo (hasLogo=false), ✅ POST /api/operators with logo (hasLogo=true), ✅ GET /api/operators/{id} (correct details), ✅ GET /api/operators/{id}/logo (image retrieval), ✅ PUT /api/operators/{id} (name update), ✅ DELETE non-existing operator returns 404 with 'Operator not found'. BACKEND FIXES APPLIED: Fixed duplicate DELETE route declaration, corrected hasLogo logic for operators without logos, fixed multipart form handling for PUT requests. All operator CRUD operations are fully functional and ready for production use."
 
 ## test_plan:
   current_focus:
