@@ -900,7 +900,22 @@ function NumbersPage() {
     load();
   };
 
-  const openContext = (n) => { suppressClickRef.current = true; setCtxTarget(n); setCtxOpen(true); };
+  const openContext = (n, ev) => { 
+    suppressClickRef.current = true; 
+    setCtxTarget(n); 
+    try {
+      const rect = ev?.currentTarget?.getBoundingClientRect?.();
+      if (rect) {
+        const pad = 6; const menuW = 260;
+        const left = Math.min(Math.max(0, rect.right - menuW), window.innerWidth - menuW - pad);
+        const top = Math.max(0, rect.bottom + pad);
+        setCtxPos({ top, left, right: null });
+      } else {
+        setCtxPos(prev => ({ ...prev, right: '1vw' }));
+      }
+    } catch { setCtxPos(prev => ({ ...prev, right: '1vw' })); }
+    setCtxOpen(true);
+  };
 
   const onItemClick = (n) => {
     if (suppressClickRef.current) { suppressClickRef.current = false; return; }
