@@ -955,7 +955,6 @@ function NumbersPage() {
               duration={0}
               onClick={() => onItemClick(n)}
             >
-              <button className="dots-btn place-dots" onClick={(e)=>{ e.stopPropagation(); openContext(n); }} aria-label="Меню">⋮</button>
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden rounded-[3px]">
                 <img alt="logo" src={OPERATORS[n.operatorKey]?.icon} className="w-6 h-6 object-contain rounded-[3px]"/>
               </div>
@@ -967,6 +966,7 @@ function NumbersPage() {
                   </div>
                 ))}
               </div>
+              <button className="dots-btn place-dots" onClick={(e)=>{ e.stopPropagation(); openContext(n); }} aria-label="Меню">⋮</button>
             </LongPressable>
           ))}
         </div>
