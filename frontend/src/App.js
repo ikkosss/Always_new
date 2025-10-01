@@ -752,8 +752,6 @@ function SearchPage() {
         </div>
       )}
 
-      )}
-
       {/* Number Dialog */}
       {showNumberDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={() => setShowNumberDialog(false)}>
