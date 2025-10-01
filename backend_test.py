@@ -1347,9 +1347,9 @@ class FIRSTAPITester:
 def main():
     tester = FIRSTAPITester()
     
-    # Run admin timestamp fix tests as requested in review
-    print("Running admin timestamp fix tests as requested...")
-    success = tester.run_admin_tests()
+    # Run operators tests as requested in review for sync functionality
+    print("Running operators sync tests as requested...")
+    success = tester.run_operators_tests()
     return 0 if success else 1
 
 if __name__ == "__main__":
