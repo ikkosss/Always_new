@@ -197,7 +197,10 @@ select.search-input { background-image: url("data:image/svg+xml;utf8,<svg xmlns=
 .checkbox:checked::after { content: ''; width: calc(var(--check-size) * 0.5); height: calc(var(--check-size) * 0.5); border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(45deg); }
 
 /* Модалки — общий паддинг и крупнее текст, строгие углы */
-.modal-panel { padding: 24px; border: 1px solid #e5e7eb; border-radius: 0; max-height: 70vh; overflow-y: auto; }
+.modal-panel { padding: 24px; border: 1px solid #e5e7eb; border-radius: 0; max-height: 70vh; overflow-y: auto; position: relative; }
+/* Sticky header/footer inside scrollable modal */
+.modal-header-sticky { position: sticky; top: 0; background: #fff; z-index: 2; padding-top: 4px; padding-bottom: 8px; }
+.modal-footer-sticky { position: sticky; bottom: 0; background: #fff; z-index: 2; padding-top: 8px; padding-bottom: 4px; }
 .modal-panel .btn { height: 43px; display: inline-flex; align-items: center; }
 /* Клавиатурно-осведомлённые модалки: ужимаем высоту под клавиатуру, но не больше 70% экрана */
 .modal-panel.keyboard-aware { max-height: min(70vh, calc(100vh - var(--vv-lift, 0px) - 32px)); overflow-y: auto; scroll-padding-bottom: calc(var(--bn-h, 56px) + 24px); }
