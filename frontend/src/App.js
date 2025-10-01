@@ -638,7 +638,18 @@ function SearchPage() {
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
                 </label>
                 <div className="flex justify-between gap-2">
-                  <button className="px-4 py-2 text-red-600" onClick={()=> alert('Удаление оператора — в разработке')}>Удалить</button>
+                  <button className="btn btn-danger" onClick={async ()=>{
+                    if (!opForm.id) return;
+                    if (!confirm('Точно удалить оператора?')) return;
+                    try{
+                      await api.delete(`/operators/${opForm.id}`);
+                      const { data } = await api.get(`/operators`);
+                      setOps(data);
+                      setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
+                      setIsEditingOp(false);
+                      setSettingsMode('ops_list');
+                    }catch(e){ alert(e.response?.data?.detail || 'Не удалось удалить оператора'); }
+                  }}>Удалить</button>
                   <div className="flex gap-2">
                     {(!isEditingOp) && (<button className="px-4 py-2" onClick={()=> gotoSettingsMode('ops_home')}>Назад</button>)}
                     <button className="px-4 py-2 bg-blue-600 text-white" onClick={async ()=>{
