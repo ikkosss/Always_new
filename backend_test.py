@@ -1848,15 +1848,35 @@ class FIRSTAPITester:
             "name": new_name
         }
         
-        success, response = self.run_test(
-            f"Update category name to '{new_name}'", 
-            "PUT", 
-            f"/categories/{category_id}", 
-            200, 
-            data=update_data, 
-            files=None, 
-            is_multipart=True
-        )
+        # Use multipart form data for PUT request
+        url = f"{self.api_url}/categories/{category_id}"
+        self.log(f"Testing Update category name to '{new_name}'...")
+        self.log(f"URL: {url}")
+        
+        try:
+            response = requests.put(url, data=update_data)
+            self.tests_run += 1
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                print(f"✅ PASSED - Status: {response.status_code}")
+                print(f"   Response: {json.dumps(response_data, indent=2, ensure_ascii=False)}")
+                
+                # Verify the name was updated
+                if response_data.get('name') != new_name:
+                    print(f"❌ Name not updated. Expected: {new_name}, Got: {response_data.get('name')}")
+                    return False
+                
+                print(f"✅ Category name updated to: {new_name}")
+                return True
+            else:
+                print(f"❌ FAILED - Expected 200, got {response.status_code}")
+                print(f"   Response: {response.text[:500]}")
+                return False
+        except Exception as e:
+            print(f"❌ FAILED - Error: {str(e)}")
+            return False
         
         if success:
             # Verify the name was updated
