@@ -1135,8 +1135,8 @@ function NumbersPage() {
       {nbOpPickOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setNbOpPickOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Выбор оператора</div>
-            <div className="grid menu-list max-h-[70vh] overflow-y-auto">
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор оператора</div>
+            <div className="grid menu-list">
               {nbOpPickList.map(op => {
                 const key = nameToKey(op.name);
                 const active = key === nbOpPickKey;
@@ -1148,7 +1148,7 @@ function NumbersPage() {
                 );
               })}
             </div>
-            <div className="flex items-center justify-end gap-2 mt-3">
+            <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
               <button className="btn btn-text" onClick={()=> setNbOpPickOpen(false)}>Отмена</button>
               <button className="btn btn-primary" onClick={()=>{ setForm(f=>({...f, operatorKey: nbOpPickKey || 'mts'})); setNbOpPickOpen(false); }}>Сохранить</button>
             </div>
