@@ -627,9 +627,10 @@ function SearchPage() {
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название оператора" value={opForm.name} onChange={(e)=> setOpForm(prev=> ({...prev, name: e.target.value}))} />
                 {opForm.existingLogo && (
-                  <div className="flex items-center gap-2">
-                    <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px]" />
-                    <span className="text-xs text-neutral-500">Текущий логотип</span>
+                  <div className="file-field cursor-default">
+                    <span className="file-choose-btn" style={{visibility:'hidden'}}>Обзор</span>
+                    <span className="file-name has-file">Текущий логотип</span>
+                    <img alt="logo" src={opForm.existingLogo} className="w-8 h-8 rounded-[3px]" style={{marginLeft:8}} />
                   </div>
                 )}
                 <label className="file-field cursor-pointer">
