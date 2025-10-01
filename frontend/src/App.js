@@ -593,15 +593,7 @@ function SearchPage() {
                 <div className="flex items-center justify-between gap-2 modal-actions">
                   <div>
                     {catForm.id && (
-                      <button className="btn btn-danger" onClick={async ()=>{
-                        if (!confirm('Точно удалить категорию?')) return;
-                        try{
-                          await api.delete(`/categories/${catForm.id}`);
-                          await refreshCats();
-                          setCatForm({ id:'', name:'' });
-                          setSettingsMode('cats_list');
-                        } catch(e){ alert(e.response?.data?.detail || 'Не удалось удалить'); }
-                      }}>Удалить</button>
+                      <button className="btn btn-danger" onClick={()=> setCatDeleteConfirmOpen(true)}>Удалить</button>
                     )}
                   </div>
                   <div className="flex items-center justify-end gap-2">
