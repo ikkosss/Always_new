@@ -703,6 +703,35 @@ function SearchPage() {
         </div>
       )}
 
+      {/* Operator Delete Confirmation Dialog */}
+      {opDeleteConfirmOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={() => setOpDeleteConfirmOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Удалить оператора</div>
+            <div className="text-sm text-neutral-600 mb-4">
+              Вы уверены, что хотите удалить оператора "{opForm.name}"? Это действие нельзя отменить.
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <button className="btn btn-text" onClick={() => setOpDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="btn btn-danger" onClick={async () => {
+                try {
+                  await api.delete(`/operators/${opForm.id}`);
+                  const { data } = await api.get(`/operators`);
+                  setOps(data);
+                  setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
+                  setIsEditingOp(false);
+                  setSettingsMode('ops_list');
+                  setOpDeleteConfirmOpen(false);
+                } catch(e) {
+                  alert(e.response?.data?.detail || 'Не удалось удалить оператора');
+                  setOpDeleteConfirmOpen(false);
+                }
+              }}>Удалить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Number Dialog */}
       {showNumberDialog && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={() => setShowNumberDialog(false)}>
