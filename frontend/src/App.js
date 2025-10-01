@@ -298,6 +298,8 @@ function SearchPage() {
   const resetSettings = () => { setSettingsMode('root'); setOpForm({ name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); };
   const [isEditingOp, setIsEditingOp] = useState(false);
   const [opDeleteConfirmOpen, setOpDeleteConfirmOpen] = useState(false);
+  const [catDeleteConfirmOpen, setCatDeleteConfirmOpen] = useState(false);
+
   const [catForm, setCatForm] = useState({ id: '', name: '' });
 
   const gotoSettingsMode = (mode) => {
