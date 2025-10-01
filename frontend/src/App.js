@@ -774,6 +774,31 @@ function SearchPage() {
                   setCatDeleteConfirmOpen(false);
                 }
               }}>Удалить</button>
+      {/* Operator Picker Modal */}
+      {opPickOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setOpPickOpen(false)}>
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="text-lg font-semibold mb-2">Выбор оператора</div>
+            <div className="grid menu-list max-h-[70vh] overflow-y-auto">
+              {opPickList.map(op => {
+                const key = nameToKey(op.name);
+                const active = key === opPickKey;
+                return (
+                  <button key={op.id} className={`flex items-center px-3 py-2 text-left hover:bg-neutral-50 ${active? 'bg-neutral-100':''}`} onClick={()=> setOpPickKey(key || 'mts')}>
+                    <img alt="op" src={op.hasLogo ? `${API}/operators/${op.id}/logo` : (key? OPERATORS[key]?.icon : '/operators/mts.png')} className="w-6 h-6 rounded-[3px] mr-2" onError={(e)=>{ e.currentTarget.src='/operators/mts.png'; }} />
+                    <span>{op.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="flex items-center justify-end gap-2 mt-3">
+              <button className="btn btn-text" onClick={()=> setOpPickOpen(false)}>Отмена</button>
+              <button className="btn btn-primary" onClick={()=>{ setNumberForm(f=>({...f, operatorKey: opPickKey || 'mts'})); setOpPickOpen(false); }}>Сохранить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
             </div>
           </div>
         </div>
