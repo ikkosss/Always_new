@@ -839,6 +839,7 @@ function NumbersPage() {
   const [editing, setEditing] = useState(null);
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxTarget, setCtxTarget] = useState(null);
+  const [ctxPos, setCtxPos] = useState({ top: 0, left: null, right: '1vw' });
   // Number page local menu state (avoid collisions)
   const [nbMenuOpen, setNbMenuOpen] = useState(false);
   const [nbMenuPos, setNbMenuPos] = useState({ top: 72, right: 16 });
