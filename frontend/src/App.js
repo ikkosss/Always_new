@@ -70,6 +70,14 @@ function useCats() {
     return ()=> CatsStore.listeners.delete(onChange);
   }, []);
   return { cats, refreshCats };
+// helper to map backend operator name to static key
+function nameToKey(name){
+  if (!name) return null;
+  const lower = String(name).toLowerCase();
+  const found = Object.keys(OPERATORS).find(k => (OPERATORS[k]?.name||'').toLowerCase() === lower);
+  return found || null;
+}
+
 }
 
 
