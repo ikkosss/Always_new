@@ -758,6 +758,19 @@ function SearchPage() {
                   setCatDeleteConfirmOpen(false);
                 } catch(e) {
                   alert(e.response?.data?.detail || 'Не удалось удалить');
+              {/* Operator button (opens unified picker) */}
+              <button className="search-input flex items-center gap-2 justify-between" onClick={()=>{
+                setOpPickKey(numberForm.operatorKey||'mts');
+                (async()=>{ try{ const { data } = await api.get(`/operators`); setOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
+                setOpPickOpen(true);
+              }}>
+                <span className="flex items-center gap-2">
+                  <img alt="op" src={OPERATORS[numberForm.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
+                  <span>{OPERATORS[numberForm.operatorKey]?.name || 'Оператор'}</span>
+                </span>
+                <span>▼</span>
+              </button>
+
                   setCatDeleteConfirmOpen(false);
                 }
               }}>Удалить</button>
