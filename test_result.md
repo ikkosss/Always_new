@@ -280,11 +280,11 @@
 ## backend:
   - task: "DELETE /api/categories/{id} works"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "urgent"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
         - agent: "user"
@@ -292,6 +292,9 @@
         - working: "NA"
         - agent: "main"
         - comment: "Проверить и протестировать эндпоинт DELETE /api/categories/{id}: создать тестовую категорию, удалить, убедиться в 404 при повторном удалении."
+        - working: true
+        - agent: "testing"
+        - comment: "COMPREHENSIVE CATEGORIES DELETE TESTING COMPLETED: All backend Categories CRUD operations working perfectly (100% success rate - 10/10 tests passed). MAIN DELETE FLOW VERIFIED: 1) ✅ Created temp category 'ТестКатегория_UD1' successfully via POST /api/categories, 2) ✅ Category appeared in GET /api/categories list with correct structure (id, name, createdAt), 3) ✅ DELETE /api/categories/{id} returned {ok: true} as expected, 4) ✅ Category no longer appears in GET /api/categories list after deletion, 5) ✅ Attempting DELETE again for same id correctly returns 404 with 'Category not found' error. REGRESSION TESTS PASSED: ✅ POST duplicate name returns 409 with 'Category already exists', ✅ PUT /api/categories/{id} with new name works correctly and updates the category, ✅ PUT non-existent id returns 404 with 'Category not found'. All Categories CRUD endpoints (GET, POST, PUT, DELETE) are fully functional and ready for frontend integration. The backend API is working correctly - the issue reported by user is likely in frontend implementation."
 
 ## frontend:
   - task: "Fix category deletion flow in Settings (modal + API + state refresh)"
