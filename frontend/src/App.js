@@ -977,7 +977,7 @@ function NumbersPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setOpsOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Операторы</div>
-            <div className="grid menu-list">
+            <div className="grid menu-list max-h-[60vh] overflow-y-auto">
               {opsList.map(op => (
                 <label key={op.id} className="flex items-center px-3 py-2 cursor-pointer">
                   <input type="checkbox" className="ops-check" checked={!!opFilterNames[op.name]} onChange={(e)=> setOpFilterNames(prev=> ({...prev, [op.name]: e.target.checked}))} />
@@ -987,7 +987,7 @@ function NumbersPage() {
               ))}
             </div>
             <div className="flex justify-end items-center gap-3 mt-3">
-              {/* Кнопки массового выбора: обновляют именно опFilterNames (по именам), затем синхронизируем opFilter по ключам */}
+              {/* Массовый выбор/снятие галочек */}
               <button className="mass-box on" onClick={()=>{
                 const allByName = {}; (opsList||[]).forEach(o => allByName[o.name] = true); setOpFilterNames(allByName);
                 const allByKey = {}; Object.keys(OPERATORS).forEach(k => allByKey[k] = true); setOpFilter(allByKey);
@@ -995,14 +995,6 @@ function NumbersPage() {
               <button className="mass-box off" onClick={()=>{
                 const noneByName = {}; (opsList||[]).forEach(o => noneByName[o.name] = false); setOpFilterNames(noneByName);
                 const noneByKey = {}; Object.keys(OPERATORS).forEach(k => noneByKey[k] = false); setOpFilter(noneByKey);
-              }} aria-label="Снять все" />
-
-              {/* Заменено на квадратные кнопки 43x43 как на странице места */}
-              <button className="mass-box on" onClick={()=>{
-                const all = {}; Object.keys(OPERATORS).forEach(k => all[k]=true); setOpFilter(all);
-              }} aria-label="Выбрать все" />
-              <button className="mass-box off" onClick={()=>{
-                const none = {}; Object.keys(OPERATORS).forEach(k => none[k]=false); setOpFilter(none);
               }} aria-label="Снять все" />
               <button className="btn btn-primary" onClick={()=>setOpsOpen(false)}>OK</button>
             </div>
