@@ -329,7 +329,6 @@
 
 ## test_plan:
   current_focus:
-    - "Backend: Categories DELETE endpoint end-to-end (create → delete → verify)"
     - "Frontend: Settings → Категории → Редактировать → Удалить — модалка и удаление"
     - "Frontend: На странице Номера (список) ⋮ меню появляется рядом с точками"
   stuck_tasks: []
@@ -339,3 +338,5 @@
 ## agent_communication:
   - agent: "main"
   - message: "Пожалуйста, сначала прогоните backend-тесты для DELETE /api/categories/{id}: создать временную категорию, удалить её, убедиться, что она пропала из списка, и что повторное удаление даёт 404. Затем, по подтверждению пользователя, можем запустить авто‑тесты UI: 1) Открыть Настройки → Категории → Редактировать → выбрать категорию → Удалить → подтвердить; проверить, что категория исчезла из списка, 2) На странице со списком номеров нажать ⋮ возле конкретного номера и убедиться, что меню появляется возле точки нажатия, а не снизу."
+  - agent: "testing"
+  - message: "CATEGORIES DELETE BACKEND TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of Categories CRUD operations completed with 100% success rate (10/10 tests passed). CRITICAL FINDINGS: 1) Backend DELETE /api/categories/{id} endpoint is working perfectly - all requested test steps passed, 2) Main DELETE flow verified: created 'ТестКатегория_UD1', confirmed in list, deleted successfully with {ok: true} response, verified removal from list, confirmed 404 on repeat delete, 3) All regression tests passed: duplicate POST returns 409, PUT updates work correctly, PUT non-existent returns 404. ROOT CAUSE IDENTIFIED: The user-reported issue 'удаление категории из настроек не работает' is NOT a backend problem - the backend API is fully functional. The issue is in the frontend implementation (Settings → Категории → Редактировать → Удалить flow). Backend is ready for frontend integration. Main agent should focus on frontend category deletion flow testing and fixes."
