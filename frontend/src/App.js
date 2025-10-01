@@ -638,6 +638,26 @@ function SearchPage() {
                   <span className="file-choose-btn">Обзор</span>
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
                 </label>
+                <div className="flex items-center justify-end gap-2">
+                  <button className="btn btn-text" onClick={()=> gotoSettingsMode(isEditingOp ? 'ops_list' : 'ops_home')}>Закрыть</button>
+                  <button className="btn btn-primary" onClick={async ()=>{
+                    try{
+                      const fd = new FormData();
+                      fd.append('name', opForm.name);
+                      if (opForm.logo) fd.append('logo', opForm.logo);
+                      if (isEditingOp && opForm.id){
+                        await api.put(`/operators/${opForm.id}`, fd);
+                      } else {
+                        await api.post(`/operators`, fd);
+                      }
+                      const { data } = await api.get(`/operators`);
+                      setOps(data);
+                      setSettingsMode('ops_list');
+                      setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
+                    }catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить оператора'); }
+                  }}>Сохранить</button>
+                </div>
+
                 <div className="flex justify-between gap-2">
                   <button className="btn btn-danger" onClick={async ()=>{
                     if (!opForm.id) return;
