@@ -14,6 +14,8 @@ class FIRSTAPITester:
         self.tests_passed = 0
         self.created_number_id = None
         self.created_place_id = None
+        self.created_operator_id = None
+        self.created_operator_with_logo_id = None
         # Use timestamp to make unique entries
         self.timestamp = str(int(time.time()))
 
