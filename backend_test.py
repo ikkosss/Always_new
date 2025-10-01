@@ -1101,6 +1101,225 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def test_list_operators(self):
+        """Test GET /api/operators - should return list of operators with proper structure"""
+        success, response = self.run_test("List operators", "GET", "/operators", 200)
+        
+        if not success:
+            return False
+        
+        # Verify response is a list
+        if not isinstance(response, list):
+            print(f"❌ Expected list, got {type(response)}")
+            return False
+        
+        # Should have at least some default operators
+        if len(response) == 0:
+            print(f"❌ Expected at least some operators, got empty list")
+            return False
+        
+        print(f"✅ Found {len(response)} operators")
+        
+        # Verify structure of first operator
+        first_operator = response[0]
+        required_fields = ['id', 'name', 'hasLogo', 'createdAt']
+        
+        for field in required_fields:
+            if field not in first_operator:
+                print(f"❌ Missing required field '{field}' in operator")
+                return False
+        
+        # Verify field types
+        if not isinstance(first_operator['id'], str):
+            print(f"❌ Operator id should be string, got {type(first_operator['id'])}")
+            return False
+        
+        if not isinstance(first_operator['name'], str):
+            print(f"❌ Operator name should be string, got {type(first_operator['name'])}")
+            return False
+        
+        if not isinstance(first_operator['hasLogo'], bool):
+            print(f"❌ Operator hasLogo should be boolean, got {type(first_operator['hasLogo'])}")
+            return False
+        
+        # Verify no 'logo' field is present (should be stripped)
+        if 'logo' in first_operator:
+            print(f"❌ Operator should not contain 'logo' field in list response")
+            return False
+        
+        print(f"✅ Operators have correct structure")
+        
+        # Check for some expected default operators
+        operator_names = [op['name'] for op in response]
+        expected_operators = ['МегаФон', 'Билайн', 'МТС']
+        
+        found_expected = 0
+        for expected in expected_operators:
+            if expected in operator_names:
+                found_expected += 1
+                print(f"✅ Found expected operator: {expected}")
+        
+        if found_expected > 0:
+            print(f"✅ Found {found_expected}/{len(expected_operators)} expected default operators")
+        else:
+            print(f"❌ No expected default operators found")
+            return False
+        
+        return True
+
+    def test_get_operator_details(self):
+        """Test GET /api/operators/{id} - should return operator details"""
+        # First get the list to find an operator ID
+        success, operators_list = self.run_test("Get operators list for details test", "GET", "/operators", 200)
+        
+        if not success or not operators_list:
+            print(f"❌ Could not get operators list for details test")
+            return False
+        
+        # Test with first operator
+        first_operator = operators_list[0]
+        operator_id = first_operator['id']
+        
+        success, response = self.run_test(
+            f"Get operator details ({first_operator['name']})", 
+            "GET", 
+            f"/operators/{operator_id}", 
+            200
+        )
+        
+        if not success:
+            return False
+        
+        # Verify response structure
+        required_fields = ['id', 'name', 'hasLogo', 'createdAt']
+        
+        for field in required_fields:
+            if field not in response:
+                print(f"❌ Missing required field '{field}' in operator details")
+                return False
+        
+        # Verify the ID matches
+        if response['id'] != operator_id:
+            print(f"❌ Operator ID mismatch. Expected: {operator_id}, Got: {response['id']}")
+            return False
+        
+        # Verify the name matches
+        if response['name'] != first_operator['name']:
+            print(f"❌ Operator name mismatch. Expected: {first_operator['name']}, Got: {response['name']}")
+            return False
+        
+        # Verify no 'logo' field is present (should be stripped)
+        if 'logo' in response:
+            print(f"❌ Operator details should not contain 'logo' field")
+            return False
+        
+        print(f"✅ Operator details correct for: {response['name']}")
+        
+        return True
+
+    def test_operators_consistency(self):
+        """Test that operators list is consistent between calls"""
+        # Get operators list twice and compare
+        success1, response1 = self.run_test("Get operators list (first call)", "GET", "/operators", 200)
+        if not success1:
+            return False
+        
+        success2, response2 = self.run_test("Get operators list (second call)", "GET", "/operators", 200)
+        if not success2:
+            return False
+        
+        # Compare lengths
+        if len(response1) != len(response2):
+            print(f"❌ Operators list length inconsistent. First: {len(response1)}, Second: {len(response2)}")
+            return False
+        
+        # Compare operator IDs and names
+        ids1 = {op['id']: op['name'] for op in response1}
+        ids2 = {op['id']: op['name'] for op in response2}
+        
+        if ids1 != ids2:
+            print(f"❌ Operators list content inconsistent between calls")
+            return False
+        
+        print(f"✅ Operators list is consistent between calls ({len(response1)} operators)")
+        
+        return True
+
+    def test_operators_for_frontend_sync(self):
+        """Test operators endpoint specifically for frontend sync functionality"""
+        success, response = self.run_test("Get operators for frontend sync", "GET", "/operators", 200)
+        
+        if not success:
+            return False
+        
+        # This is the critical test for the sync issue mentioned in test_result.md
+        # The frontend Numbers->Operators modal should use this same data as Settings->Edit Operators
+        
+        # Verify we have operators data that can be used for sync
+        if not isinstance(response, list) or len(response) == 0:
+            print(f"❌ CRITICAL: No operators data available for frontend sync")
+            return False
+        
+        # Verify each operator has the minimum required fields for frontend display
+        for i, operator in enumerate(response):
+            # Check required fields for frontend display
+            if 'id' not in operator:
+                print(f"❌ CRITICAL: Operator {i} missing 'id' field required for frontend sync")
+                return False
+            
+            if 'name' not in operator:
+                print(f"❌ CRITICAL: Operator {i} missing 'name' field required for frontend display")
+                return False
+            
+            if 'hasLogo' not in operator:
+                print(f"❌ CRITICAL: Operator {i} missing 'hasLogo' field required for frontend display")
+                return False
+            
+            # Verify the name is not empty (required for display)
+            if not operator['name'] or not operator['name'].strip():
+                print(f"❌ CRITICAL: Operator {i} has empty name")
+                return False
+            
+            # Verify ID is valid UUID format
+            if not operator['id'] or len(operator['id']) < 10:
+                print(f"❌ CRITICAL: Operator {i} has invalid ID: {operator['id']}")
+                return False
+        
+        print(f"✅ CRITICAL: All {len(response)} operators have required fields for frontend sync")
+        
+        # Log operator names for verification against frontend
+        operator_names = [op['name'] for op in response]
+        print(f"✅ Operator names available for sync: {', '.join(operator_names)}")
+        
+        return True
+
+    def run_operators_tests(self):
+        """Run operators-specific API tests for sync functionality"""
+        print("📱 Starting Operators Sync Tests")
+        print("=" * 50)
+        
+        operators_tests = [
+            self.test_list_operators,
+            self.test_get_operator_details,
+            self.test_operators_consistency,
+            self.test_operators_for_frontend_sync,
+        ]
+        
+        for test in operators_tests:
+            try:
+                test()
+                print("-" * 30)
+            except Exception as e:
+                print(f"❌ Test {test.__name__} failed with exception: {e}")
+                print("-" * 30)
+        
+        print("📊 Operators Test Results:")
+        print(f"   Tests run: {self.tests_run}")
+        print(f"   Tests passed: {self.tests_passed}")
+        print(f"   Success rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        return self.tests_passed == self.tests_run
+
     def run_admin_tests(self):
         """Run admin-specific API tests"""
         print("🔧 Starting Admin Feature Tests")
