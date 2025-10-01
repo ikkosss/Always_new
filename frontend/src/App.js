@@ -1101,11 +1101,17 @@ function NumbersPage() {
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать номер" : "Добавить номер"}</div>
             <div className="grid gap-3">
               <input className="search-input" placeholder="Номер" value={form.phone} onChange={(e)=>onPhoneChange(e.target.value)} />
-              <select className="search-input" value={form.operatorKey} onChange={(e)=>setForm({...form, operatorKey: e.target.value})}>
-                {Object.entries(OPERATORS).map(([k, v]) => (
-                  <option key={k} value={k}>{v.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center gap-2 justify-between" onClick={()=>{
+                setOpPickKey(form.operatorKey||'mts');
+                (async()=>{ try{ const { data } = await api.get(`/operators`); setOpPickList(Array.isArray(data)? data: []); } catch(_){} })();
+                setOpPickOpen(true);
+              }}>
+                <span className="flex items-center gap-2">
+                  <img alt="op" src={OPERATORS[form.operatorKey]?.icon} className="w-6 h-6 rounded-[3px]"/>
+                  <span>{OPERATORS[form.operatorKey]?.name || 'Оператор'}</span>
+                </span>
+                <span>▼</span>
+              </button>
               <div className="flex items-center justify-end gap-2">
                 <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
