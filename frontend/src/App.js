@@ -804,6 +804,11 @@ function NumbersPage() {
   const [sortOpen, setSortOpen] = useState(false);
   const [opsOpen, setOpsOpen] = useState(false);
   const [sortKey, setSortKey] = useState('new');
+  const [opsList, setOpsList] = useState([]);
+  const [opFilterNames, setOpFilterNames] = useState({});
+  const defaultNameByKey = useMemo(() => Object.fromEntries(Object.entries(OPERATORS).map(([k,v])=>[k, v.name])), []);
+  useEffect(()=>{ if (opsOpen){ (async()=>{ try{ const { data } = await api.get(`/operators`); setOpsList(data||[]); if (Object.keys(opFilterNames).length===0){ const init = {}; (data||[]).forEach(o=> init[o.name]=true); setOpFilterNames(init);} } catch(e){} })(); } }, [opsOpen]);
+
   const [opFilter, setOpFilter] = useState(Object.fromEntries(Object.keys(OPERATORS).map(k=>[k,true])));
   const [showDialog, setShowDialog] = useState(false);
   const [form, setForm] = useState({ phone: "", operatorKey: "mts" });
