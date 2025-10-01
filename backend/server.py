@@ -74,6 +74,7 @@ class OperatorModel(BaseModel):
 class CategoryModel(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
+    icon: Optional[Dict[str, Any]] = None  # { contentType, data(base64) }
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
