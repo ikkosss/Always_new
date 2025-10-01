@@ -1950,9 +1950,9 @@ class FIRSTAPITester:
 def main():
     tester = FIRSTAPITester()
     
-    # Run operators DELETE tests as requested in review
-    print("Running operators DELETE tests as requested...")
-    success = tester.run_operators_delete_tests()
+    # Run categories DELETE tests as requested in review
+    print("Running categories DELETE tests as requested...")
+    success = tester.run_categories_delete_tests()
     return 0 if success else 1
 
 if __name__ == "__main__":
