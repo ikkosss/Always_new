@@ -1412,29 +1412,37 @@ class FIRSTAPITester:
             return False
         
         new_name = f"ОбновленныйОператор-{self.timestamp}"
-        data = {
-            "name": new_name
-        }
         
-        success, response = self.run_test(
-            "Update operator name", 
-            "PUT", 
-            f"/operators/{self.created_operator_id}", 
-            200, 
-            data=data, 
-            files=None, 
-            is_multipart=True
-        )
+        # Use multipart form data for PUT request
+        url = f"{self.api_url}/operators/{self.created_operator_id}"
+        self.log(f"Testing Update operator name...")
+        self.log(f"URL: {url}")
         
-        if success:
-            # Verify the name was updated
-            if response.get('name') != new_name:
-                print(f"❌ Name not updated. Expected: {new_name}, Got: {response.get('name')}")
-                return False
+        try:
+            data = {"name": new_name}
+            response = requests.put(url, data=data)
+            self.tests_run += 1
             
-            print(f"✅ Operator name updated to: {new_name}")
-        
-        return success
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                print(f"✅ PASSED - Status: {response.status_code}")
+                print(f"   Response: {json.dumps(response_data, indent=2, ensure_ascii=False)}")
+                
+                # Verify the name was updated
+                if response_data.get('name') != new_name:
+                    print(f"❌ Name not updated. Expected: {new_name}, Got: {response_data.get('name')}")
+                    return False
+                
+                print(f"✅ Operator name updated to: {new_name}")
+                return True
+            else:
+                print(f"❌ FAILED - Expected 200, got {response.status_code}")
+                print(f"   Response: {response.text[:500]}")
+                return False
+        except Exception as e:
+            print(f"❌ FAILED - Error: {str(e)}")
+            return False
 
     def test_delete_operator_main_flow(self):
         """Test DELETE /api/operators/{id} - main deletion flow as requested"""
