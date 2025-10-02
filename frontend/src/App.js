@@ -2307,6 +2307,22 @@ function PlacesPage() {
   const [sortOpen, setSortOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
   const [catFilterNames, setCatFilterNames] = useState({});
+  // Initialize category checkboxes when opening modal
+  useEffect(()=>{
+    if (catOpen && Object.keys(catFilterNames).length === 0) {
+      const init = {};
+      (catsList || []).forEach(c => init[c.name] = true);
+      setCatFilterNames(init);
+    }
+  }, [catOpen, catsList]);
+
+  // Derived list by selected categories
+  const itemsToShow = useMemo(()=>{
+    const active = Object.entries(catFilterNames).filter(([,on])=>on).map(([name])=>name);
+    if (active.length === 0) return items;
+    return items.filter(p => active.includes(p.category));
+  }, [items, catFilterNames]);
+
   // Category picker state for PlacesPage add/edit dialog
   const [plCatPickOpen, setPlCatPickOpen] = useState(false);
   const [plCatPickName, setPlCatPickName] = useState("");
