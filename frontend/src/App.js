@@ -2235,7 +2235,7 @@ function PlaceDetails({ id }) {
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор категории</div>
             <div className="modal-scroll grid menu-list max-h-[60vh]">
-              {cats.map(cat => {
+              {catsList.map(cat => {
                 const active = (cat.name||'') === (plCatPickName||'');
                 return (
                   <button key={cat.id} className={`text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2 ${active? 'bg-neutral-100':''}`} onClick={()=> setPlCatPickName(cat.name)}>
@@ -2547,7 +2547,7 @@ function PlacesPage() {
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор категории</div>
             <div className="modal-scroll grid menu-list max-h-[60vh]">
-              {cats.map(cat => {
+              {catsList.map(cat => {
                 const active = (cat.name||'') === (plCatPickName||'');
                 return (
                   <button key={cat.id} className={`text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2 ${active? 'bg-neutral-100':''}`} onClick={()=> setPlCatPickName(cat.name)}>
