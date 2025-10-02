@@ -2339,7 +2339,7 @@ function PlacesPage() {
   const suppressClickRef = useRef(false);
 
   const load = async () => {
-    const { data } = await api.get(`/places`, { params: filter });
+    const { data } = await api.get(`/places`, { params: { sort: filter.sort } });
     setItems(data);
   };
   useEffect(() => { load(); }, [filter]);
