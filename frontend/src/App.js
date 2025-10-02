@@ -2490,7 +2490,7 @@ function PlacesPage() {
           </div>
         )}
         <div className="grid-3">
-          {items.map((p) => (
+          {itemsToShow.map((p) => (
             <LongPressable
               key={p.id}
               className="flex flex-col items-stretch gap-1 cursor-pointer relative w-full place-item"
