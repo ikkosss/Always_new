@@ -2493,7 +2493,7 @@ function PlacesPage() {
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={form.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, name: e.target.value})} />
-              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(form.category || (cats[0]?.name || '')); setPlCatPickOpen(true); }}>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(form.category || (catsList[0]?.name || '')); setPlCatPickOpen(true); }}>
                 <span>{form.category || 'Выберите категорию'}</span>
               </button>
               {/* Промокод с плюсиком */}
