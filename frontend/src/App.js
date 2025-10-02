@@ -2424,12 +2424,6 @@ function PlacesPage() {
   return (
     <Page title="МЕСТА" hideHeader padX={false}>
       <div className="p-0">
-          <button className="filter-btn" onClick={()=> setCatOpen(true)}>
-            Категории
-          </button>
-          {/* При открытии модалки категорий — подгружаем список и инициализируем чекбоксы, если пусто */}
-          {catOpen && Object.keys(catFilterNames).length === 0 && (()=>{ const init={}; (catsList||[]).forEach(c=> init[c.name]=true); setCatFilterNames(init); })()}
-
         <div className="numbers-topbar places-topbar">
           <button className="filter-btn" onClick={()=> setSortOpen(true)}>
             Сортировка
