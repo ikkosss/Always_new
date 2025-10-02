@@ -2153,7 +2153,7 @@ function PlaceDetails({ id }) {
             <div className="text-lg font-semibold mb-2 sticky top-0 bg-white">Редактировать место</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
-              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(editForm.category || (cats[0]?.name || '')); setPlCatPickOpen(true); }}>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(editForm.category || (catsList[0]?.name || '')); setPlCatPickOpen(true); }}>
                 <span>{editForm.category || 'Категория'}</span>
               </button>
               
