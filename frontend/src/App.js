@@ -2438,6 +2438,9 @@ function PlacesPage() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onScroll={(e)=>e.preventDefault()} onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=>setSortOpen(false)}>
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Сортировка</div>
+          {/* При открытии модалки категорий — подгружаем список и инициализируем чекбоксы, если пусто */}
+          {catOpen && Object.keys(catFilterNames).length === 0 && (()=>{ const init={}; (catsList||[]).forEach(c=> init[c.name]=true); setCatFilterNames(init); })()}
+
               <div className="modal-scroll grid menu-list max-h-[60vh]">
                 {SORT_OPTIONS.map(opt => (
                   <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, sort: opt.key })); setSortOpen(false); }}>
