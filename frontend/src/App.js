@@ -978,7 +978,7 @@ function SearchPage() {
             <div className="text-lg font-semibold mb-2">Добавить место</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
-              <button className="search-input flex items-center justify-between" onClick={()=>{ setCatPickName(placeForm.category || (cats[0]?.name || '')); setCatPickOpen(true); }}>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setCatPickName(placeForm.category || (catsList[0]?.name || '')); setCatPickOpen(true); }}>
                 <span>{placeForm.category || 'Категория'}</span>
               </button>
               {/* Промокод с плюсиком */}
