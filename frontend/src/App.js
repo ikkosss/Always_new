@@ -2439,13 +2439,12 @@ function PlacesPage() {
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="modal-header-sticky text-lg font-semibold mb-2">Категории</div>
               <div className="modal-scroll grid menu-list max-h-[60vh]">
-                {cats.map(c => (
+                {catsList.map(c => (
                   <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2" onClick={()=>{ setFilter(f=>({...f, category: c.name })); setCatOpen(false); }}>
                     <img alt="icon" src={`${API}/categories/${c.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
                     <span>{c.name}</span>
                   </button>
                 ))}
-                <button className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: '' })); setCatOpen(false); }}>Все категории</button>
               </div>
               <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
                 <button className="btn btn-text" onClick={()=> setCatOpen(false)}>Отмена</button>
