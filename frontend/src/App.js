@@ -2446,15 +2446,29 @@ function PlacesPage() {
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="modal-header-sticky text-lg font-semibold mb-2">Категории</div>
               <div className="modal-scroll grid menu-list max-h-[60vh]">
-                {catsList.map(c => (
-                  <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2" onClick={()=>{ setFilter(f=>({...f, category: c.name })); setCatOpen(false); }}>
-                    <img alt="icon" src={`${API}/categories/${c.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                {(catsList||[]).map(c => (
+                  <label key={c.id} className="flex items-center px-3 py-2 cursor-pointer">
+                    <input type="checkbox" className="ops-check" checked={!!catFilterNames[c.name]} onChange={(e)=> {
+                      const checked = e.target.checked;
+                      setCatFilterNames(prev=> ({...prev, [c.name]: checked}));
+                    }} />
+                    <img alt="icon" src={`${API}/categories/${c.id}/icon`} className="w-6 h-6 rounded-[3px] mr-2" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
                     <span>{c.name}</span>
-                  </button>
+                  </label>
                 ))}
               </div>
-              <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
-                <button className="btn btn-text" onClick={()=> setCatOpen(false)}>Отмена</button>
+              <div className="flex justify-end items-center gap-3 mt-3">
+                <button className="mass-box on" onClick={()=>{
+                  const allByName = {}; (catsList||[]).forEach(c => allByName[c.name] = true); setCatFilterNames(allByName);
+                }} aria-label="Выбрать все" />
+                <button className="mass-box off" onClick={()=>{
+                  const noneByName = {}; (catsList||[]).forEach(c => noneByName[c.name] = false); setCatFilterNames(noneByName);
+                }} aria-label="Снять все" />
+                <button className="btn btn-primary" onClick={()=>{
+                  const picked = Object.entries(catFilterNames).filter(([name,on])=>on).map(([name])=>name);
+                  setFilter(f=> ({ ...f, category: picked.join(',') }));
+                  setCatOpen(false);
+                }}>OK</button>
               </div>
             </div>
           </div>
