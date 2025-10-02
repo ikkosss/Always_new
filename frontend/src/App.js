@@ -2303,9 +2303,10 @@ function PlacesPage() {
   });
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
-  const [filter, setFilter] = useState({ category: "", sort: "popular" });
+  const [filter, setFilter] = useState({ sort: "popular" });
   const [sortOpen, setSortOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
+  const [catFilterNames, setCatFilterNames] = useState({});
   // Category picker state for PlacesPage add/edit dialog
   const [plCatPickOpen, setPlCatPickOpen] = useState(false);
   const [plCatPickName, setPlCatPickName] = useState("");
