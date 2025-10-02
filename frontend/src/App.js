@@ -1792,7 +1792,7 @@ function PlaceDetails({ id }) {
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
   const [tab, setTab] = useState('unused');
-  const { cats } = useCats();
+  const { cats: catsList } = useCats();
   const [plCatPickOpen, setPlCatPickOpen] = useState(false);
   const [plCatPickName, setPlCatPickName] = useState("");
 
