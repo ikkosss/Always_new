@@ -23,6 +23,103 @@ function ensureFieldVisible(target) {
   } catch {}
 }
 import { createPortal } from "react-dom";
+// Robust body scroll lock (works on mobile Chrome with passive listeners)
+// Trap scroll so only .modal-scroll can scroll
+function ScrollTrap(){
+  const startYRef = React.useRef(0);
+  useEffect(()=>{
+    const onTouchStart = (e)=>{
+      try { startYRef.current = e.touches ? e.touches[0].clientY : 0; } catch{}
+    };
+    const allowWithin = (el)=>{
+      if (!el) return false;
+      let node = el;
+      while (node && node !== document.body){
+        if (node.classList && node.classList.contains('modal-scroll')) return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+    const onTouchMove = (e)=>{
+      const target = e.target;
+      const scrollArea = allowWithin(target);
+      if (!scrollArea){
+        e.preventDefault();
+        return false;
+      }
+      const dy = (e.touches ? e.touches[0].clientY : 0) - startYRef.current;
+      const { scrollTop, scrollHeight, clientHeight } = scrollArea;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+      if ((atTop && dy > 0) || (atBottom && dy < 0)){
+        e.preventDefault();
+        return false;
+      }
+      return true;
+    };
+    const onWheel = (e)=>{
+      const target = e.target;
+      const scrollArea = allowWithin(target);
+      if (!scrollArea){ e.preventDefault(); return false; }
+      const delta = e.deltaY;
+      const { scrollTop, scrollHeight, clientHeight } = scrollArea;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+      if ((atTop && delta < 0) || (atBottom && delta > 0)){
+        e.preventDefault();
+        return false;
+      }
+      return true;
+    };
+    document.addEventListener('touchstart', onTouchStart, { passive: false });
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('wheel', onWheel, { passive: false });
+    return ()=>{
+      try{
+        document.removeEventListener('touchstart', onTouchStart);
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('wheel', onWheel);
+      }catch{}
+    };
+  }, []);
+  return null;
+}
+
+function LockBodyScroll(){
+  const prevRef = useRef({});
+  const scrollYRef = useRef(0);
+  useEffect(()=>{
+    const body = document.body;
+    const html = document.documentElement;
+    scrollYRef.current = window.scrollY || html.scrollTop || 0;
+    prevRef.current = {
+      body: { overflow: body.style.overflow, position: body.style.position, top: body.style.top, width: body.style.width },
+      html: { overflow: html.style.overflow }
+    };
+    // Lock body without global event listeners to allow modal internal scroll
+    body.classList.add('no-scroll');
+    html.classList.add('no-scroll');
+    body.style.overflow = 'hidden';
+    html.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollYRef.current}px`;
+    body.style.width = '100%';
+
+    return ()=>{
+      const prev = prevRef.current;
+      body.classList.remove('no-scroll');
+      html.classList.remove('no-scroll');
+      body.style.overflow = prev.body.overflow || '';
+      html.style.overflow = prev.html.overflow || '';
+      body.style.position = prev.body.position || '';
+      body.style.top = prev.body.top || '';
+      body.style.width = prev.body.width || '';
+      try { window.scrollTo(0, scrollYRef.current || 0); } catch {}
+    };
+  }, []);
+  return null;
+}
+
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -254,7 +351,7 @@ function PromoBadgeAuto({ imgSrc, onClick }){
             <div className="text-sm text-neutral-600">У вас есть несохранённые изменения. Хотите сохранить перед переходом?</div>
             <div className="modal-actions">
               <button className="btn btn-primary" onClick={() => proceedNav(true)}>Сохранить</button>
-              <button className="btn btn-text" onClick={() => proceedNav(false)}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => proceedNav(false)}>Отмена</button>
             </div>
           </div>
         </div>
@@ -297,6 +394,10 @@ function SearchPage() {
   const [opPickList, setOpPickList] = useState([]);
   const [opPickKey, setOpPickKey] = useState("mts");
   const [placeForm, setPlaceForm] = useState({ name: "", category: "Магазины", promoCode: "", promoCode2: "", promoUrl: "", comment: "", logo: null });
+  // Category picker for Add Place dialog
+  const [catPickOpen, setCatPickOpen] = useState(false);
+  const [catPickName, setCatPickName] = useState("");
+
   const [confirmAdd, setConfirmAdd] = useState({ open: false, type: null, label: "" });
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [ops, setOps] = useState([]);
@@ -312,7 +413,7 @@ function SearchPage() {
   const [opDeleteConfirmOpen, setOpDeleteConfirmOpen] = useState(false);
   const [catDeleteConfirmOpen, setCatDeleteConfirmOpen] = useState(false);
 
-  const [catForm, setCatForm] = useState({ id: '', name: '' });
+  const [catForm, setCatForm] = useState({ id: '', name: '', icon: null, existingIcon: '' });
 
   const gotoSettingsMode = (mode) => {
     setSettingsMode(mode);
@@ -474,14 +575,8 @@ function SearchPage() {
       <button className="fab" onClick={() => setSettingsOpen(true)} title="Настройки">
         <img
           className="icon"
-          alt=""
-          src="/settings.png"
-          onError={(e)=>{
-            try {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23FFFFFF\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><circle cx=\'12\' cy=\'12\' r=\'3\'/><path d=\'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c0 .69.28 1.32.73 1.77.45.45 1.08.73 1.77.73H21a2 2 0 1 1 0 4h-.09c-.69 0-1.32.28-1.77.73-.45.45-.73 1.08-.73 1.77z\'/></svg>';
-            } catch {}
-          }}
+          alt="Настройки"
+          src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/lt2jwdsn_setting.svg"
         />
       </button>
       <div className="search-wrap">
@@ -539,61 +634,93 @@ function SearchPage() {
       </div>
 
       {settingsOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>{ setSettingsMode('root'); setCatForm({ id:'', name:'' }); setOpForm({ id:'', name:'', logo:null, existingLogo:'' }); setSettingsOpen(false); }}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10030] modal-overlay" onClick={()=>{ setSettingsMode('root'); setCatForm({ id:'', name:'', icon:null }); setOpForm({ id:'', name:'', logo:null, existingLogo:'' }); setSettingsOpen(false); }}>
           <div className="bg-white modal-panel keyboard-aware w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="grid gap-2">
-            {/* Динамический заголовок (единственный) */}
-            <div className="text-lg font-semibold mb-2">
-              {settingsMode === 'root' && 'Настройки'}
-              {settingsMode === 'ops_home' && 'Управление операторами'}
-              {settingsMode === 'ops_list' && 'Выберите оператора'}
-              {settingsMode === 'ops_form' && (opForm.name || 'Новый оператор')}
-              {settingsMode === 'cats_home' && 'Категории'}
-              {settingsMode === 'cats_list' && 'Выберите категорию'}
-              {settingsMode === 'cats_form' && (catForm.id ? 'Редактирование категории' : 'Добавление категории')}
-            </div>
+            {/* Динамический заголовок: скрываем его для ops_form, т.к. в форме есть свой заголовок */}
+            {settingsMode !== 'ops_form' && (
+              <div className="modal-header-sticky text-lg font-semibold mb-2">
+                {settingsMode === 'root' && 'Настройки'}
+                {settingsMode === 'ops_home' && 'Управление операторами'}
+                {settingsMode === 'ops_list' && 'Редактирование операторов'}
+                {settingsMode === 'cats_home' && 'Управление категориями'}
+                {settingsMode === 'cats_list' && 'Выберите категорию'}
+                {settingsMode === 'cats_form' && (catForm.id ? 'Редактирование категории' : 'Добавление категории')}
+              </div>
+            )}
 
             {/* Содержимое в зависимости от режима (без дубликатов) */}
             {settingsMode === 'root' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('ops_home')}>Управление операторами</button>
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('cats_home')}>Управление категориями</button>
+                <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-2">
+                  <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
+                </div>
               </div>
             )}
 
             {settingsMode === 'ops_home' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setIsEditingOp(false); setSettingsMode('ops_list'); }}>Редактировать операторов</button>
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setOpForm({ name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); gotoSettingsMode('ops_form'); }}>Добавить нового оператора</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setOpForm({ id:'', name:'', logo:null, existingLogo:'' }); setIsEditingOp(false); gotoSettingsMode('ops_form'); }}>Добавить нового оператора</button>
+                <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-2">
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode('root')} aria-label="Назад">
+                    <img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" />
+                  </button>
+                  <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
+                </div>
               </div>
             )}
 
             {settingsMode === 'cats_home' && (
               <div className="grid gap-2">
                 <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> gotoSettingsMode('cats_list')}>Редактировать категории</button>
-                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setCatForm({ id: '', name: '' }); gotoSettingsMode('cats_form'); }}>Добавить новую категорию</button>
+                <button className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setCatForm({ id: '', name: '', icon:null }); gotoSettingsMode('cats_form'); }}>Добавить новую категорию</button>
+                <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-2">
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode('root')} aria-label="Назад">
+                    <img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" />
+                  </button>
+                  <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
+                </div>
               </div>
             )}
 
+
+
             {settingsMode === 'ops_list' && (
-              <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
-                {ops.map(op => (
-                  <button key={op.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setOpForm({ id: op.id, name: op.name, logo:null, existingLogo: op.hasLogo ? `${API}/operators/${op.id}/logo` : '' }); setIsEditingOp(true); gotoSettingsMode('ops_form'); }}>
-                    <img alt="op" src={op.hasLogo ? `${API}/operators/${op.id}/logo` : '/operators/mts.png'} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.src='/operators/mts.png'; }} />
-                    <span>{op.name}</span>
-                  </button>
-                ))}
+              <div className="grid gap-2">
+                {/* sticky spacer removed per request */}
+                <div className="max-h-[50vh] overflow-y-auto overflow-x-hidden">
+                  {ops.map(op => (
+                    <button key={op.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setOpForm({ id: op.id, name: op.name, logo:null, existingLogo: op.hasLogo ? `${API}/operators/${op.id}/logo` : '' }); setIsEditingOp(true); gotoSettingsMode('ops_form'); }}>
+                      <img alt="op" src={op.hasLogo ? `${API}/operators/${op.id}/logo` : '/operators/mts.png'} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.src='/operators/mts.png'; }} />
+                      <span>{op.name}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-2">
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode('ops_home')} aria-label="Назад"><img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" /></button>
+                  <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
+                </div>
               </div>
             )}
 
             {settingsMode === 'cats_list' && (
-              <div className="grid gap-2 max-h-[50vh] overflow-y-auto">
-                {cats.map(cat => (
-                  <button key={cat.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border" onClick={()=> { setCatForm({ id: cat.id, name: cat.name }); setSettingsMode('cats_form'); }}>
-                    {cat.name}
-                  </button>
-                ))}
-                {saveToast && <div className="save-toast">СОХРАНЕНО</div>}
+              <div className="grid gap-2">
+                <div className="max-h-[50vh] overflow-y-auto overflow-x-hidden">
+                  {cats.map(cat => (
+                    <button key={cat.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setCatForm({ id: cat.id, name: cat.name, icon: null, existingIcon: `${API}/categories/${cat.id}/icon` }); setSettingsMode('cats_form'); }}>
+                      <img alt="icon" src={`${API}/categories/${cat.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                      <span>{cat.name}</span>
+                    </button>
+                  ))}
+                  {saveToast && <div className="save-toast">СОХРАНЕНО</div>}
+                </div>
+                <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-3">
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode('cats_home')} aria-label="Назад"><img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" /></button>
+                  <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
+                </div>
 
               </div>
             )}
@@ -604,27 +731,38 @@ function SearchPage() {
             {settingsMode === 'cats_form' && (
               <div className="grid gap-3">
                 <input className="search-input" placeholder="Название категории" value={catForm.name} onChange={(e)=> setCatForm(prev=>({...prev, name: e.target.value}))} />
-                <div className="flex items-center justify-between gap-2 modal-actions">
-                  <div>
+                <label className="file-field cursor-pointer">
+                  <input className="hidden" type="file" accept="image/*" onChange={(e)=> setCatForm(prev=> ({...prev, icon: e.target.files?.[0] || null}))} />
+                  <span className="file-choose-btn">Обзор</span>
+                  <span className={`file-name ${catForm.icon ? 'has-file' : ''}`}>{catForm.icon ? catForm.icon.name : 'Файл не выбран'}</span>
+                  {catForm.icon ? (
+                    <img alt="preview" src={URL.createObjectURL(catForm.icon)} className="w-8 h-8 rounded-[3px] ml-2" />
+                  ) : (
+                    catForm.existingIcon ? <img alt="icon" src={catForm.existingIcon} className="w-8 h-8 rounded-[3px] ml-2" onError={(e)=>{ e.currentTarget.remove(); }} /> : null
+                  )}
+                </label>
+
+                <div className="modal-footer-sticky flex items-center justify-between gap-2">
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode(catForm.id ? 'cats_list' : 'cats_home')} aria-label="Назад"><img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" /></button>
+                  <div className="flex items-center gap-2">
+                    <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>Отмена</button>
                     {catForm.id && (
                       <button className="btn btn-danger" onClick={()=> setCatDeleteConfirmOpen(true)}>Удалить</button>
                     )}
-                  </div>
-                  <div className="flex items-center justify-end gap-2">
                     <button className="btn btn-primary" onClick={async ()=>{
                       const n = (catForm.name||'').trim();
                       if (!n) { alert('Введите название'); return; }
                       try{
                         if (catForm.id){
-                                                    const fd = new FormData(); fd.append('name', n); await api.put(`/categories/${catForm.id}`, fd);
+                          const fd = new FormData(); fd.append('name', n); if (catForm.icon) fd.append('icon', catForm.icon); await api.put(`/categories/${catForm.id}`, fd);
                         } else {
-                          const fd = new FormData(); fd.append('name', n); await api.post(`/categories`, fd);
+                          const fd = new FormData(); fd.append('name', n); if (catForm.icon) fd.append('icon', catForm.icon); await api.post(`/categories`, fd);
                         }
                         await refreshCats();
-                        setCatForm({ id:'', name:'' });
+                        setCatForm({ id:'', name:'', icon:null });
                         setSettingsMode('cats_list'); setSaveToast(true); setTimeout(()=> setSaveToast(false), 1500);
                       } catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить'); }
-                    }}>Сохранить</button>
+                    }}>ОК</button>
                   </div>
                 </div>
               </div>
@@ -632,12 +770,12 @@ function SearchPage() {
 
             {settingsMode === 'ops_form' && (
               <div className="grid gap-3">
+                <div className="text-lg font-semibold mb-2">{isEditingOp ? 'Редактирование оператора' : 'Добавление оператора'}</div>
                 <input className="search-input" placeholder="Название оператора" value={opForm.name} onChange={(e)=> setOpForm(prev=> ({...prev, name: e.target.value}))} />
                 <label className="file-field cursor-pointer">
                   <input className="hidden" type="file" accept="image/*" onChange={(e)=> setOpForm(prev=> ({...prev, logo: e.target.files?.[0] || null}))} />
                   <span className="file-choose-btn">Обзор</span>
                   <span className={`file-name ${opForm.logo ? 'has-file' : ''}`}>{opForm.logo ? opForm.logo.name : 'Файл не выбран'}</span>
-                  {/* превью внутри поля загрузки */}
                   {opForm.logo ? (
                     <img alt="preview" src={URL.createObjectURL(opForm.logo)} className="w-8 h-8 rounded-[3px] ml-2" />
                   ) : (
@@ -645,8 +783,9 @@ function SearchPage() {
                   )}
                 </label>
                 <div className="modal-footer-sticky flex items-center justify-between gap-2">
-                  <button className="btn btn-text" onClick={()=> gotoSettingsMode(isEditingOp ? 'ops_list' : 'ops_home')}>Закрыть</button>
+                  <button className="btn btn-back-50" onClick={()=> gotoSettingsMode(isEditingOp ? 'ops_list' : 'ops_home')} aria-label="Назад"><img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" /></button>
                   <div className="flex items-center gap-2">
+                    <button className="btn btn-text" onClick={()=>{ setSettingsMode('root'); setSettingsOpen(false); }}>{isEditingOp ? 'Отмена' : 'Отмена'}</button>
                     {isEditingOp && (
                       <button className="btn btn-danger" onClick={()=> setOpDeleteConfirmOpen(true)}>Удалить</button>
                     )}
@@ -665,7 +804,7 @@ function SearchPage() {
                         setSettingsMode('ops_list');
                         setOpForm({ id:'', name:'', logo:null, existingLogo:'' });
                       }catch(e){ alert(e.response?.data?.detail || 'Не удалось сохранить оператора'); }
-                    }}>Сохранить</button>
+                    }}>ОК</button>
                   </div>
                 </div>
               </div>
@@ -678,6 +817,7 @@ function SearchPage() {
 
       {confirmAdd.open && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10020] modal-overlay" onClick={()=> setConfirmAdd({ open:false, type:null, label:'' })}>
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Подтверждение</div>
             <div className="text-sm text-neutral-700 mb-4">
@@ -716,7 +856,7 @@ function SearchPage() {
               Вы уверены, что хотите удалить оператора "{opForm.name}"? Это действие нельзя отменить.
             </div>
             <div className="flex items-center justify-end gap-2">
-              <button className="btn btn-text" onClick={() => setOpDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => setOpDeleteConfirmOpen(false)}>Отмена</button>
               <button className="btn btn-danger" onClick={async () => {
                 try {
                   await api.delete(`/operators/${opForm.id}`);
@@ -746,12 +886,12 @@ function SearchPage() {
               Вы уверены, что хотите удалить категорию "{catForm.name}"? Это действие нельзя отменить.
             </div>
             <div className="flex items-center justify-end gap-2">
-              <button className="btn btn-text" onClick={() => setCatDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => setCatDeleteConfirmOpen(false)}>Отмена</button>
               <button className="btn btn-danger" onClick={async () => {
                 try {
                   await api.delete(`/categories/${catForm.id}`);
                   await refreshCats();
-                  setCatForm({ id:'', name:'' });
+                  setCatForm({ id:'', name:'', icon:null });
                   setSettingsMode('cats_list');
                   setCatDeleteConfirmOpen(false);
                 } catch(e) {
@@ -774,10 +914,12 @@ function SearchPage() {
               }}>Удалить</button>
       {/* Operator Picker Modal */}
       {opPickOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setOpPickOpen(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" style={{touchAction:'auto'}} onClick={()=> setOpPickOpen(false)}>
+          <LockBodyScroll />
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор оператора</div>
-            <div className="grid menu-list">
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {opPickList.map(op => {
                 const key = nameToKey(op.name);
                 const active = key === opPickKey;
@@ -821,7 +963,7 @@ function SearchPage() {
                 
               </button>
               <div className="flex items-center justify-end gap-2">
-                <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Закрыть</button>
+                <button className="btn btn-text" onClick={() => setShowNumberDialog(false)}>Отмена</button>
                 <button className="btn btn-primary" onClick={saveNumber}>Сохранить</button>
               </div>
             </div>
@@ -836,11 +978,9 @@ function SearchPage() {
             <div className="text-lg font-semibold mb-2">Добавить место</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={placeForm.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, name: e.target.value })} />
-              <select className="search-input" value={placeForm.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e) => setPlaceForm({ ...placeForm, category: e.target.value })}>
-                {cats.map((c)=> (
-                  <option key={c.id} value={c.name}>{c.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setCatPickName(placeForm.category || (cats[0]?.name || '')); setCatPickOpen(true); }}>
+                <span>{placeForm.category || 'Категория'}</span>
+              </button>
               {/* Промокод с плюсиком */}
               <div className="flex items-center gap-2">
                 <input 
@@ -892,11 +1032,36 @@ function SearchPage() {
                 }}
               />
               <div className="flex items-center justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={() => setShowPlaceDialog(false)}>Отмена</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={savePlace}>Сохранить</button>
               </div>
             </div>
           </div>
+      {/* Категорийный пикер для модалки добавления места из поиска */}
+      {catPickOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setCatPickOpen(false)}>
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор категории</div>
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
+              {cats.map(cat => {
+                const active = (cat.name||'') === (catPickName||'');
+                return (
+                  <button key={cat.id} className={`text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2 ${active? 'bg-neutral-100':''}`} onClick={()=> setCatPickName(cat.name)}>
+                    <img alt="icon" src={`${API}/categories/${cat.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                    <span>{cat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
+              <button className="btn btn-text" onClick={()=> setCatPickOpen(false)}>Отмена</button>
+              <button className="btn btn-primary" onClick={()=>{ setPlaceForm(f=>({...f, category: catPickName || f.category})); setCatPickOpen(false); }}>Сохранить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
         </div>
       )}
 
@@ -1051,10 +1216,11 @@ function NumbersPage() {
       </button>
 
       {sortOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onScroll={(e)=>e.preventDefault()} onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=>setSortOpen(false)}>
+          <LockBodyScroll />
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Сортировка</div>
-            <div className="grid menu-list">
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Сортировка</div>
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {[
                 { key: 'new', label: 'Сначала новые' },
                 { key: 'old', label: 'Сначала старые' },
@@ -1071,10 +1237,11 @@ function NumbersPage() {
       )}
 
       {opsOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setOpsOpen(false)}>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onClick={()=>setOpsOpen(false)}>
+          <LockBodyScroll />
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-            <div className="text-lg font-semibold mb-2">Операторы</div>
-            <div className="grid menu-list max-h-[60vh] overflow-y-auto">
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Операторы</div>
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {opsList.map(op => (
                 <label key={op.id} className="flex items-center px-3 py-2 cursor-pointer">
                   <input type="checkbox" className="ops-check" checked={!!opFilterNames[op.name]} onChange={(e)=> { 
@@ -1122,7 +1289,7 @@ function NumbersPage() {
                 
               </button>
               <div className="flex items-center justify-end gap-2">
-                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
@@ -1132,10 +1299,12 @@ function NumbersPage() {
 
       {/* NumbersPage Operator Picker Modal */}
       {nbOpPickOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setNbOpPickOpen(false)}>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onScroll={(e)=>e.preventDefault()} onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=> setNbOpPickOpen(false)}>
+          <LockBodyScroll />
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор оператора</div>
-            <div className="grid menu-list">
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {nbOpPickList.map(op => {
                 const key = nameToKey(op.name);
                 const active = key === nbOpPickKey;
@@ -1386,10 +1555,10 @@ function NumberDetails({ id }) {
 
         {/* Диалог сортировки мест на странице номера */}
         {sortOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onScroll={(e)=>e.preventDefault()} onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=>setSortOpen(false)}>
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Сортировка</div>
-              <div className="grid menu-list">
+              <div className="modal-scroll grid menu-list max-h-[60vh]">
                 {[ 
                   { key:'recentUsed', label:'Последние использованные' },
                   { key:'longUnused', label:'Давно не использовались' },
@@ -1410,7 +1579,7 @@ function NumberDetails({ id }) {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setPlacesOpen(false)}>
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Места</div>
-              <div className="grid menu-list max-h-[60vh] overflow-y-auto">
+              <div className="modal-scroll grid menu-list max-h-[60vh]">
                 {[...(usage.used||[]), ...(usage.unused||[])]
                   .sort((a,b)=> (a.name||'').localeCompare(b.name||''))
                   .map(p => (
@@ -1485,7 +1654,7 @@ function NumberDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
             </div>
           </div>
         </div>
@@ -1506,7 +1675,7 @@ function NumberDetails({ id }) {
               Вы уверены, что хотите удалить номер "{number?.phone}"? Это действие нельзя отменить.
             </div>
             <div className="flex items-center justify-end gap-2">
-              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Отмена</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deleteNumber}>Удалить</button>
             </div>
           </div>
@@ -1528,9 +1697,11 @@ function NumberDetails({ id }) {
       {/* NumberDetails Operator Picker Modal */}
       {ndOpPickOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onClick={()=> setNdOpPickOpen(false)}>
+          <LockBodyScroll />
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор оператора</div>
-            <div className="grid menu-list">
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {ndOpPickList.map(op => {
                 const key = nameToKey(op.name);
                 const active = key === ndOpPickKey;
@@ -1544,7 +1715,7 @@ function NumberDetails({ id }) {
             </div>
             <div className="modal-footer-sticky flex items-center justify-between gap-2 mt-3">
               <div>
-                <button className="btn" onClick={()=> { setNdOpPickOpen(false); /* Назад ведёт к форме, просто закрываем */ }}>Назад</button>
+                <button className="btn btn-back-50" onClick={()=> { setNdOpPickOpen(false); /* Назад ведёт к форме, просто закрываем */ }} aria-label="Назад"><img alt="Назад" src="https://customer-assets.emergentagent.com/job_promophone-plus/artifacts/3k9fa4t5_back.svg" className="icon-back" /></button>
               </div>
               <div className="flex items-center gap-2">
                 <button className="btn btn-text" onClick={()=> setNdOpPickOpen(false)}>Отмена</button>
@@ -1562,7 +1733,7 @@ function NumberDetails({ id }) {
                 
               </button>
               <div className="flex items-center justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedNumber}>Сохранить</button>
               </div>
             </div>
@@ -1585,7 +1756,7 @@ function NumberDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
             </div>
           </div>
         </div>
@@ -1621,6 +1792,10 @@ function PlaceDetails({ id }) {
   const [showExtraPromo, setShowExtraPromo] = useState(false);
   const [showPromoUrl, setShowPromoUrl] = useState(false);
   const [tab, setTab] = useState('unused');
+  const { cats } = useCats();
+  const [plCatPickOpen, setPlCatPickOpen] = useState(false);
+  const [plCatPickName, setPlCatPickName] = useState("");
+
   // Панель сортировки/операторов для страницы места
   const [plSortOpen, setPlSortOpen] = useState(false);
   const [plOpsOpen, setPlOpsOpen] = useState(false);
@@ -1840,12 +2015,13 @@ function PlaceDetails({ id }) {
 
       {commentDialogOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setCommentDialogOpen(false)}>
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Комментарий</div>
             <div className="grid gap-3">
               <div className="text-base whitespace-pre-wrap">{place.comment}</div>
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setCommentDialogOpen(false)}>Отмена</button>
               </div>
             </div>
           </div>
@@ -1857,7 +2033,7 @@ function PlaceDetails({ id }) {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10020]" onClick={()=>setPlSortOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10021]" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Сортировка</div>
-            <div className="grid menu-list">
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {[
                 { key:'recentUsed', label:'Последние использованные' },
                 { key:'longUnused', label:'Давно не использовались' },
@@ -1878,7 +2054,7 @@ function PlaceDetails({ id }) {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10020]" onClick={()=>setPlOpsOpen(false)}>
           <div className="bg-white modal-panel w-full max-w-sm relative z-[10021]" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Операторы</div>
-            <div className="grid menu-list max-h-[60vh] overflow-y-auto">
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
               {opsList.map(op => (
                 <label key={op.id} className="flex items-center px-3 py-2 cursor-pointer">
                   <input type="checkbox" className="ops-check" checked={!!opFilterNames[op.name]} onChange={(e)=> { 
@@ -1909,6 +2085,7 @@ function PlaceDetails({ id }) {
 
       {promoOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Промо-материалы</div>
             <div className="grid gap-3">
@@ -1933,7 +2110,7 @@ function PlaceDetails({ id }) {
               ); })()}
 
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Отмена</button>
               </div>
             </div>
           </div>
@@ -1949,7 +2126,7 @@ function PlaceDetails({ id }) {
             )}
               <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => { openEditDialog(); setCtxOpen(false); }}>Редактировать</button>
               <button className="w-full px-3 py-2 text-left text-red-600 hover:bg-neutral-50" onClick={() => { setDeleteConfirmOpen(true); setCtxOpen(false); }}>Удалить</button>
-              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
+              <button className="w-full px-3 py-2 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
             </div>
           </div>
         </div>
@@ -1963,7 +2140,7 @@ function PlaceDetails({ id }) {
               Вы уверены, что хотите удалить место "{place?.name}"? Это действие нельзя отменить.
             </div>
             <div className="flex items-center justify-end gap-2">
-              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Закрыть</button>
+              <button className="px-4 py-2" onClick={() => setDeleteConfirmOpen(false)}>Отмена</button>
               <button className="px-4 py-2 bg-red-600 text-white" onClick={deletePlace}>Удалить</button>
             </div>
           </div>
@@ -1976,11 +2153,9 @@ function PlaceDetails({ id }) {
             <div className="text-lg font-semibold mb-2 sticky top-0 bg-white">Редактировать место</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={editForm.name} onChange={(e)=>setEditForm({...editForm, name: e.target.value})} />
-              <select className="search-input" value={editForm.category} onChange={(e)=>setEditForm({...editForm, category: e.target.value})}>
-                {cats.map((c)=> (
-                  <option key={c.id} value={c.name}>{c.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(editForm.category || (cats[0]?.name || '')); setPlCatPickOpen(true); }}>
+                <span>{editForm.category || 'Категория'}</span>
+              </button>
               
               {/* Промокод с плюсиком */}
               <div className="flex items-center gap-2">
@@ -2051,7 +2226,33 @@ function PlaceDetails({ id }) {
                 <span className={`file-name ${editForm.logo ? 'has-file' : ''}`}>{editForm.logo ? (editForm.logo.name || editForm.logo) : 'Файл не выбран'}</span>
               </label>
               <div className="flex items-center justify-end gap-2">
-                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={() => setEditDialogOpen(false)}>Отмена</button>
+      {/* Категорийный пикер для диалога редактирования места */}
+      {plCatPickOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=> setPlCatPickOpen(false)}>
+          <LockBodyScroll />
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор категории</div>
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
+              {cats.map(cat => {
+                const active = (cat.name||'') === (plCatPickName||'');
+                return (
+                  <button key={cat.id} className={`text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2 ${active? 'bg-neutral-100':''}`} onClick={()=> setPlCatPickName(cat.name)}>
+                    <img alt="icon" src={`${API}/categories/${cat.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                    <span>{cat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
+              <button className="btn btn-text" onClick={()=> setPlCatPickOpen(false)}>Отмена</button>
+              <button className="btn btn-primary" onClick={()=>{ setEditForm(f=>({...f, category: plCatPickName || f.category})); setPlCatPickOpen(false); }}>Сохранить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={saveEditedPlace}>Сохранить</button>
               </div>
             </div>
@@ -2074,7 +2275,7 @@ function PlaceDetails({ id }) {
                 window.__unsaved = false;
                 setNbUsageConfirm({ open: false, targetId: null, next: false });
               }}>Да</button>
-              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Закрыть</button>
+              <button className="btn btn-text" onClick={() => setNbUsageConfirm({ open: false, targetId: null, next: false })}>Отмена</button>
             </div>
           </div>
         </div>
@@ -2105,6 +2306,9 @@ function PlacesPage() {
   const [filter, setFilter] = useState({ category: "", sort: "popular" });
   const [sortOpen, setSortOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
+  // Category picker state for PlacesPage add/edit dialog
+  const [plCatPickOpen, setPlCatPickOpen] = useState(false);
+  const [plCatPickName, setPlCatPickName] = useState("");
   const SORT_OPTIONS = [
     { key: 'new', label: 'Сначала новые' },
     { key: 'old', label: 'Сначала старые' },
@@ -2214,10 +2418,10 @@ function PlacesPage() {
 
         {/* Селектор сортировки */}
         {sortOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setSortOpen(false)}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onScroll={(e)=>e.preventDefault()} onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=>setSortOpen(false)}>
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
               <div className="text-lg font-semibold mb-2">Сортировка</div>
-              <div className="grid menu-list">
+              <div className="modal-scroll grid menu-list max-h-[60vh]">
                 {SORT_OPTIONS.map(opt => (
                   <button key={opt.key} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, sort: opt.key })); setSortOpen(false); }}>
                     {opt.label}
@@ -2230,16 +2434,21 @@ function PlacesPage() {
 
         {/* Селектор категорий */}
         {catOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001]" onClick={()=>setCatOpen(false)}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[10001] modal-overlay" onClick={()=>setCatOpen(false)}>
+            <LockBodyScroll />
             <div className="bg-white modal-panel w-full max-w-sm relative z-[10002]" onClick={(e)=>e.stopPropagation()}>
-              <div className="text-lg font-semibold mb-2">Категории</div>
-              <div className="grid menu-list">
+              <div className="modal-header-sticky text-lg font-semibold mb-2">Категории</div>
+              <div className="modal-scroll grid menu-list max-h-[60vh]">
                 {cats.map(c => (
-                  <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: c.name })); setCatOpen(false); }}>
-                    {c.name}
+                  <button key={c.id} className="text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2" onClick={()=>{ setFilter(f=>({...f, category: c.name })); setCatOpen(false); }}>
+                    <img alt="icon" src={`${API}/categories/${c.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                    <span>{c.name}</span>
                   </button>
                 ))}
                 <button className="text-left px-3 py-2 hover:bg-neutral-50" onClick={()=>{ setFilter(f=>({...f, category: '' })); setCatOpen(false); }}>Все категории</button>
+              </div>
+              <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
+                <button className="btn btn-text" onClick={()=> setCatOpen(false)}>Отмена</button>
               </div>
             </div>
           </div>
@@ -2285,12 +2494,9 @@ function PlacesPage() {
             <div className="text-lg font-semibold mb-2">{editing ? "Редактировать место" : "Добавить место"}</div>
             <div className="grid gap-3 pb-4">
               <input className="search-input" placeholder="Название" value={form.name} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, name: e.target.value})} />
-              <select className="search-input" value={form.category} onFocus={(e)=>ensureFieldVisible(e.target)} onChange={(e)=>setForm({...form, category: e.target.value})}>
-                <option value="" disabled>{"Выберите категорию"}</option>
-                {cats.map((c)=> (
-                  <option key={c.id} value={c.name}>{c.name}</option>
-                ))}
-              </select>
+              <button className="search-input flex items-center justify-between" onClick={()=>{ setPlCatPickName(form.category || (cats[0]?.name || '')); setPlCatPickOpen(true); }}>
+                <span>{form.category || 'Выберите категорию'}</span>
+              </button>
               {/* Промокод с плюсиком */}
               <div className="flex items-center gap-2">
                 <input 
@@ -2334,6 +2540,32 @@ function PlacesPage() {
                 <input className="hidden" type="file" accept="image/*" onChange={(e)=>setForm({...form, logo: e.target.files?.[0] || null})} />
                 <span className="file-choose-btn">Обзор</span>
                 <span className={`file-name ${form.logo ? 'has-file' : ''}`}>{form.logo ? (form.logo.name || form.logo) : 'Файл не выбран'}</span>
+      {/* Категорийный пикер для диалога добавления/редактирования места (список мест) */}
+      {plCatPickOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-[10040] modal-overlay" onWheelCapture={(e)=>e.preventDefault()} onTouchMoveCapture={(e)=>e.preventDefault()} onClick={()=> setPlCatPickOpen(false)}>
+          <LockBodyScroll />
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
+          <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="modal-header-sticky text-lg font-semibold mb-2">Выбор категории</div>
+            <div className="modal-scroll grid menu-list max-h-[60vh]">
+              {cats.map(cat => {
+                const active = (cat.name||'') === (plCatPickName||'');
+                return (
+                  <button key={cat.id} className={`text-left px-3 py-2 hover:bg-neutral-50 flex items-center gap-2 ${active? 'bg-neutral-100':''}`} onClick={()=> setPlCatPickName(cat.name)}>
+                    <img alt="icon" src={`${API}/categories/${cat.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
+                    <span>{cat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="modal-footer-sticky flex items-center justify-end gap-2 mt-3">
+              <button className="btn btn-text" onClick={()=> setPlCatPickOpen(false)}>Отмена</button>
+              <button className="btn btn-primary" onClick={()=>{ setForm(f=>({...f, category: plCatPickName || f.category})); setPlCatPickOpen(false); }}>Сохранить</button>
+            </div>
+          </div>
+        </div>
+      )}
+
               </label>
               {/* Комментарий с автоувеличением как у редактирования */}
               <textarea 
@@ -2358,7 +2590,7 @@ function PlacesPage() {
                 }}
               />
               <div className="flex items-center justify-end gap-2">
-                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setShowDialog(false)}>Отмена</button>
                 <button className="px-4 py-2 bg-blue-600 text-white" onClick={save}>Сохранить</button>
               </div>
             </div>
@@ -2368,6 +2600,7 @@ function PlacesPage() {
 
       {promoOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4" onClick={()=>setPromoOpen(false)}>
+          {/* <ScrollTrap /> removed to allow natural scroll inside modal */}
           <div className="bg-white modal-panel w-full max-w-md shadow-xl" onClick={(e)=>e.stopPropagation()}>
             <div className="text-lg font-semibold mb-2">Промо-материалы</div>
             <div className="grid gap-3">
@@ -2388,7 +2621,7 @@ function PlacesPage() {
                 <div className="text-sm text-neutral-500">Ссылка не указана</div>
               )}
               <div className="flex justify-end">
-                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Закрыть</button>
+                <button className="px-4 py-2" onClick={()=>setPromoOpen(false)}>Отмена</button>
               </div>
             </div>
           </div>
@@ -2400,7 +2633,7 @@ function PlacesPage() {
           <div className="bg-white w-full max-w-sm overflow-hidden" onClick={(e)=>e.stopPropagation()}>
             <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => startEdit(ctxTarget)}>Редактировать</button>
             <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-neutral-50" onClick={() => { del(ctxTarget.id); setCtxOpen(false); }}>Удалить</button>
-            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Закрыть</button>
+            <button className="w-full px-4 py-3 text-left hover:bg-neutral-50" onClick={() => setCtxOpen(false)}>Отмена</button>
           </div>
         </div>
       )}

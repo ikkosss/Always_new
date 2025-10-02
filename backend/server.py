@@ -375,10 +375,13 @@ async def create_place(
             "contentType": logo.content_type or "image/png",
             "data": base64.b64encode(content).decode('utf-8')
         }
+    # Copy BEFORE insert to avoid in-place _id injection by Mongo driver
+    resp_base = dict(doc)
     await db.places.insert_one(doc)
-    resp = dict(doc)
+    resp = dict(resp_base)
+    resp.pop("_id", None)
     resp.pop("logo", None)
-    resp["hasLogo"] = "logo" in doc
+    resp["hasLogo"] = "logo" in doc and bool(doc.get("logo"))
     resp["hasPromo"] = bool(doc.get("promoCode") or doc.get("promoUrl"))
     return resp
 
@@ -649,6 +652,17 @@ async def delete_operator_endpoint(op_id: str):
 # ---------------------
 # Categories CRUD
 # ---------------------
+@api_router.get("/categories/{cat_id}/icon")
+async def get_category_icon(cat_id: str):
+    doc = await db.categories.find_one({"id": cat_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Category not found")
+    ic = doc.get("icon")
+    if not ic:
+        raise HTTPException(status_code=404, detail="Icon not set")
+    data = base64.b64decode(ic.get("data", ""))
+    return Response(content=data, media_type=ic.get("contentType", "image/png"))
+
 @api_router.get("/categories")
 async def list_categories():
     items = await db.categories.find({}).sort("createdAt", -1).to_list(2000)
@@ -656,11 +670,14 @@ async def list_categories():
     for it in items:
         d = dict(it)
         d.pop("_id", None)
+        has_icon = bool(d.get("icon"))
+        d.pop("icon", None)
+        d["hasIcon"] = has_icon
         out.append(d)
     return out
 
 @api_router.post("/categories")
-async def create_category(name: str = Form(...)):
+async def create_category(name: str = Form(...), icon: Optional[UploadFile] = File(None)):
     n = (name or '').strip()
     if not n:
         raise HTTPException(status_code=400, detail="Name required")
@@ -668,26 +685,61 @@ async def create_category(name: str = Form(...)):
     if dup:
         raise HTTPException(status_code=409, detail="Category already exists")
     doc = CategoryModel(name=n).model_dump()
+    if icon is not None:
+        content = await icon.read()
+        if len(content) > 2 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="Icon too large (max 2MB)")
+        doc["icon"] = {
+            "contentType": icon.content_type or "image/png",
+            "data": base64.b64encode(content).decode('utf-8')
+        }
     await db.categories.insert_one(doc)
     resp = dict(doc)
     resp.pop("_id", None)
+    has_icon = bool(resp.get("icon"))
+    resp.pop("icon", None)
+    resp["hasIcon"] = has_icon
     return resp
 
 @api_router.put("/categories/{cat_id}")
-async def update_category(cat_id: str, name: str = Form(...)):
-    n = (name or '').strip()
-    if not n:
-        raise HTTPException(status_code=400, detail="Name required")
+async def update_category(cat_id: str, name: Optional[str] = Form(None), icon: Optional[UploadFile] = File(None), removeIcon: Optional[bool] = Form(False)):
     cur = await db.categories.find_one({"id": cat_id})
     if not cur:
         raise HTTPException(status_code=404, detail="Category not found")
-    dup = await db.categories.find_one({"name": {"$regex": f"^{re.escape(n)}$", "$options": "i"}, "id": {"$ne": cat_id}})
-    if dup:
-        raise HTTPException(status_code=409, detail="Category already exists")
-    await db.categories.update_one({"id": cat_id}, {"$set": {"name": n}})
+    set_obj: Dict[str, Any] = {}
+    unset_obj: Dict[str, Any] = {}
+    if name is not None:
+        n = (name or '').strip()
+        if not n:
+            raise HTTPException(status_code=400, detail="Name required")
+        dup = await db.categories.find_one({"name": {"$regex": f"^{re.escape(n)}$", "$options": "i"}, "id": {"$ne": cat_id}})
+        if dup:
+            raise HTTPException(status_code=409, detail="Category already exists")
+        set_obj["name"] = n
+    if icon is not None:
+        content = await icon.read()
+        if len(content) > 2 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="Icon too large (max 2MB)")
+        set_obj["icon"] = {
+            "contentType": icon.content_type or "image/png",
+            "data": base64.b64encode(content).decode('utf-8')
+        }
+    if removeIcon:
+        unset_obj["icon"] = ""
+    update_cmd: Dict[str, Any] = {}
+    if set_obj:
+        update_cmd["$set"] = set_obj
+    if unset_obj:
+        update_cmd["$unset"] = unset_obj
+    if not update_cmd:
+        return JSONResponse({"updated": False})
+    await db.categories.update_one({"id": cat_id}, update_cmd)
     doc = await db.categories.find_one({"id": cat_id})
     resp = dict(doc)
     resp.pop("_id", None)
+    has_icon = bool(resp.get("icon"))
+    resp.pop("icon", None)
+    resp["hasIcon"] = has_icon
     return resp
 
 @api_router.delete("/categories/{cat_id}")

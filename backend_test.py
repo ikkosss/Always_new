@@ -1584,6 +1584,301 @@ class FIRSTAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def test_create_place_without_logo_comprehensive(self):
+        """Test POST /api/places - successful creation without logo (Review Request #1)"""
+        place_name = f"МестоБезЛого-{self.timestamp}"
+        
+        data = {
+            "name": place_name,
+            "category": "Магазины",
+            "comment": "Тестовое место без логотипа"
+        }
+        
+        success, response = self.run_test(
+            "Create place without logo (comprehensive)", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify response structure - should NOT contain _id
+            if '_id' in response:
+                print(f"❌ CRITICAL: Response contains _id field: {response.get('_id')}")
+                return False
+            
+            # Verify response contains hasLogo flag
+            if 'hasLogo' not in response:
+                print(f"❌ CRITICAL: Response missing hasLogo flag")
+                return False
+            
+            # Verify hasLogo is false for place without logo
+            if response.get('hasLogo') is not False:
+                print(f"❌ CRITICAL: hasLogo should be false, got: {response.get('hasLogo')}")
+                return False
+            
+            # Verify response contains hasPromo flag
+            if 'hasPromo' not in response:
+                print(f"❌ CRITICAL: Response missing hasPromo flag")
+                return False
+            
+            # Verify hasPromo is false for place without promo
+            if response.get('hasPromo') is not False:
+                print(f"❌ CRITICAL: hasPromo should be false, got: {response.get('hasPromo')}")
+                return False
+            
+            # Store place ID for later tests
+            if 'id' in response:
+                self.created_place_id = response['id']
+                print(f"✅ Created place ID: {self.created_place_id}")
+            
+            print(f"✅ Place created successfully without logo: {place_name}")
+            print(f"✅ Response correctly excludes _id field")
+            print(f"✅ Response correctly includes hasLogo=false and hasPromo=false flags")
+        
+        return success
+
+    def test_create_place_with_small_logo(self):
+        """Test POST /api/places - creation with small logo <50KB (Review Request #2)"""
+        place_name = f"МестоСЛого-{self.timestamp}"
+        
+        # Create a small test image (minimal PNG - well under 50KB)
+        import base64
+        # Minimal 1x1 PNG image in base64 (very small, <1KB)
+        minimal_png = base64.b64decode(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77yQAAAABJRU5ErkJggg=='
+        )
+        
+        data = {
+            "name": place_name,
+            "category": "Кафе",
+            "promoCode": "LOGO123"
+        }
+        
+        files = {
+            'logo': ('small_logo.png', minimal_png, 'image/png')
+        }
+        
+        success, response = self.run_test(
+            "Create place with small logo (<50KB)", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=files, 
+            is_multipart=True
+        )
+        
+        if success:
+            # Verify response structure - should NOT contain _id
+            if '_id' in response:
+                print(f"❌ CRITICAL: Response contains _id field: {response.get('_id')}")
+                return False
+            
+            # Verify response should NOT contain logo data
+            if 'logo' in response:
+                print(f"❌ CRITICAL: Response contains logo field (should be excluded)")
+                return False
+            
+            # Verify hasLogo is true for place with logo
+            if response.get('hasLogo') is not True:
+                print(f"❌ CRITICAL: hasLogo should be true, got: {response.get('hasLogo')}")
+                return False
+            
+            # Verify hasPromo is true for place with promoCode
+            if response.get('hasPromo') is not True:
+                print(f"❌ CRITICAL: hasPromo should be true, got: {response.get('hasPromo')}")
+                return False
+            
+            # Store place ID for later tests
+            if 'id' in response:
+                self.created_place_with_logo_id = response['id']
+                print(f"✅ Created place with logo ID: {self.created_place_with_logo_id}")
+            
+            print(f"✅ Place created successfully with small logo: {place_name}")
+            print(f"✅ Response correctly excludes _id and logo fields")
+            print(f"✅ Response correctly includes hasLogo=true and hasPromo=true flags")
+        
+        return success
+
+    def test_get_place_details_no_id_no_logo(self):
+        """Test GET /api/places/{id} - should not contain _id and logo (Review Request #4)"""
+        if not hasattr(self, 'created_place_with_logo_id') or not self.created_place_with_logo_id:
+            print(f"❌ No place with logo available for details test")
+            return False
+        
+        success, response = self.run_test(
+            "Get place details (should exclude _id and logo)", 
+            "GET", 
+            f"/places/{self.created_place_with_logo_id}", 
+            200
+        )
+        
+        if success:
+            # Verify response does NOT contain _id
+            if '_id' in response:
+                print(f"❌ CRITICAL: GET place details contains _id field: {response.get('_id')}")
+                return False
+            
+            # Verify response does NOT contain logo data
+            if 'logo' in response:
+                print(f"❌ CRITICAL: GET place details contains logo field (should be excluded)")
+                return False
+            
+            # Verify response contains hasLogo flag
+            if 'hasLogo' not in response:
+                print(f"❌ CRITICAL: GET place details missing hasLogo flag")
+                return False
+            
+            # Verify response contains hasPromo flag
+            if 'hasPromo' not in response:
+                print(f"❌ CRITICAL: GET place details missing hasPromo flag")
+                return False
+            
+            # Verify required fields are present
+            required_fields = ['id', 'name', 'category', 'hasLogo', 'hasPromo', 'createdAt']
+            for field in required_fields:
+                if field not in response:
+                    print(f"❌ CRITICAL: GET place details missing required field: {field}")
+                    return False
+            
+            print(f"✅ GET place details correctly excludes _id and logo fields")
+            print(f"✅ GET place details correctly includes hasLogo and hasPromo flags")
+            print(f"✅ Place details: {response.get('name')} (hasLogo={response.get('hasLogo')}, hasPromo={response.get('hasPromo')})")
+        
+        return success
+
+    def test_create_place_duplicate_name_case_insensitive(self):
+        """Test POST /api/places - duplicate name (case-insensitive) should return 409 (Review Request #5)"""
+        # First create a place with a specific name
+        original_name = f"ДубликатТест-{self.timestamp}"
+        
+        data = {
+            "name": original_name,
+            "category": "Тест"
+        }
+        
+        success, response = self.run_test(
+            "Create original place for duplicate test", 
+            "POST", 
+            "/places", 
+            200, 
+            data=data, 
+            files=None, 
+            is_multipart=True
+        )
+        
+        if not success:
+            print(f"❌ Failed to create original place for duplicate test")
+            return False
+        
+        print(f"✅ Created original place: {original_name}")
+        
+        # Now try to create a place with the same name but different case
+        duplicate_variations = [
+            original_name.upper(),  # ALL UPPERCASE
+            original_name.lower(),  # all lowercase
+            original_name.capitalize(),  # First letter capitalized
+            original_name  # Exact same name
+        ]
+        
+        all_duplicates_rejected = True
+        
+        for duplicate_name in duplicate_variations:
+            data_duplicate = {
+                "name": duplicate_name,
+                "category": "Другая категория"
+            }
+            
+            success, response = self.run_test(
+                f"Try create duplicate place: '{duplicate_name}'", 
+                "POST", 
+                "/places", 
+                409,  # Expecting 409 Conflict
+                data=data_duplicate, 
+                files=None, 
+                is_multipart=True
+            )
+            
+            if success:
+                # Verify the error response
+                if 'detail' in response and 'already exists' in response['detail'].lower():
+                    print(f"✅ Duplicate name '{duplicate_name}' correctly rejected with 409")
+                else:
+                    print(f"❌ Duplicate rejection has wrong error message: {response}")
+                    all_duplicates_rejected = False
+            else:
+                print(f"❌ Duplicate name '{duplicate_name}' was not rejected with 409")
+                all_duplicates_rejected = False
+        
+        if all_duplicates_rejected:
+            print(f"✅ All duplicate name variations correctly rejected (case-insensitive)")
+        else:
+            print(f"❌ Some duplicate names were not properly rejected")
+        
+        return all_duplicates_rejected
+
+    def test_places_comprehensive_flow(self):
+        """Test complete places flow covering all review requirements"""
+        print("🏢 Testing comprehensive places flow as per review request...")
+        
+        # Test 1: Create place without logo
+        test1_success = self.test_create_place_without_logo_comprehensive()
+        print(f"✅ Test 1 (Create without logo): {'PASSED' if test1_success else 'FAILED'}")
+        
+        # Test 2: Create place with small logo
+        test2_success = self.test_create_place_with_small_logo()
+        print(f"✅ Test 2 (Create with small logo): {'PASSED' if test2_success else 'FAILED'}")
+        
+        # Test 3: Verify GET place details excludes _id and logo
+        test3_success = self.test_get_place_details_no_id_no_logo()
+        print(f"✅ Test 3 (GET details excludes _id/logo): {'PASSED' if test3_success else 'FAILED'}")
+        
+        # Test 4: Test duplicate name rejection (case-insensitive)
+        test4_success = self.test_create_place_duplicate_name_case_insensitive()
+        print(f"✅ Test 4 (Duplicate name rejection): {'PASSED' if test4_success else 'FAILED'}")
+        
+        all_tests_passed = test1_success and test2_success and test3_success and test4_success
+        
+        print("=" * 50)
+        print(f"🏢 PLACES COMPREHENSIVE FLOW: {'✅ ALL PASSED' if all_tests_passed else '❌ SOME FAILED'}")
+        print("=" * 50)
+        
+        return all_tests_passed
+
+    def run_places_review_tests(self):
+        """Run places tests as specifically requested in the review"""
+        print("🏢 Starting Places Review Tests (Russian Request)")
+        print("=" * 50)
+        print("Тестирование POST /api/places согласно запросу:")
+        print("1) Успешное создание места без logo")
+        print("2) Создание места с небольшим логотипом (<50KB)")
+        print("3) Ответ не содержит _id и содержит hasLogo/hasPromo флаги")
+        print("4) GET /api/places/{id} возвращается и не содержит _id и logo")
+        print("5) Попробовать дублирование имени (регистронезависимо) — должен быть 409")
+        print("=" * 50)
+        
+        # Reset counters for this specific test suite
+        initial_tests_run = self.tests_run
+        initial_tests_passed = self.tests_passed
+        
+        # Run the comprehensive flow test
+        comprehensive_success = self.test_places_comprehensive_flow()
+        
+        # Calculate results for this test suite only
+        suite_tests_run = self.tests_run - initial_tests_run
+        suite_tests_passed = self.tests_passed - initial_tests_passed
+        
+        print("📊 Places Review Test Results:")
+        print(f"   Tests run: {suite_tests_run}")
+        print(f"   Tests passed: {suite_tests_passed}")
+        print(f"   Success rate: {(suite_tests_passed/suite_tests_run*100):.1f}%" if suite_tests_run > 0 else "   Success rate: 0%")
+        
+        return comprehensive_success
+
     def run_operators_delete_tests(self):
         """Run comprehensive DELETE operators tests as requested in review"""
         print("🗑️ Starting Operators DELETE Tests")
@@ -1990,9 +2285,32 @@ class FIRSTAPITester:
 def main():
     tester = FIRSTAPITester()
     
-    # Run categories DELETE tests as requested in review
-    print("Running categories DELETE tests as requested...")
-    success = tester.run_categories_delete_tests()
+    if len(sys.argv) > 1:
+        test_type = sys.argv[1].lower()
+        
+        if test_type == "promo":
+            success = tester.run_promo_tests()
+        elif test_type == "search":
+            success = tester.run_search_tests()
+        elif test_type == "admin":
+            success = tester.test_admin_fix_timestamps()
+        elif test_type == "operators":
+            success = tester.run_operators_tests()
+        elif test_type == "operators_delete":
+            success = tester.run_operators_delete_tests()
+        elif test_type == "categories_delete":
+            print("Running categories DELETE tests as requested...")
+            success = tester.run_categories_delete_tests()
+        elif test_type == "places_review":
+            print("Running places review tests as requested...")
+            success = tester.run_places_review_tests()
+        else:
+            print(f"Unknown test type: {test_type}")
+            print("Available types: promo, search, admin, operators, operators_delete, categories_delete, places_review")
+            success = False
+    else:
+        success = tester.run_all_tests()
+    
     return 0 if success else 1
 
 if __name__ == "__main__":
