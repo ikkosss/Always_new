@@ -2286,7 +2286,7 @@ function PlaceDetails({ id }) {
 }
 
 function PlacesPage() {
-  const { cats } = useCats();
+  const { cats: catsList } = useCats();
   const nav = useNavigate();
   const [items, setItems] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
