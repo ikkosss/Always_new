@@ -709,7 +709,7 @@ function SearchPage() {
             {settingsMode === 'cats_list' && (
               <div className="grid gap-2">
                 <div className="max-h-[50vh] overflow-y-auto overflow-x-hidden">
-                  {cats.map(cat => (
+                  {catsList.map(cat => (
                     <button key={cat.id} className="w-full px-3 py-2 text-left hover:bg-neutral-50 border flex items-center gap-2" onClick={()=> { setCatForm({ id: cat.id, name: cat.name, icon: null, existingIcon: `${API}/categories/${cat.id}/icon` }); setSettingsMode('cats_form'); }}>
                       <img alt="icon" src={`${API}/categories/${cat.id}/icon`} className="w-6 h-6 rounded-[3px]" onError={(e)=>{ e.currentTarget.style.display='none'; }} />
                       <span>{cat.name}</span>
